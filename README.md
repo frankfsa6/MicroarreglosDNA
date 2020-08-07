@@ -1,4 +1,4 @@
-# MicroarreglosDNA
+# MicroarreglosDNA 
 
 >>> Control CNC usando Raspberry, enfocada a investigación en ciencias biológicas.
 
