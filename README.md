@@ -19,4 +19,4 @@ Using a “Raspberry”, it works with a used interface based on web programming
 
 Follow the “Installation guide” and use the zip folder “Microarreglos.zip” to install the program in your system. Before using the program, read with detail the "User manual" for its appropiate use.
 
-In case you want an update of the program, use the zip folder “Rasp(date).zip” with the most recent (date) in the repository.
+In case you want an update of the program, use the zip folder “Rasp(date).zip” with the most recent (date) in the repository. 
