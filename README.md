@@ -15,7 +15,7 @@ En caso de realizar una actualización al programa, en la carpeta “versions”
 
 Dedicated to the DNA Microarrays Unit, Institute of Cellular Physiology, UNAM, Mexico. The software “Microarreglos DNA” was made by students from Faculty of Engineering, UNAM, Mexico, focused on numeric control (CNC) of a machine used in laboratories of biological science investigation.
 
-Using a “Raspberry”, it works with a used interface based on web programming (php, javascript and mysql) which allows to control an electronic system or specific hardware, using its general purpose pins (GPIO controlled by C language).
+Using a “Raspberry”, it works with a user interface based on web programming (php, javascript and mysql) which allows to control an electronic system (hardware), using its general purpose pins (GPIO controlled by C language).
 
 Follow the “Installation guide” and use the zip file “Microarreglos.zip” to install the program in your system. Before using the program, read with detail the "User manual" for its appropiate use.
 
