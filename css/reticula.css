@@ -1,0 +1,69 @@
+    #circleR {
+      width: 6px;
+      height: 6px;
+      -webkit-border-radius: 3px;
+      -moz-border-radius: 3px;
+      border-radius: 3px;
+      background: red;
+    }
+	
+	#circleB {
+      width: 6px;
+      height: 6px;
+      -webkit-border-radius: 3px;
+      -moz-border-radius: 3px;
+      border-radius: 3px;
+      background: blue;
+    }
+	
+	#circleV {
+      width: 6px;
+      height: 6px;
+      -webkit-border-radius: 3px;
+      -moz-border-radius: 3px;
+      border-radius: 3px;
+      background: green;
+    }
+	
+	
+	#circleN {
+      width: 6px;
+      height: 6px;
+      -webkit-border-radius: 3px;
+      -moz-border-radius: 3px;
+      border-radius: 3px;
+      background: black;
+    }
+	
+	#circleW {
+      width: 6px;
+      height: 6px;
+      -webkit-border-radius: 3px;
+      -moz-border-radius: 3px;
+      border-radius: 3px;
+      background: white;
+	}
+	
+	#Square{
+      width: 10px;
+      height: 10px;
+      background: grey;
+    }
+	
+	
+	td.celda {
+      width: 7px;
+      height: 7px;
+	  text-align:center;
+	  vertical-align: middle;
+	  padding-left: 0%;
+	  padding-right:0%;
+	  padding-bottom:5px;
+	  padding-top:5px;
+	  background: white;
+    }
+	
+	table.table{
+		border: 1px solid grey;
+		height: 500px;
+	}
