@@ -2,7 +2,6 @@
   // Rutina específica de chips múltiples
   set_time_limit(0);
   include("ArchC.php");
-  ini_set('display_errors', 1);
   // Chips (0-PinesDob, 1-XCoord, 2-YCoord, 3-XEsp, 4-YEsp, 5-XPunt, 6-YPunt, 7-Duplic, 8-Placas, 9-XSlide, 10-YSlide)
   $datos = explode(",", $_POST['datchips']);
   $vxy = 120;

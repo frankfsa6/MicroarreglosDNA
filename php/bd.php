@@ -2,8 +2,6 @@
   $password = "Fisio";
   $wusuario = "root";
   $wcontras = "";
-  //Contraseña para Paco que cambió su contraseña de SQL en Windows
-  //$wcontras = "1234";
   $lusuario = "raspberry";
   $lcontras = "microarreglosdna";
   // Conecta en linux-windows

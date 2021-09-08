@@ -2,12 +2,11 @@
   set_time_limit(0);
   include("bd.php");
   // **********************  Importante ***********************
-    // El codigo G trabaja con coordenadas, asi que se cambian las variables que calculan pasos entre lugares
-    // Por coordenadas. Es importante hacer correctamente las operaciones y agregar un paramatro para modificar
+    // El codigo G trabaja con coordenadas mm, asi que se cambian las variables que calculan pasos entre lugares.
+    // Es importante hacer correctamente las operaciones y agregar un parámetro para modificar
     // los pasos en C y el codigo G,
     // Las coordenadas en la base de datos están dadas en milímetros
     // Las coordenadas en código G están en mm, no en pasos
-    // Se agregan los 0.00 para darle formato al codigo G
   class ArchG{
     private $pasos;		 //Pasos que se avanzarán en cada caso y se enviarán al archivo C
     private $actual;	 //Coordenadas posición actual en mm
@@ -18,13 +17,13 @@
     private $zsep = 10;     // Separación del sensor Z
 
     // Constructor que fija tipo de archivo e inicializa rutina
-    public function __construct(string $nombreRutina){
+    public function __construct($nombreRutina, $info = null){
       $this -> DatosDB();
-      $this -> NuevoArchivoG($nombreRutina); // Crea un nuevo archivo de código G en la raiz
+      $this -> NuevoArchivoG($nombreRutina, $info); // Crea un nuevo archivo de código G en la raiz
     }
     //Procesar el texto G y escribe en el archivo
-    public function escribeArchivo(string $texto){
-      $archivo = fopen("../".$this->nombreG,"a"); //abre la ruta del archivo, para más comodidad se deja en raíz
+    public function escribeArchivo($texto){
+      $archivo = fopen("../G/".$this->nombreG,"a"); //abre la ruta del archivo, para más comodidad se deja en raíz
       fwrite($archivo, $texto);
       fclose($archivo);
       unset($archivo);
@@ -32,22 +31,22 @@
     // Lleva motores al origen para iniciar proceso
     public function SensarOrigen(){
       $this->actual = [0,0, $this->zsep];
-      $texto = "G01 Z0 F500 (Origen del sistema) \n";
-      $texto .= "G01 Z-".$this->zsep." F500 \n";
-      $texto .= "G01 X0 Y0 F500 \n";
+      $this->lugares["Origen"][2] += $this->zsep;
+      $texto = "G00 Z-".$this->zsep." (Origen del sistema) \n";
+      $texto .= "G00 X0 Y0 \n";
       $this->escribeArchivo($texto);
       unset($texto);
     }
     // Usa diagonales para lugares principales
-    public function LugarD($lugar,$vxy,$vz,$typeZ){
+    public function LugarD($lugar, $vxy, $vz, $typeZ, $extra = null){
       // Primero sube eje Z para evitar chocar: (2000 pasos/rev)/(8.02mm/rev) = 250 pasos/mm
       if($this->actual[2] != $this->zsep && $typeZ == "Lugar"){
-        $texto = "G00 Z-".$this->zsep." (".$lugar.") \n";
+        $texto = "G00 Z-".$this->zsep." \n";
         $this->escribeArchivo($texto);
         $this->actual[2] = $this->zsep;
       }
       // En caso de ser un slide, sube mínimo para moverse entre vidrios
-      elseif ($this->actual[2] != $this->lugares["Slide"][2] && $typeZ == "Slide"){
+      else if ($this->actual[2] != $this->lugares["Slide"][2] && $typeZ == "Slide"){
         $prox = $this->lugares["Slide"][2];
         // Modifica posición actual
         $this->actual[2] = $prox;
@@ -61,7 +60,7 @@
         $prox[$i] = $this->lugares[$lugar][$i];
         $this->actual[$i] = $prox[$i];
       }
-      $texto = "G00 X".$prox[0]." Y-".$prox[1]." \n";
+      $texto = "G00 X".$prox[0]." Y-".$prox[1]." (".$lugar.$extra.") \n";
       $this->escribeArchivo($texto);
       unset($prox, $texto);
       // Al ser lugares definidos, finaliza eje Z para llegar al lugar
@@ -93,21 +92,24 @@
       //Baja para limpieza 4 mm
       $pasos = 4 + $this->actual[2];
       $this->actual[2] += 4;
-      // Realiza movimiento de bajada
-      $texto = "G01 Z-".$pasos." F500 \n";
+      // Realiza primer movimiento de bajada
+      $texto = "G01 Z-".$pasos." \n";
       $this->escribeArchivo($texto);
       unset($pasos,$texto);
+      // Secuencia sube-baja para tiempos de espera
+      for($i=0; $i<=$tiempo*3; $i++)
+        $this->PinSB($i%2, 0.5);
     }
     //Enciende o apaga la bomba de vacío
     public function BVac($estado){
-      $texto = ($estado == 1 )? "M03 (Enciende bomba de vacio)\n" : "M05 (Apaga la bomba de vacio)\n";
+      $texto = ($estado == 1 )? "M03 (Enciende bomba de vacío)\n" : "M05 (Apaga la bomba de vacío)\n";
       $this->escribeArchivo($texto);
       unset($texto);
     }
     //Hace los toques de limpieza seguidos
     public function ToquesLimpieza($toques){
       for($i=0; $i<$toques; $i++)
-        $this->InsertarPunto($i,0.5);
+        $this->Toque($i,0.5);
     }
     //Hace toda la rutina de un ciclo de insertar los puntos en todos los slides (vidrios)
     public function InsertarPuntosSlides($columnasPlaca,$filasPlaca,$vxy,$vz,$DupDots,$YSpace,$YSlideDist,$XSlideDist){
@@ -115,11 +117,12 @@
         for ($j=1; $j<=$filasPlaca; $j++){
           // Primera vez llega a retícula
           if ($i==1 && $j==1)
-            $this->LugarD("Slide",$vxy,$vz,"Lugar");
-          $this->LugarD("Slide",$vxy,$vz,"Slide");
+            $this->LugarD("Slide",$vxy,$vz,"Lugar"," $i x $j");
+          else
+            $this->LugarD("Slide",$vxy,$vz,"Slide"," $i x $j");
           // Pone puntos simples o duplicados
           for($k=0; $k<$DupDots; $k++)
-            $this->InsertarPunto($k,$YSpace);
+            $this->Toque($k,$YSpace);
           // En columna impar, avanza en Y
           if ($i%2 == 1 && $j!=$filasPlaca)
             $this->ActualizaCoords(1,$YSlideDist,"Slide");
@@ -131,35 +134,97 @@
         $this->ActualizaCoords(0,$XSlideDist,"Slide");
       }
     }
-    // Realiza la inserción del punto en el vidrio del Slide
-    //Baja el pin de 3mm a 0mm (-3mm Z)
-    //Si hay desplazamiento en Y llama a la función: sube:2.5mm-sube/avanza:2.5mm-avanza:y-5mm-baja/avanza:2.5mm-baja:2.5mm (ymm Y)
-    //Sube el pin de 0mm a 5mm (+2mm Z)
-    public function InsertarPunto($NumToque,$Ydist){
-      if ($NumToque == 0)
-        $this->PinSB(1,1.5);
-      else
-        $this->Toque($Ydist);
+    // Hace toda la rutina de un ciclo de insertar los números en todos los slides (vidrios)
+    public function InsertarNumSlides($columnasPlaca, $filasPlaca, $vxy, $vz, $numImp, $numDist, $YSlideDist, $XSlideDist){
+      // Matrices de puntos 5x3 donde no hay puntito, yendo de 9 a 2
+      $mat5x3 = [ [7,9,14], [7,9], [6,7,8,9,12,13,14,15], [2,7,9], [2,7,9,14], [6,7,9,10,14,15], [7,9,12,14],[4,7,9,12] ];
+      $vpunto = 150;
+      // Recorre la retícula completa en zigzag
+      for ($i=1; $i<=$columnasPlaca; $i++){
+        for ($j=1; $j<=$filasPlaca; $j++){
+          // Primera vez se va al slide en 1.5mmZ, y después al slide a colocar número
+          if ($i==1 && $j==1)
+            $this->LugarD("Slide",$vxy,$vz,"Lugar");
+          else
+            $this->LugarD("Slide",$vxy,$vz,"Slide");
+          // Siempre pone el puntito 1 en todos los números y fija altura en 1.5 mm
+          $this->PinSB(1, 1.5);
+          $this->PinSB(0, 1.5);
+          $multip = 1;
+          $dirX = 1;
+          for($k=2; $k<=15; $k++){
+            // Mueve en dirección Y cada 5 puntitos para siguiente fila
+            if( $k==6 || $k==11 ){
+              // Mueve en X hasta llegar al extremo si multiplicador quedó pendiente
+              if( $multip!=1 ){
+                // Caso especial para ajustar número 4
+                if( $numImp==5 && $k==11 )
+                  $multip--;
+                $this->actual[0] += ( $dirX==0 )?-$multip*$numDist:$multip*$numDist;
+                $texto = "G00 X".$this->actual[0]." \n";
+                $this->escribeArchivo($texto);
+                unset($texto);
+              }
+              // Mueve en Y hacia adelante
+              $this->actual[1] += $numDist;
+              $texto = "G00 Y-".$this->actual[1]." \n";
+              $this->escribeArchivo($texto);
+              unset($texto);
+              // Cambia dirección en X y actualiza multiplicador con coordenada actual Y
+              $dirX = ( $k%2==0 )?0:1;
+              $multip = 1;
+            }
+            // Si la gotita no está en arreglo del número dado, se pone
+            if( !in_array($k, $mat5x3[$numImp]) ) {
+              // Avanza mmX acumulados si no acaba de avanzar fila y actualiza coordenada X
+              if( $k!=6 && $k !=11 ){
+                $this->actual[0] += ( $dirX==0 )?-$multip*$numDist:$multip*$numDist;
+                $texto = "G00 X".$this->actual[0]." \n";
+                $this->escribeArchivo($texto);
+                unset($texto);
+              }
+              // Pone gotita instantáneamente y reinicia multiplicador
+              $this->PinSB(1, 1.5);
+              $this->PinSB(0, 1.5);
+              $multip = 1;
+            }
+            // Aumenta multiplicador al encontrar vacío si no acaba de avanzar fila
+            else if( $k!=6 && $k !=11 )
+              $multip++;
+          }
+          // Mueve +Y en columnas impares de retícula
+          if ($i%2 == 1 && $j!=$filasPlaca)
+            $this->ActualizaCoords(1,$YSlideDist,"Slide");
+          // Mueve -Y en columnas impares de retícula
+          elseif ($i%2 == 0 && $j!=$filasPlaca)
+            $this->ActualizaCoords(1,-$YSlideDist,"Slide");
+        }
+        // Al terminar filas, avanza columna a la derecha de la retícula
+        $this->ActualizaCoords(0,$XSlideDist,"Slide");
+      }
+      unset($multip, $dirX);
     }
-    // Sube, hace cúpula y baja instantáneamente
-    public function Toque($Ydist){
+    // Baja a poner gotita, sube y avanza en Y
+    public function Toque($NumToque,$Ydist){
       $vv = 250;
-      // Sube 1.5 mm en Z iniciales
-      $pasos = $this->actual[2]-1.5;
-      $texto = "G00 Z-".$pasos." \n";
+      // Primera vez baja 1.5 mm a poner gotitas, después 0.5 mm al estar dentro del vidrio
+      if( $NumToque == 0 )
+        $this->actual[2] += 1.5;
+      else
+        $this->actual[2] += 0.5;
+      $texto = "G00 Z-".$this->actual[2]." \n";
       $this->escribeArchivo($texto);
-      unset($pasos,$texto);
+      unset($texto);
+      // Sube 0.5 mm en altura dentro del vidrio
+      $this->actual[2] -= 0.5;
+      $texto = "G00 Z-".$this->actual[2]." \n";
+      $this->escribeArchivo($texto);
+      unset($texto);
       // Avanza Y mm 
-      $pasos = $this->actual[1]+$Ydist;
-      $texto = "G00 Y-".$pasos." \n";
-      $this->escribeArchivo($texto);
-      unset($pasos,$texto);
       $this->actual[1] += $Ydist;
-      // Baja a poner gotita
-      $pasos = $this->actual[2]+1.5;
-      $texto = "G00 Z-".$pasos." \n";
+      $texto = "G00 Y-".$this->actual[1]." \n";
       $this->escribeArchivo($texto);
-      unset($pasos,$texto);
+      unset($texto);
     }
     // Sube o baja el pin
     public function PinSB($dir,$mm){
@@ -169,11 +234,10 @@
         $this->actual[2] -= $mm;
       else
         $this->actual[2] += $mm;
-      $pasos =  $this->actual[2];
       //Movimiento en Z del pin
-      $texto = "G00 Z-".$pasos." \n";
+      $texto = "G00 Z-".$this->actual[2]." \n";
       $this->escribeArchivo($texto);
-      unset($pasos,$texto, $mm);
+      unset($texto, $mm);
     }
     // Consigue pasos por eje y coordenadas de "lugares"
     private function DatosDB(){
@@ -232,40 +296,58 @@
       $texto = "M00 ";
       if(!$cambioPlaca && !$cambioVidrio)
         $texto .= "(Pausa para humedecer pines) \n";
-      else{
-        if($cambioVidrio)
+      else if ($cambioPlaca && $cambioVidrio)
+        $texto .= "(Pausa para cambio de placa y vidrio) \n";
+      else if($cambioVidrio)
           $texto .= "(Pausa para cambio de vidrio) \n";
-        if($cambioPlaca)
+      else
           $texto .= "(Pausa para cambio de placa) \n";
-      } 
       $this->escribeArchivo($texto);
       unset($texto);
     }
-    //Funcion para borrar del archivo G
-    private function NuevoArchivoG(string $nombreRutina){
-      //Busca si existe el archivo G
+    // Función para reescribir archivo G
+    private function NuevoArchivoG($nombreRutina, $info = null){
+      // Busca si existe el archivo G
       $this->nombreG = $nombreRutina.".nc";
-      if(file_exists("../".$this->nombreG))
-        unlink("../".$this->nombreG);
-      // Obtiene datos de la base de datos para ponerlos en el header como comentarios
-      $pines = getDBdata("pines");
-      $lavado = getDBdata("lavado");
-      $slide = getDBdata("slide");
-      //Se dan los datos iniciales
-      $texto = "(Rutina:".$nombreRutina.")\n";
-      if($pines != null){
-        $texto .= "(Pines en XY:".$pines["PinesX"].", 4)\n";
-        unset($pines);
+      if( file_exists("../G/".$this->nombreG) )
+        unlink("../G/".$this->nombreG);
+      // Obtiene datos de la base si es rutina principal
+      if( $info == null ){
+        // Obtiene datos de la base de datos para ponerlos en el header como comentarios
+        $pines = getDBdata("pines");
+        $lavado = getDBdata("lavado");
+        $slide = getDBdata("slide");
+        $reti = getDBdata("reticula");
+        //Se dan los datos iniciales
+        $texto = "(Rutina: $nombreRutina)\n";
+        if($pines != null)
+          $texto .= "(Pines: ".$pines["PinesX"]."x4)\n";
+        if($reti != null){
+          $texto .= "(Puntos por arreglo: ".$reti["XDots"]."x".$reti["YDots"]." con ".$reti["DuplicateDots"]." dup)\n";
+          $texto .= "(Coords y espaciado: ".$reti["XCoords"]."x".$reti["YCoords"]."mm con ".$reti["XSpace"]."x".$reti["YSpace"]."um)\n";
+          $texto .= "(Placas a realizar: ".$reti["TotalPlates"].")\n";
+        }
+        if($slide != null)
+          $texto .= "(Slides a imprimir: ".$slide["filasplaca"]."x".$slide["columnasplaca"].")\n";
+        if($lavado != null)
+          $texto .= "(Ciclos de lavado: ".$lavado["ciclos"]." con ".$lavado["oscilaciones"]." osc)\n";
+        unset($pines, $lavado, $slide, $reti);
       }
-      if($lavado != null){
-        $texto .= "(Ciclos de lavado:".$lavado["ciclos"].", oscilaciones:".$lavado["oscilaciones"].")\n";
-        unset($lavado);
+      // Datos fijos si es tipo numeración o chips múltiples
+      else {
+        $info = explode(",",$info);
+        $texto = "(Rutina específica: ".$info[0].")\n";
+        $texto .= "(Distribución de pines: 6x1)\n";
+        if( (int)$info[1]<10 )
+          $texto .= "(Sección por imprimir: superior)\n";
+        else
+          $texto .= "(Sección por imprimir: inferior girado)\n";
+        $texto .= "(Slides a imprimir: ".$info[2]."x".$info[3].")\n";
+        $texto .= "(Ciclos de lavado y oscilaciones: 3,4)\n";
       }
-      if($slide != null){
-        $texto .= "(Slides en XY:".$slide["filasplaca"].", ".$slide["columnasplaca"].")\n";
-        unset($slide);
-      }
-      $archivo = fopen("../".$this->nombreG,"a");
+      // Guarda comentarios de inicio
+      $texto .= "\n";
+      $archivo = fopen("../G/".$this->nombreG,"a");
       fwrite($archivo, $texto);
       fclose($archivo);
       unset($texto, $archivo);

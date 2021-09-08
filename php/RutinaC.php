@@ -2,7 +2,6 @@
 // Rutina principal configurable
   set_time_limit(0);
   include("ArchC.php");
-  ini_set('display_errors', 1);
   //Variables de velocidad
   $vxy = 120;
   $vz = 100;
@@ -15,10 +14,10 @@
   $PinDist = 4.5;
   $YMuestraDistance = $PinDist*4;
   $YMuestra = 4;
-  $Muestra = array(0,0);
+  $Muestra = [0,0];
   $YLimpiezaDistance = $YMuestraDistance+2;
   $YLimpieza = 2;
-  $Limpieza = array(0,0,0);
+  $Limpieza = [0,0,0];
   //Obtiene los datos de la rutina de la base de datos y asigna variable pines
   $pines = getDBdata("pines");
   if( $pines != null ){
@@ -84,7 +83,7 @@
           $archivito->ActualizaPausa($cambioPlaca[0],$cambioPlaca[1]);
           $cambioPlaca = [0,0];
         }
-                // Demás veces hace limpieza y vacío con tiempo predeterminado
+        // Demás veces hace limpieza y vacío con tiempo predeterminado
         else{
           // Enciende bomba y hace tantos ciclos de lavado se necesiten
           $archivito->BVac(1);
@@ -160,20 +159,20 @@
           $cambioPlaca[1]=0;
           $TotalPlates --;	
         }
-        //if ($cambioPlaca[0] != 0 || $cambioPlaca[1] != 0 || ($b==1 && $a==1) ){
+        /*if ($cambioPlaca[0] != 0 || $cambioPlaca[1] != 0 || ($b==1 && $a==1) ){
           $archivito->LugarD("Origen",$vxy,$vz,"Lugar");
           $archivito->SensarOrigen();
-        //}
-        //else {
-        //$archivito->SumaPasosPerdidos($pasosPerdidos);
-        //}
+        }
+        else {
+          $archivito->SumaPasosPerdidos($pasosPerdidos);
+        }*/
       }
     }
     //Término de puntos en x
      $XCoords+=$XSpace;   
   }
   // Termina en origen y finaliza rutina
-  //$archivito->LugarD("Origen",$vxy,$vz,"Lugar");
+  $archivito->LugarD("Origen",$vxy,$vz,"Lugar");
   unset($archivito);
   header_remove('Set-Cookie');
 ?>
