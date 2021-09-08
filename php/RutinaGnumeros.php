@@ -6,6 +6,8 @@
   //Variables de velocidad
   $vxy = 70;
   $vz = 70;
+  //HOLA
+
   //Variable del cambio de placa/vidrio
   $cambioPlaca = array (0,0);
   //Distancias en mm (dadas por la estructura de la máquina)
