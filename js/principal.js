@@ -230,11 +230,11 @@ function cargaPrincipal () {
 					$.post("php/LSArch.php", { rutinaIniciada: true }, function (datos) {
 						if (datos == '0') {
 							pageKey = true;
-							$("#tablaBotonesRutina").append("<td> </td>");
+							$("#tablaBotonesRutina").append("<td style='width:2%'> </td>");
 							$("#tablaBotonesRutina").append("<td style='width:22%' style='width:20%'><button type='button' class='btn btn-success btn-lg btn-block' id='inicioProceso'><u>I</u>niciar proceso</button></td>");
 							if (!$("#codigoG").length) {
-								$("#tablaBotonesRutina").append("<td style='width:2%'> </td>");
-								$("#tablaBotonesRutina").append("<td  style='width:22%' style='width:20%'><button type='button' class='btn btn-info btn-lg btn-block' id='codigoG' name='principal'>Código <u>G</u></button></td></tr>");
+								$("#tablaBotonesRutina").append("<td> </td>");
+								$("#tablaBotonesRutina").append("<td style='width:22%' style='width:20%'><button type='button' class='btn btn-info btn-lg btn-block' id='codigoG' name='principal'>Código <u>G</u></button></td></tr>");
 								$.ajax({
 									type: 'POST',
 									url: 'php/bd.php',
