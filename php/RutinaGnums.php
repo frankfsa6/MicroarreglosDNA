@@ -48,15 +48,14 @@
       if( $i==0 && $j==0 ){
         $archivito->LugarD("Lavado",$vxy,$vz,"Lugar");
         $archivito->ActualizaPausa($cambioPlaca[0],$cambioPlaca[1]);
-        $cambioPlaca = [1,0];
+        $cambioPlaca = [1,1];
         $archivito->BVac(1);
         $archivito->LugarD("Vacío",$vxy,$vz,"Lugar");
         $archivito->Espera($tvac);
         $archivito->BVac(0);
       }
-      // Demás veces con tiempo predeterminado
+      // Demás veces hace limpieza y vacío con tiempo predeterminado
       else{
-        // Enciende bomba y hace tantos ciclos de lavado se necesiten
         $archivito->BVac(1);
         for($k=0; $k<$cicLav; $k++){
           $archivito->LugarD("Lavado",$vxy,$vz,"Lugar");
@@ -73,17 +72,18 @@
       // Pide pausa para cambiar placa de muestras al iniciar cada serie 
       if( $j==0 ){
         $archivito->PinSB(0,"Cambio");
-        $archivito->ActualizaPausa($cambioPlaca[0],$cambioPlaca[1]);
+        $archivito->ActualizaPausa($cambioPlaca[0],$cambioPlaca[1], " para iniciar la serie ".($i+1)."/4");
+        $cambioPlaca = [1,0];
       }
       // Toma muestra en el siguiente número y espera
       // En caso de ser primera columna, suma mmX para siguiente vez; de lo contrario, quita mmX y suma mmY
-      $archivito->LugarD("Toma de muestra",$vxy,$vz,"Lugar");
+      $archivito->LugarD("Toma de muestra",$vxy,$vz,"Lugar", " del #".(9-$j)." en la serie ".($i+1)."/4" );
       $archivito->Espera($tmuestra); 
       if( $j%2==0 )
-        $archivito->ActualizaCoords(0,$XMuestraDist,"Toma de muestra");
+        $archivito->ActualizaCoords(0, $XMuestraDist,"Toma de muestra");
       else{
-        $archivito->ActualizaCoords(0,-$XMuestraDist,"Toma de muestra");
-        $archivito->ActualizaCoords(1,$pinDist/2,"Toma de muestra");
+        $archivito->ActualizaCoords(0, -$XMuestraDist,"Toma de muestra");
+        $archivito->ActualizaCoords(1, $pinDist/2,"Toma de muestra");
       }
       // Hace la limpieza de pines y avanza 0.5 mmX para siguiente vez
       // Si ya terminó la serie, regresa a XMuestra y aumenta 5 mmY
@@ -105,9 +105,20 @@
       $archivito->ReiniciaCoords(2,"Slide","Retícula");
     }
   }
-  // Termina en origen y finaliza rutina
+  // Por último, deja limpios y secos los pines
+  $archivito->BVac(1);
+  for($i=0; $i<$cicLav; $i++){
+    $archivito->LugarD("Lavado",$vxy,$vz,"Lugar");
+    $archivito->Lavado($oscLav);
+    $archivito->LugarD("Vacío",$vxy,$vz,"Lugar");
+    if($i == $cicLav-1)
+      $archivito->Espera($utvac);
+    else
+      $archivito->Espera($tvac);
+  }
+  $archivito->BVac(0);
+  // Termina rutina yendo a origen
   $archivito->LugarD("Origen",$vxy,$vz,"Lugar");
   $archivito->FinCodigoG();
   unset($archivito);
-  header_remove('Set-Cookie');
 ?>

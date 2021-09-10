@@ -2,15 +2,16 @@
 // Rutina para generar código G
   set_time_limit(0);
   include("ArchG.php");
-  //Variable del cambio de placa/vidrio
+  // Variable del cambio de placa/vidrio y distancias en mm (dadas por la estructura de la máquina)
   $cambioPlaca = [0,0];
-  //Distancias en mm (dadas por la estructura de la máquina)
   $XSlideDistance = 80.9;
   $YSlideDistance = 30.9;
+  // Distancia entre pines de 4.5 mm para calcular muestra
   $PinDist = 4.5;
   $YMuestraDistance = $PinDist*4;
   $YMuestra = 4;
   $Muestra = [0,0];
+  // Distancia de puntos en limpieza  y origen a 3 mmXY
   $YLimpiezaDistance = $YMuestraDistance+2;
   $YLimpieza = 2;
   $Limpieza = [0,0,0];
@@ -24,7 +25,7 @@
   $lavado = getDBdata("lavado");
   if( $lavado != null ){
     $cicLav = $lavado["ciclos"];
-    $osc = $lavado["oscilaciones"];
+    $oscLav = $lavado["oscilaciones"];
     $tvac = $lavado["vacio"];
     $utvac = $lavado["uvacio"];
     $toques = $lavado["toques"];
@@ -96,7 +97,7 @@
           $archivito->BVac(1);
           for($i=0; $i<$cicLav; $i++){
             $archivito->LugarD("Lavado",$vxy,$vz,"Lugar");
-            $archivito->Lavado($osc);
+            $archivito->Lavado($oscLav);
             $archivito->LugarD("Vacío",$vxy,$vz,"Lugar");
             // Último lavado cambia tiempo 
             if($i == $cicLav-1)
@@ -174,7 +175,7 @@
   $archivito->BVac(1);
   for($i=0; $i<$cicLav; $i++){
     $archivito->LugarD("Lavado",$vxy,$vz,"Lugar");
-    $archivito->Lavado($osc);
+    $archivito->Lavado($oscLav);
     $archivito->LugarD("Vacío",$vxy,$vz,"Lugar");
     if($i == $cicLav-1)
       $archivito->Espera($utvac);
