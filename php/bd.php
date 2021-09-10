@@ -2,6 +2,7 @@
   $password = "Fisio";
   $wusuario = "root";
   $wcontras = "";
+  //$wcontras = "1234";
   $lusuario = "raspberry";
   $lcontras = "microarreglosdna";
   // Conecta en linux-windows

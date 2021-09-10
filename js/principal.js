@@ -213,39 +213,39 @@ function cargaPrincipal () {
 		$("#botones").empty().show();
 		$("#pags").html(datos);
 		//Crea los botones de guardado y nueva rutina
-		$("#botones").html("<table style='width:100%' id='tablaBotonesRutina'><tbody><tr></tr>");
-		$("#tablaBotonesRutina").append("<td style='width:18%'><button type='button' class='btn btn-outline-danger btn-lg btn-block' id='nuevaRutina'><u>N</u>ueva rutina</button><span> </span></td>");
+		$("#botones").html("<table style='width:100%' id='tablaBotonesRutina'><tbody>");
+		$("#tablaBotonesRutina").append("<td><button type='button' class='btn btn-outline-danger btn-lg btn-block' id='nuevaRutina'><u>N</u>ueva rutina</button><span> </span></td>");
 		$("#tablaBotonesRutina").append("<td> </td>");
-		$("#tablaBotonesRutina").append("<td style='width:18%'><button type='button' class='btn btn-outline-warning btn-lg btn-block' id='cargaRutina'><u>C</u>argar rutina</button><span> </span></td>");
+		$("#tablaBotonesRutina").append("<td><button type='button' class='btn btn-outline-warning btn-lg btn-block' id='cargaRutina'><u>C</u>argar rutina</button><span> </span></td>");
 		$("#tablaBotonesRutina").append("<td> </td>");
 		//Verifica si está definida la sesión y muestra el botón de guardar
-		$.post("php/LSArch.php", { checkSesion: true }, function (datos) {
-			if (datos == '1') {
+		$.post("php/LSArch.php",{checkSesion:true}, function(datos){
+			if(datos == '1'){
 				//Cambia el contenido del botón dependiendo si la rutina ya fue guardada
-				$.post("php/LSArch.php", { temporal: true }, function (resp) {
-					if (resp == '0') //la rutina ya está guardada
+				$.post("php/LSArch.php",{temporal:true}, function(resp){
+					if(resp == '0') //la rutina ya está guardada
 						$("#tablaBotonesRutina").append("<td style='width:18%'><button type='button' class='btn btn-outline-primary btn-lg btn-block' id='guardaRutina' >R<u>e</u>nombrar rutina</button><span> </span></td>");
-					else if (resp == '1')
-						$("#tablaBotonesRutina").append("<td style='width:18%'><button type='button' class='btn btn-outline-primary btn-lg btn-block' id='guardaRutina' >G<u>u</u>ardar rutina</button><span> </span></td>");
-					$.post("php/LSArch.php", { rutinaIniciada: true }, function (datos) {
-						if (datos == '0') {
+					else if(resp == '1')
+						$("#tablaBotonesRutina").append("<td style='width:18%'><button type='button' class='btn btn-outline-primary btn-lg btn-block' id='guardaRutina' ><u>G</u>uardar rutina</button><span> </span></td>");
+					$.post("php/LSArch.php",{rutinaIniciada:true}, function(datos){
+						if(datos == '0'){
 							pageKey = true;
-							$("#tablaBotonesRutina").append("<td style='width:2%'> </td>");
-							$("#tablaBotonesRutina").append("<td style='width:22%' style='width:20%'><button type='button' class='btn btn-success btn-lg btn-block' id='inicioProceso'><u>I</u>niciar proceso</button></td>");
-							if (!$("#codigoG").length) {
-								$("#tablaBotonesRutina").append("<td> </td>");
-								$("#tablaBotonesRutina").append("<td style='width:22%' style='width:20%'><button type='button' class='btn btn-info btn-lg btn-block' id='codigoG' name='principal'>Código <u>G</u></button></td></tr>");
+							$("#tablaBotonesRutina").append("<td style='width:2%'></td>");
+							$("#tablaBotonesRutina").append("<td style='width:22%'><button type='button' class='btn btn-success btn-lg btn-block' id='inicioProceso'><u>I</u>niciar proceso</button>");
+							if(!$("#codigoG").length){
+								$("#tablaBotonesRutina").append("<td></td>");
+								$("#tablaBotonesRutina").append("<td style='width:22%'><button type='button' class='btn btn-info btn-lg btn-block' id='codigoG' name='principal'>Có<u>d</u>igo G &nbsp;&nbsp;</button></td></tr>");
 								$.ajax({
-									type: 'POST',
-									url: 'php/bd.php',
-									data: { nombreRutina: 1 },
-									success: function (elemento) {
-										$("#tablaBotonesRutina").append("<a href='./G/" + elemento + ".nc' download><button type='button' class='btn btn-md btn-light' id='codigoGlink' hidden></button></a>");
+									type:'POST',
+									url:'php/bd.php',
+									data:{nombreRutina : 1},
+									success: function(elemento){
+										$("#tablaBotonesRutina").append("<a href='"+elemento+".nc' download><button type='button' class='btn btn-md btn-light' id='codigoGlink' hidden></button></a>");
 									}
 								});
 							}
 						}
-						else if (datos == '1')
+						else if(datos == '1')
 							pageKey = false;
 					});
 				});
