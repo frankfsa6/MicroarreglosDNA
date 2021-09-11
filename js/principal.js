@@ -234,13 +234,13 @@ function cargaPrincipal () {
 							$("#tablaBotonesRutina").append("<td style='width:22%'><button type='button' class='btn btn-success btn-lg btn-block' id='inicioProceso'><u>I</u>niciar proceso</button>");
 							if(!$("#codigoG").length){
 								$("#tablaBotonesRutina").append("<td></td>");
-								$("#tablaBotonesRutina").append("<td style='width:22%'><button type='button' class='btn btn-info btn-lg btn-block' id='codigoG' name='principal'>Có<u>d</u>igo G &nbsp;&nbsp;</button></td></tr>");
+								$("#tablaBotonesRutina").append("<td style='width:22%'><button type='button' class='btn btn-info btn-lg btn-block' id='codigoG' name='principal'>Código <u>G</u>&nbsp;&nbsp;</button></td></tr>");
 								$.ajax({
 									type:'POST',
 									url:'php/bd.php',
 									data:{nombreRutina : 1},
 									success: function(elemento){
-										$("#tablaBotonesRutina").append("<a href='"+elemento+".nc' download><button type='button' class='btn btn-md btn-light' id='codigoGlink' hidden></button></a>");
+										$("#tablaBotonesRutina").append("<a href='./G/"+elemento+".nc' download><button type='button' class='btn btn-md btn-light' id='codigoGlink' hidden></button></a>");
 									}
 								});
 							}
@@ -257,7 +257,7 @@ function cargaPrincipal () {
 		});
 		$("#botones").append("</tbody></table> </br>");
 		// Desaparece oscuridad
-		$("#espera").css({ "width": "0%", "height": "0%", "cursor": "auto" });
+		$("#espera").css({ "width": "0%", "height": "0%", "cursor": "default" });
 	}).fail(function (datos) {
 		$("#info, #pags, #botones").empty();
 		$("#info").hide();
@@ -385,23 +385,25 @@ function pantComp () {
 // Teclas rápidas para eventos del navegador cuando no hay campo de texto
 function tecRap (event) {
 	// Teclas libres del footer
-	switch (event.keyCode) {
-		// L: cambia ventana completa
-		case 76:
-			$("#pantcomp").trigger("click");
-			break;
-		// M: abre documentación
-		case 77:
-			$("#docref").trigger("click");
-			break;
-		// O: abre créditos
-		case 79:
-			if ($("#popup").attr("class") != "active")
-				$("#creds").trigger("click");
-			break;
+	if ( $("#popup").attr("class") != "active" && $(":password").length == 0 ){
+		switch (event.keyCode) {
+			// L: cambia ventana completa
+			case 76:
+				$("#pantcomp").trigger("click");
+				break;
+			// M: abre documentación
+			case 77:
+				$("#docref").trigger("click");
+				break;
+			// O: abre créditos
+			case 79:
+				if ($("#popup").attr("class") != "active")
+					$("#creds").trigger("click");
+				break;
+		}
 	}
 	// Teclas condicionales según campos de texto o pestañas activas
-	if (!($(":text").length > 0 && $("#popup").attr("class") == "active" && navpag != "nums" && navpag != "chips") && navpag != "login" && navpag != "joystick") {
+	if ( !( $(":text").length > 0 && $("#popup").attr("class") == "active" && navpag != "nums" && navpag != "chips") && navpag != "login" && navpag != "joystick") {
 		switch (event.keyCode) {
 			// A: botón de anterior
 			case 65:
@@ -471,11 +473,6 @@ function tecRap (event) {
 				if ($("#guardaRutina").length > 0 && $("#popup").attr("class") != "active")
 					$("#guardaRutina").trigger("click");
 				break;
-			// X: cierra ventanas de popup
-			case 88:
-				if ($("#cerrarPopup").length > 0)
-					$("#cerrarPopup").trigger("click");
-				break;
 		}
 	}
 }
@@ -491,6 +488,9 @@ function barraNav () {
 		if (pageKey)
 			$("li").removeClass("active");
 		$(this).parent().addClass("active");
+		// Genera animación para llevar al principio de la página
+		var arriba = $("#info").parent().offset().top;
+		$("HTML, BODY").animate({ scrollTop: arriba }, 1000);
 		// Solicita página respectiva y escribe datos recibidos
 		setTimeout(function () {
 			$.post("php/" + navpag + ".php", function (datos) {
@@ -506,7 +506,7 @@ function barraNav () {
 					}
 				}, 50);
 				// Desaparece oscuridad
-				$("#espera").css({ "width": "0%", "height": "0%", "cursor": "auto" });
+				$("#espera").css({ "width": "0%", "height": "0%", "cursor": "default" });
 			}).fail(function (datos) {
 				$("#info, #pags, #botones").empty()
 				$("#info").hide();
@@ -549,6 +549,9 @@ $(document).ready(function () {
 			$("a").on("click", barraNav);
 			// Movimiento entre páginas siguiente
 			$("#botones").on("click", "#Siguiente", function () {
+				// Genera animación para llevar al principio de la página
+				var arriba = $("#info").parent().offset().top;
+				$("HTML, BODY").animate({ scrollTop: arriba }, 1000);
 				// Obtiene la pagina actual
 				var actualPage = $("ul").find("li.nav-item.active").children().attr("id")
 				// Obtiene la página siguiente 
@@ -587,6 +590,9 @@ $(document).ready(function () {
 			});
 			// Movimiento entre páginas anterior
 			$("#botones").on("click", "#Anterior", function () {
+				// Genera animación para llevar al principio de la página
+				var arriba = $("#info").parent().offset().top;
+				$("HTML, BODY").animate({ scrollTop: arriba }, 1000);
 				// Verifica la página en la que se enceuntra y carga la siguiente
 				var actualPage = $("ul").find("li.nav-item.active").children().attr("id")
 				var nextPage = $.inArray(actualPage, pages) - 1;
@@ -675,8 +681,8 @@ $(document).ready(function () {
 					// Cierra popup
 					$("#overlay, #popup").removeClass("active");
 					// Genera animación para llevar al principio de la página
-					var position = $("#info").parent().offset().top;
-					$("HTML, BODY").animate({ scrollTop: position }, 500);
+					var arriba = $("#info").parent().offset().top;
+					$("HTML, BODY").animate({ scrollTop: arriba }, 1000);
 					//Verifica si esta definido el campo de lavado, si no, se manda una alerta al usuario
 					$.ajax({
 						type: 'POST',
@@ -754,8 +760,8 @@ $(document).ready(function () {
 				e.preventDefault();
 				$("#overlay, #popup").removeClass("active");
 				//Genera una animación para cuando se cierre el popup
-				var position = $("#info").parent().offset().top;
-				$("HTML, BODY").animate({ scrollTop: position }, 500);
+				var arriba = $("#info").parent().offset().top;
+				$("HTML, BODY").animate({ scrollTop: arriba }, 1000);
 				//Se debe generar un explode para quitar el carga
 				//-----------Importante------------
 				//Se hace en el archivo de cargaRutina.php
@@ -1010,14 +1016,18 @@ $(document).ready(function () {
 			});
 			// Lanza código G
 			$("#botones").on("click", "#codigoG", function () {
+				// Genera animación para llevar al principio de la página
+				var arriba = $("#info").parent().offset().top;
+				$("HTML, BODY").animate({ scrollTop: arriba }, 1000);
 				$("#espera").css({ "width": "100%", "height": "100%", "cursor": "wait" });
-				console.log(this.name);
+				$("#info").text("Generando código G, espere por favor").show();
 				//this.name tiene el nombre de la página donde se pulso el boton de codigo g
 				if (this.name == "principal") {
 					$.post("php/RutinaG.php", function () {
 						$("#codigoGlink").trigger("click");
 					}).always(function () {
-						$("#espera").css({ "width": "0%", "height": "0%", "cursor": "auto" });
+						$("#espera").css({ "width": "0%", "height": "0%", "cursor": "default" });
+						$("#info").empty().hide();
 					});
 				}
 				else {
@@ -1029,7 +1039,8 @@ $(document).ready(function () {
 						$.post("php/RutinaGnums.php", { "datnum": datNums }, function () {
 							$("#codigoGlink").trigger("click");
 						}).always(function () {
-							$("#espera").css({ "width": "0%", "height": "0%", "cursor": "auto" });
+							$("#espera").css({ "width": "0%", "height": "0%", "cursor": "default" });
+							$("#info").empty().hide();
 						});
 					}
 					else {
@@ -1040,7 +1051,8 @@ $(document).ready(function () {
 						$.post("php/RutinaGchips.php", { "datnum": datNums }, function () {
 							$("#codigoGlink").trigger("click");
 						}).always(function () {
-							$("#espera").css({ "width": "0%", "height": "0%", "cursor": "auto" });
+							$("#espera").css({ "width": "0%", "height": "0%", "cursor": "default" });
+							$("#info").empty().hide();
 						});
 					}
 				}

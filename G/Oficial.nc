@@ -15,7 +15,7 @@ M03 (Enciende bomba de vacío)
 G00 Z-10 
 G00 X63.64 Y-9.98 (Vacío) 
 G00 Z-50 
-G01 Z-54 
+G00 Z-54 
 G00 Z-53.5 
 G00 Z-54 
 G00 Z-53.5 
@@ -25,7 +25,7 @@ G00 Z-10
 M00 (Pausa para cambio de placa y vidrio) 
 G00 X12.77 Y-230.09 (Toma de muestra 1 x 1) 
 G00 Z-62.3 
-G01 Z-66.3 
+G00 Z-66.3 
 G00 Z-65.8 
 G00 Z-66.3 
 G00 Z-65.8 
@@ -120,7 +120,7 @@ G00 X63.64
 G00 Z-10 
 G00 X63.64 Y-9.98 (Vacío) 
 G00 Z-50 
-G01 Z-54 
+G00 Z-54 
 G00 Z-53.5 
 G00 Z-54 
 G00 Z-53.5 
@@ -129,7 +129,7 @@ M05 (Apaga la bomba de vacío)
 G00 Z-10 
 G00 X66.77 Y-230.09 (Toma de muestra 2 x 1) 
 G00 Z-62.3 
-G01 Z-66.3 
+G00 Z-66.3 
 G00 Z-65.8 
 G00 Z-66.3 
 G00 Z-65.8 
@@ -224,7 +224,7 @@ G00 X63.64
 G00 Z-10 
 G00 X63.64 Y-9.98 (Vacío) 
 G00 Z-50 
-G01 Z-54 
+G00 Z-54 
 G00 Z-53.5 
 G00 Z-54 
 G00 Z-53.5 
@@ -233,7 +233,7 @@ M05 (Apaga la bomba de vacío)
 G00 Z-10 
 G00 X12.77 Y-248.09 (Toma de muestra 1 x 2) 
 G00 Z-62.3 
-G01 Z-66.3 
+G00 Z-66.3 
 G00 Z-65.8 
 G00 Z-66.3 
 G00 Z-65.8 
@@ -328,7 +328,7 @@ G00 X63.64
 G00 Z-10 
 G00 X63.64 Y-9.98 (Vacío) 
 G00 Z-50 
-G01 Z-54 
+G00 Z-54 
 G00 Z-53.5 
 G00 Z-54 
 G00 Z-53.5 
@@ -337,7 +337,7 @@ M05 (Apaga la bomba de vacío)
 G00 Z-10 
 G00 X66.77 Y-248.09 (Toma de muestra 2 x 2) 
 G00 Z-62.3 
-G01 Z-66.3 
+G00 Z-66.3 
 G00 Z-65.8 
 G00 Z-66.3 
 G00 Z-65.8 
@@ -432,7 +432,7 @@ G00 X63.64
 G00 Z-10 
 G00 X63.64 Y-9.98 (Vacío) 
 G00 Z-50 
-G01 Z-54 
+G00 Z-54 
 G00 Z-53.5 
 G00 Z-54 
 G00 Z-53.5 
@@ -441,7 +441,7 @@ M05 (Apaga la bomba de vacío)
 G00 Z-10 
 G00 X12.77 Y-266.09 (Toma de muestra 1 x 3) 
 G00 Z-62.3 
-G01 Z-66.3 
+G00 Z-66.3 
 G00 Z-65.8 
 G00 Z-66.3 
 G00 Z-65.8 
@@ -536,7 +536,7 @@ G00 X63.64
 G00 Z-10 
 G00 X63.64 Y-9.98 (Vacío) 
 G00 Z-50 
-G01 Z-54 
+G00 Z-54 
 G00 Z-53.5 
 G00 Z-54 
 G00 Z-53.5 
@@ -545,7 +545,7 @@ M05 (Apaga la bomba de vacío)
 G00 Z-10 
 G00 X66.77 Y-266.09 (Toma de muestra 2 x 3) 
 G00 Z-62.3 
-G01 Z-66.3 
+G00 Z-66.3 
 G00 Z-65.8 
 G00 Z-66.3 
 G00 Z-65.8 
@@ -640,7 +640,7 @@ G00 X63.64
 G00 Z-10 
 G00 X63.64 Y-9.98 (Vacío) 
 G00 Z-50 
-G01 Z-54 
+G00 Z-54 
 G00 Z-53.5 
 G00 Z-54 
 G00 Z-53.5 
@@ -649,7 +649,7 @@ M05 (Apaga la bomba de vacío)
 G00 Z-10 
 G00 X12.77 Y-284.09 (Toma de muestra 1 x 4) 
 G00 Z-62.3 
-G01 Z-66.3 
+G00 Z-66.3 
 G00 Z-65.8 
 G00 Z-66.3 
 G00 Z-65.8 
@@ -744,7 +744,7 @@ G00 X63.64
 G00 Z-10 
 G00 X63.64 Y-9.98 (Vacío) 
 G00 Z-50 
-G01 Z-54 
+G00 Z-54 
 G00 Z-53.5 
 G00 Z-54 
 G00 Z-53.5 
@@ -753,7 +753,7 @@ M05 (Apaga la bomba de vacío)
 G00 Z-10 
 G00 X66.77 Y-284.09 (Toma de muestra 2 x 4) 
 G00 Z-62.3 
-G01 Z-66.3 
+G00 Z-66.3 
 G00 Z-65.8 
 G00 Z-66.3 
 G00 Z-65.8 
@@ -848,7 +848,7 @@ G00 X63.64
 G00 Z-10 
 G00 X63.64 Y-9.98 (Vacío) 
 G00 Z-50 
-G01 Z-54 
+G00 Z-54 
 G00 Z-53.5 
 G00 Z-54 
 G00 Z-53.5 
