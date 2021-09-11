@@ -231,7 +231,9 @@ function cargaPrincipal () {
 						if(datos == '0'){
 							pageKey = true;
 							$("#tablaBotonesRutina").append("<td style='width:2%'></td>");
-							$("#tablaBotonesRutina").append("<td style='width:22%'><button type='button' class='btn btn-success btn-lg btn-block' id='inicioProceso'><u>I</u>niciar proceso</button>");
+							//Detecta el sistema operativo
+							if (navigator.userAgent.indexOf("Linux") != -1)
+								$("#tablaBotonesRutina").append("<td style='width:22%'><button type='button' class='btn btn-success btn-lg btn-block' id='inicioProceso'><u>I</u>niciar proceso</button>");
 							if(!$("#codigoG").length){
 								$("#tablaBotonesRutina").append("<td></td>");
 								$("#tablaBotonesRutina").append("<td style='width:22%'><button type='button' class='btn btn-info btn-lg btn-block' id='codigoG' name='principal'>Código <u>G</u>&nbsp;&nbsp;</button></td></tr>");
@@ -480,7 +482,7 @@ function tecRap (event) {
 function barraNav () {
 	navpag = $(this).attr("id");
 	// Mientras se presione pestaña que no sea rutina
-	if (navpag != "principal" && navpag != "logo" && (navpag == actual || navpag == "joystick" || navpag == "login" || navpag == "nums" || navpag == "chips" || pageKey)) {
+	if (navpag != "principal" && navpag != "logo" && (navpag == actual || (navpag == "joystick" && navigator.userAgent.indexOf("Linux") != -1) || navpag == "login" || navpag == "nums" || navpag == "chips" || (pageKey && navpag != "joystick"))) {
 		$("#espera").css({ "width": "100%", "height": "100%", "cursor": "wait" });
 		//Comprueba que la clase de joystick sea verdadera para eliminar la clase active
 		$("#joystick, #login, #nums, #chips").parent().removeClass("active");
