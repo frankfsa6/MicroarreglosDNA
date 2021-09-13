@@ -192,11 +192,13 @@ function creaBotones (pags) {
 	// Genera los botones de la sección de numeros 
 	if (pags == 'nums' || pags == 'chips') {
 		$("#botones").html("<table style='width:100%; margin-left: auto; margin-right: auto;' id='tablaBotonesRutina'><tr>").show();
-		if (pags == 'nums')
-			$("#tablaBotonesRutina").append("<th><button type='button' style='width:30vw; margin-left: auto; margin-right: auto;' class='btn btn-success btn-lg btn-block' id='inicioNumeracion' ><u>I</u>niciar numeración</button><th>");
-		else
-			$("#tablaBotonesRutina").append("<th><button type='button' style='width:30vw; margin-left: auto; margin-right: auto;' class='btn btn-success btn-lg btn-block' id='inicioChips' ><u>I</u>niciar chips múltiples</button><th>");
-		// Boton de códigoG
+		if (navigator.userAgent.indexOf("Linux") != -1){
+			if (pags == 'nums')
+				$("#tablaBotonesRutina").append("<th><button type='button' style='width:30vw; margin-left: auto; margin-right: auto;' class='btn btn-success btn-lg btn-block' id='inicioNumeracion' ><u>I</u>niciar numeración</button><th>");
+			else
+				$("#tablaBotonesRutina").append("<th><button type='button' style='width:30vw; margin-left: auto; margin-right: auto;' class='btn btn-success btn-lg btn-block' id='inicioChips' ><u>I</u>niciar chips múltiples</button><th>");
+		}
+			// Boton de códigoG
 		$("#tablaBotonesRutina").append("<th><button type='button' style='width:30vw; margin-left: auto; margin-right: auto;' class='btn btn-info btn-lg btn-block' id='codigoG' name='" + pags + "'>Código <u>G</u></button>");
 		$("#tablaBotonesRutina").append("<a href='./G/" + pags + ".nc' download><button type='button' class='btn btn-md btn-light' id='codigoGlink' hidden></button></a><th>");
 		//$("#tablaBotonesRutina").append("<th><button type='button' class='btn btn-outline-light btn-lg btn-block' disabled>boton</button><th>");

@@ -1,4 +1,4 @@
-﻿<script type="text/javascript" src="js/config.js?v=3" ></script>
+﻿<script type='text/javascript' src='js/config.js?v=3' ></script>
 <?php
   include("bd.php");
   // Parámetros iniciales
@@ -12,8 +12,24 @@
   else{
     // Pide datos de base
     mysqli_set_charset($conexion,"utf8");
+    //Realiza cambios en la base de datos
+    if(isset($_POST['cambiaPin'])){
+      $sql = "UPDATE tipopin SET PinSelect = 0";
+      mysqli_query($conexion, $sql);
+      $sql = "UPDATE tipopin SET PinSelect = 1 WHERE nombrePin = '".$_POST['cambiaPin']."'";
+      mysqli_query($conexion, $sql);
+      //usleep(10000);
+    }
+    //Obtiene el valor seleccionado del tipo de pines
+    $sql = "SELECT IDPin FROM tipopin WHERE PinSelect=1";
+    if ( mysqli_query($conexion, $sql)->num_rows !=0 ) {
+      $res = mysqli_query($conexion, $sql);
+      while ( $dato = mysqli_fetch_assoc($res) )
+        $tipoPin = $dato['IDPin'];
+      mysqli_free_result($res);
+    }
     // Pide datos de coordenadas y valores principales
-    $sql = "SELECT * FROM config";
+    $sql = "SELECT * FROM config WHERE pinConfig=".$tipoPin;
     if ( mysqli_query($conexion, $sql)->num_rows !=0 ) {
       $res = mysqli_query($conexion, $sql);
       while ( $dato = mysqli_fetch_assoc($res) )
@@ -31,15 +47,33 @@
           $motActual[$dato['id']] = [$dato['nombre'], $dato['valor']];
       }
       mysqli_free_result($res);
+    
     }
+    
     mysqli_close($conexion);
+    
     // Obtiene datos de JS mientras no se oprima botón de guardar info
-    if( !isset($_POST['guarda']) ){
+    if( !isset($_POST['guarda'])){
       // Velocidad y altura
       echo "<h5>Coordenadas y valores asociados.</h5>
         <h5 class='text-muted'>Las unidades están dadas en milímetros (únicamente valores positivos), tomando 
         como referencia absoluta al origen (ubicado a la <b>izquierda</b> en eje X, <b>atrás</b> en eje Y, <b>arriba</b> en eje Z). </h5><br/>";
-      echo "<div class='table-responsive'><table class='table table-hover .table-responsive' id='t1'>
+      //Seccióp para cambio de pin
+      echo "<div style='width=100%;' id='tipoPin'>
+              <div style='display:inline-block; padding:10px; margin-right:auto; margin-left:0px; width:70%'> <h5>Tipo de Pin: ";
+      if($tipoPin == 1){
+        echo "Acero </h5></div>
+              <div id='PinButton' style='display:inline-block;'>
+                Cambiar a pin &nbsp &nbsp <button id='ceramico' class='btn btn-primary' style='width:100px'> Ceramico </button>";
+      }
+      elseif($tipoPin == 2){
+        echo "Cerámico </h5></div>
+              <div id='PinButton' style='display:inline-block; margin-right:0px; margin-left:auto;'>
+                Cambiar a pin &nbsp &nbsp <button id='acero' class='btn btn-primary' style='width:100px'> Acero </button>";
+      }
+      echo "</div> </div>";
+      
+      echo "<div class='table-responsive' style='padding-top:10px'><table class='table table-hover .table-responsive' id='t1'>
         <thead><tr>
           <th class='thead-light'>Lugares principales</th>
           <th class='thead-light'>Coordenada X</th>

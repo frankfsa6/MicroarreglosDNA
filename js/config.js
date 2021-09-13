@@ -112,11 +112,32 @@ function salirCfg(){
     });
   });
 }
+
+//Funcion que cambia las coordenadas de acuerdo al tipo de pin
+function cambiaCoord(){
+  var tipoPin = this.id;
+  $.ajax({
+    type: 'POST',
+    url:'php/config.php',
+    data:{ cambiaPin: tipoPin},
+  }).done(function(datos){
+    $("#info").empty().hide();
+    $("#error").empty().hide();
+    $("#pags").html(datos);
+  }).fail(function(){
+    $("#info, #pags, #botones").empty();
+    $("#info").hide();
+    $("#error").text("No se complet? la petici?n de p?gina").show();
+  });
+}
+
 // Comienza a cargar funciones principales
 $(document).ready( function(){
   // Limpia mensajes y aplica filtro
   $("#error, #botones, #info").empty().hide();
   $("#oriX, #oriY, #oriZ").attr("disabled","true");
+  //Cambia coordendas
+  $("#tipoPin").on("click","button",cambiaCoord);
   // Detonadas al iniciar o cambiar su valor
   $(".ejes").ready(InhabPines);
   $(".ejes").on("change",InhabPines);
