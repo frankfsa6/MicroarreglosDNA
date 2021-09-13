@@ -1,4 +1,4 @@
-<script type="text/javascript" src="js/login.js?v=3"></script>
+<script type="text/javascript" src="js/login.js?v=4"></script>
 <?php
 	//	se define los campos de html
 	session_name("IFCLab");

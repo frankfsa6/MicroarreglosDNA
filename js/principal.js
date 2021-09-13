@@ -163,7 +163,7 @@ function linCanv () {
 // Crea los botones
 function creaBotones (pags) {
 	//	Las secciones de login, joystick y numeros contienen sus propios botones por lo que no deben agregarse a esta condicional
-	if (pags != 'login' && pags != 'joystick' && pags != 'nums' && pags != 'chips') {
+	if (pags != 'login' && pags != 'joystick' && pags != 'nums' && pags != 'chips' && pags != 'config') {
 		// Genera una tabla para el acomodo de los botones 
 		$("#botones").html("<table style='width:100%' id='tablaBotonesRutina'><tr>").show();
 		// Si la pagina está en pines, no genera el botón de anterior
@@ -523,7 +523,7 @@ function barraNav () {
 	else {
 		//Remueve el atributo de active del joystick o config
 		var joyconf = $("ul").find("li.nav-item.active").children().attr("id");
-		if (joyconf == "joystick" || joyconf == "login" || joyconf == "chips" || joyconf == "nums")
+		if ((joyconf == "joystick" && navigator.userAgent.indexOf("Linux") != -1) || joyconf == "login" || joyconf == "chips" || joyconf == "nums")
 			$("li").removeClass("active");
 		if (navpag == "principal" || navpag == "logo")
 			cargaPrincipal();

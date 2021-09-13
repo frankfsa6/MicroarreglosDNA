@@ -1,5 +1,5 @@
 $(document).ready( function(){
-	$("#botones").hide();
+	$("#botones").empty().hide();
 	$("#info").empty().hide();
 	$( "#Entrar" ).click(function() {
 		$.ajax({
@@ -21,7 +21,7 @@ $(document).ready( function(){
 					}).fail(function(){
 						$("#info, #pags, #botones").empty();
 						$("#info").hide();
-						$("#error").text("No se complet? la petici?n de p?gina").show();
+						$("#error").text("No se completó la petición de página").show();
 					});
 				}
 				else
@@ -32,12 +32,12 @@ $(document).ready( function(){
 			}
 		});
 	});
-	$( "a" ).on("click", function() {
+	/*$( "a" ).on("click", function() {
 		var pags = $(this).attr("id");
 		if(pags != "login"){
 			$("#botones").show();
 		}
-	});
+	});*/
 	$("#Pass").keypress(function (event) {
 		var keycode = (event.keyCode ? event.keyCode : event.which);
 		if(keycode == '13'){
