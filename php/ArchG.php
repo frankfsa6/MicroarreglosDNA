@@ -14,7 +14,6 @@
     private $nombreG ; //Nombre del archivo en código G
     private $zslide = 1.5;	// Número de milimetros -1.5mm que baja para poner puntos en el Slide
     private $zespera = 4;   // Aproximación en Z para lugares principales
-    private $zsep = 10;     // Separación del sensor Z
 
     // Constructor que fija tipo de archivo e inicializa rutina
     public function __construct($nombreRutina, $info = null){
@@ -30,9 +29,8 @@
     }
     // Lleva motores al origen para iniciar proceso
     public function SensarOrigen(){
-      $this->actual = [0,0, $this->zsep];
-      $this->lugares["Origen"][2] += $this->zsep;
-      $texto = "G00 Z-".$this->zsep." (Origen del sistema) \n";
+      $this->actual = $this->lugares["Origen"];
+      $texto = "G00 Z-".$this->actual[2]." (Origen del sistema) \n";
       $texto .= "G00 X0 Y0 \n";
       $this->escribeArchivo($texto);
       unset($texto);
@@ -40,8 +38,8 @@
     // Usa diagonales para lugares principales
     public function LugarD($lugar, $vxy, $vz, $typeZ, $extra = null){
       // En lugares, primero sube eje Z para evitar chocar
-      if($this->actual[2] != $this->zsep && $typeZ == "Lugar"){
-        $this->actual[2] = $this->zsep;
+      if($this->actual[2] != $this->lugares["Origen"][2] && $typeZ == "Lugar"){
+        $this->actual[2] = $this->lugares["Origen"][2];
         $texto = "G00 Z-".$this->actual[2]." \n";
         $this->escribeArchivo($texto);
         unset($texto);
@@ -94,10 +92,11 @@
       $this->escribeArchivo($texto);
       unset($texto);
     }
-    // Hace los toques de limpieza seguidos
+    // Hace los toques de limpieza seguidos cada 0.5mmY
     public function ToquesLimpieza($toques){
+      $sepY = 0.5;
       for($i=0; $i<$toques; $i++)
-        $this->Toque($i, 0.5);
+        $this->Toque($i, $sepY, $toques);
     }
     // Inserta los puntos Y en todos los slides (vidrios)
     public function InsertarPuntosSlides($columnasPlaca,$filasPlaca,$vxy,$vz,$DupDots,$YSpace,$YSlideDist,$XSlideDist){
@@ -110,7 +109,7 @@
             $this->LugarD("Slide",$vxy,$vz,"Slide"," $i x $j");
           // Pone puntos simples o duplicados
           for($k=0; $k<$DupDots; $k++)
-            $this->Toque($k, $YSpace);
+            $this->Toque($k, $YSpace, $DupDots);
           // En columna impar, avanza en Y
           if($i%2 == 1 && $j!=$filasPlaca)
             $this->ActualizaCoords(1,$YSlideDist,"Slide");
@@ -193,7 +192,7 @@
       unset($multip, $dirX);
     }
     // Baja a poner gotita, sube y avanza en Y
-    public function Toque($NumToque, $Ydist){
+    public function Toque($NumToque, $Ydist, $fin){
       // Primera vez baja 1.5 mm a poner gotitas, después 0.5 mm al estar dentro del vidrio
       if( $NumToque == 0 )
         $this->actual[2] += 1.5;
@@ -207,16 +206,18 @@
       $texto = "G00 Z-".$this->actual[2]." \n";
       $this->escribeArchivo($texto);
       unset($texto);
-      // Avanza Y mm 
-      $this->actual[1] += $Ydist;
-      $texto = "G00 Y-".$this->actual[1]." \n";
-      $this->escribeArchivo($texto);
-      unset($texto);
+      // Avanza Y mm si no es última vez de toque
+      if( $NumToque != $fin-1 ){
+        $this->actual[1] += $Ydist;
+        $texto = "G00 Y-".$this->actual[1]." \n";
+        $this->escribeArchivo($texto);
+        unset($texto);
+      }
     }
     // Sube o baja el pin dados los mm
     public function PinSB($dir,$mm){
       if ($mm == "Cambio")
-        $mm = $this->actual[2]-$this->zsep;
+        $mm = $this->actual[2]-$this->lugares["Origen"][2];
       //Asigna dirección del movimiento en Z
       if ($dir==0)
         $this->actual[2] -= $mm;
@@ -309,6 +310,7 @@
           $texto .= "(Sección por imprimir: inferior para slides girados)\n";
         $texto .= "(Slides a imprimir: ".$info[2]."x".$info[3].")\n";
         $texto .= "(Ciclos de lavado: 3 con 4 osc)\n";
+        $texto .= "(Tiempo de muestra, vacío y último vacío: 1, 2 y 3 s)\n";
       }
       // Guarda comentarios de inicio
       $texto .= "\n";

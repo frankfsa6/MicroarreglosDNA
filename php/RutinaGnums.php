@@ -10,17 +10,17 @@
   $columnasPlaca = (int)$datos[2];
   $filasPlaca = (int)$datos[3];
   // Velocidad para diagonales y movimientos principales
-  $vxy = 120;
-  $vz = 100;
+  $vxy = null;
+  $vz = null;
   // Variable del cambio de placa/vidrio y distancias en mm (dadas por la estructura de la máquina)
   $cambioPlaca = [0,0];
   $XSlideDist = 80.9;
   $YSlideDist = 30.9;
   // Distancia entre pines de 9 mm para calcular muestras y distancia entre puntitos de números
   $pinDist = 9;
-  $tmuestra = 1;
   $XMuestraDist = 6*$pinDist;
   $numDist = 0.13;
+  $tmuestra = 1;
   // Distancia de puntos en limpieza y origen a 3 mmXY
   $limpDist = 0.5;
   $toquesLimp = 6;
@@ -91,7 +91,7 @@
       $archivito->ToquesLimpieza($toquesLimp);
       $archivito->ActualizaCoords(0, $limpDist,"Toque de limpieza");
       if( $j==7 ){
-        $archivito->ActualizaCoords(1, 5,"Limpieza");
+        $archivito->ActualizaCoords(1, 5+$limpDist*($toquesLimp-1),"Limpieza");
         $archivito->ReiniciaCoords(2,"Toque de limpieza","Limpieza");
       }
       // Comienza a poner dígitos en tantos slides se hayan configurado

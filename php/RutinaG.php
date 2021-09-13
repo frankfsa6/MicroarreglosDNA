@@ -6,8 +6,8 @@
   $cambioPlaca = [0,0];
   $XSlideDistance = 80.9;
   $YSlideDistance = 30.9;
-  $vxy = "F4000";
-  $vz = "F2500";
+  $vxy = null;
+  $vz = null;
   // Distancia entre pines de 4.5 mm para calcular muestra
   $PinDist = 4.5;
   $YMuestraDistance = $PinDist*4;
