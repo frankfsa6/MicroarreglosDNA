@@ -17,7 +17,14 @@
 
     // Constructor que fija tipo de archivo e inicializa rutina
     public function __construct($nombreRutina, $info = null){
-      $this -> DatosDB();
+      // Rutina principal
+      if( $info == null )
+        $this -> DatosDB();
+      // Rutina específica
+      else{
+        $temp = explode(",",$info);
+        $this -> DatosDB( $temp[0] );
+      }
       $this -> NuevoArchivoG($nombreRutina, $info); 
     }
     // Procesar el texto G y escribe en el archivo
@@ -228,19 +235,21 @@
       unset($texto);
     }
     // Consigue pasos por eje y coordenadas de "lugares"
-    private function DatosDB(){
+    private function DatosDB($tipoPin = null){
       // Comprueba conexión para los datos
       $conexion = ConectarBD();
       if( $conexion == true ){
         // Pide datos de coordenadas de lugares principales
         mysqli_set_charset($conexion,"utf8");
-        // Obtiene el tipo de pin de la base de datos
-        $sql = "SELECT IDPin FROM pines WHERE ID='".$_SESSION['ID']."'";
-        if ( mysqli_query($conexion, $sql)->num_rows !=0 ) {
-          $res = mysqli_query($conexion, $sql);
-          while ( $dato = mysqli_fetch_assoc($res) )
-            $tipoPin = $dato['IDPin'];
-          mysqli_free_result($res);
+        // En caso de ser rutina principal, obtiene el tipo de pin de la base de datos
+        if($tipoPin == null){
+          $sql = "SELECT IDPin FROM pines WHERE ID='".$_SESSION['ID']."'";
+          if ( mysqli_query($conexion, $sql)->num_rows !=0 ) {
+            $res = mysqli_query($conexion, $sql);
+            while ( $dato = mysqli_fetch_assoc($res) )
+              $tipoPin = $dato['IDPin'];
+            mysqli_free_result($res);
+          }
         }
         //Obtiene el valor seleccionado del tipo de pines
         $sql = "SELECT * FROM config WHERE IDPin=".$tipoPin;
@@ -300,24 +309,31 @@
         $reti = getDBdata("reticula");
         //Se dan los datos iniciales
         $texto = "(Rutina: $nombreRutina)\n";
-        $texto .= "(Pines: ".$pines["PinesX"]."x4)\n";
+        if( $pines["IDPin"]=="1" )
+          $texto .= "(Pines: ".$pines["PinesX"]."x4 tipo cerámico)\n";
+        else
+          $texto .= "(Pines: ".$pines["PinesX"]."x4 tipo acero)\n";
         $texto .= "(Puntos por arreglo: ".$reti["XDots"]."x".$reti["YDots"]." con ".$reti["DuplicateDots"]." dup)\n";
         $texto .= "(Coords y espaciado: ".$reti["XCoords"]."x".$reti["YCoords"]."mm con ".$reti["XSpace"]."x".$reti["YSpace"]."um)\n";
         $texto .= "(Placas a realizar: ".$reti["TotalPlates"].")\n";
         $texto .= "(Slides a imprimir: ".$slide["filasplaca"]."x".$slide["columnasplaca"].")\n";
         $texto .= "(Ciclos de lavado: ".$lavado["ciclos"]." con ".$lavado["oscilaciones"]." osc)\n";
+        $texto .= "(Tiempo de muestra, vacío y último vacío: ".$lavado["tmuestra"].", ".$lavado["vacio"]." y ".$lavado["uvacio"]." s)\n";
         unset($pines, $lavado, $slide, $reti);
       }
       // Datos fijos si es tipo numeración o chips múltiples
       else {
         $info = explode(",",$info);
-        $texto = "(Rutina específica: ".$info[0].")\n";
-        $texto .= "(Pines: 6x1)\n";
-        if( (int)$info[1]<10 )
+        $texto = "(Rutina específica: ".$info[1].")\n";
+        if( $info[0]=="1" )
+          $texto .= "(Pines: 6x1 tipo cerámico)\n";
+        else
+          $texto .= "(Pines: 6x1 tipo acero)\n";
+        if( (int)$info[2]<10 )
           $texto .= "(Sección por imprimir: superior)\n";
         else
           $texto .= "(Sección por imprimir: inferior para slides girados)\n";
-        $texto .= "(Slides a imprimir: ".$info[2]."x".$info[3].")\n";
+        $texto .= "(Slides a imprimir: ".$info[3]."x".$info[4].")\n";
         $texto .= "(Ciclos de lavado: 3 con 4 osc)\n";
         $texto .= "(Tiempo de muestra, vacío y último vacío: 1, 2 y 3 s)\n";
       }

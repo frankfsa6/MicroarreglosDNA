@@ -1037,7 +1037,7 @@ $(document).ready(function () {
 				else {
 					if (this.name == "nums") {
 						// Junta datos de formulario para numeración
-						var datNums = $("#coordXNums").val() + "," + $("#coordYNums").val();
+						var datNums = $("#TipoPin").val() + "," + $("#coordXNums").val() + "," + $("#coordYNums").val();
 						datNums += "," + $("#xSlidesNumeros").val() + "," + $("#ySlidesNumeros").val();
 						// Crea archivo G
 						$.post("php/RutinaGnums.php", { "datnum": datNums }, function () {

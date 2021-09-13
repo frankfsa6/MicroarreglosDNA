@@ -42,7 +42,7 @@
 			echo "<tr> <th>Pines</th>";
 			echo "<td scope='row'> Dirección en X </br>
 				 Dirección en Y </br>
-				 Tipo de Pin </td>";
+				 Tipo de pin </td>";
 			echo "<td>".$resDB[0][0]." </br>".$resDB[0][1]." </br> ";
 			if($resDB[0][2] == 1)
 				echo "Cerámico";

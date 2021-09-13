@@ -5,10 +5,11 @@
   ini_set('display_errors', 1);
   // Variables recibidas
   $datos = explode(",", $_POST['datnum']);
-  $XCoords = round((float)$datos[0], 3);
-  $YCoords = round((float)$datos[1], 3);
-  $columnasPlaca = (int)$datos[2];
-  $filasPlaca = (int)$datos[3];
+  $tipoPin = round((int)$datos[0]);
+  $XCoords = round((float)$datos[1], 3);
+  $YCoords = round((float)$datos[2], 3);
+  $columnasPlaca = (int)$datos[3];
+  $filasPlaca = (int)$datos[4];
   // Velocidad para diagonales y movimientos principales
   $vxy = null;
   $vz = null;
@@ -31,7 +32,7 @@
   $tvac = 2;
   $utvac = 3;
   // Obtiene datos DB y comienza a ejecutar
-  $archivito = new ArchG("nums", "Numeración,$XCoords,$columnasPlaca,$filasPlaca");
+  $archivito = new ArchG("nums", "$tipoPin,Numeración,$XCoords,$columnasPlaca,$filasPlaca");
   $archivito->SensarOrigen();
   // Mueve retícula a slide el valor dado de coordenadas y limpieza a 3mmXY de esquina
   $archivito->ActualizaCoords(0, $XCoords,"Retícula");

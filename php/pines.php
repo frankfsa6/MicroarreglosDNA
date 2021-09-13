@@ -18,27 +18,22 @@
         //Guarda la rutina temporalmente con el ID recién generado
         $query = "INSERT INTO rutinas (ID, nombreRutina,Temporal, rutinaIniciada) VALUES ('".$_SESSION['ID']."','Rutina".$rutinaX."',1,1)";
         mysqli_query($conexion,$query);
-        }
+    }
   	$ID = $_SESSION['ID'];
   	$PinesX = null;
   	$sql = "SELECT * FROM pines";
-    if ( mysqli_query($conexion, $sql)->num_rows !=0 )
-    {
-      $res = mysqli_query($conexion, $sql);
-      while ( $dato = mysqli_fetch_assoc($res) )
-      {
-  	 	   if ($dato["ID"] == $ID)
-         {
-  			      $PinesX = $dato["PinesX"];
-  		   }
-  	  }
-    mysqli_free_result($res);
-    //UPDATE `pines` SET `Valor`= 4 WHERE Eje = 'X'
+    if ( mysqli_query($conexion, $sql)->num_rows !=0 ) {
+    	$res = mysqli_query($conexion, $sql);
+      	while ( $dato = mysqli_fetch_assoc($res) ){
+  	 		if ($dato["ID"] == $ID)
+  			    $PinesX = $dato["PinesX"];
+  	  	}
+    	mysqli_free_result($res);
     }
-  	if ($PinesX==null)
-    {
+  	if ($PinesX==null){
       $PinesX = 12;
-      mysqli_query($conexion, "INSERT INTO pines (ID, PinesX, PinesY) VALUES ('".$ID."','".$PinesX."',4)");
+	  $tipoPin = 2;
+      mysqli_query($conexion, "INSERT INTO pines (ID, PinesX, PinesY, IDPin) VALUES ('".$ID."','".$PinesX."',4,'".$tipoPin."')");
     }
   	mysqli_close($conexion);
 
@@ -49,6 +44,13 @@
   			<form id='placas'>
   				<fieldset class='borderless'>
   				<br/><br/>
+				  	<div class='input-group mb-3'>
+  						<label for='TipoPin' class='input-group-text'>Tipo de pin</label>
+  						<select class='custom-select' id='TipoPin'>
+  							<option value='2' selected>Acero</option>
+							<option value='1'>Cerámico</option>
+  						</select>
+  					</div>
   					<div class='input-group mb-3'>
   						<label for='Pines_ejeX' class='input-group-text'>Número de pines en eje X</label>
   					    <select class='custom-select' id='Pines_ejeX'>";
@@ -57,7 +59,7 @@
   								echo "<option value='$i' selected>$i</option>";
   							else if($i!=10)
   								echo "<option value='$i'>$i</option>";
-  							}
+  						}
       					echo "</select>
   					</div>
 
@@ -89,16 +91,13 @@
     ////////// Botón de Prueba
     echo "<input class='update-db-submit' type='submit' id='guardapines' value='Submit' hidden></br>";
     //////////  Fin de Botón de Prueba
-    if(isset($_POST['DatosPines']))
-    {
+    if(isset($_POST['DatosPines'])) {
     	$conexion = ConectarBD();
-    	if($conexion != false)
-    	{
+    	if( $conexion != false ){
     		$PX = $_POST['DatosPines'];
-    		//$Update= "INSERT INTO pines (PinesX, PinesY, ID) VALUES ('.$PX.',4,1) ON DUPLICATE KEY UPDATE PinesX='.$PX.',PinesY=4";
-    		$Update= "UPDATE pines SET PinesX = '".$PX."' WHERE ID = '".$_SESSION['ID']."'";
+			$tipoPin = $_POST['tipoPin'];
+    		$Update= "UPDATE pines SET PinesX = '".$PX."', IDPin = '".$tipoPin."' WHERE ID = '".$_SESSION['ID']."'";
     		$query = mysqli_query($conexion, $Update);
-            //echo $query;
             mysqli_close($conexion);
     	}
     //DELETE from pines

@@ -6,8 +6,15 @@
           <div class='container'><div class='row'>
             <div class='col-5'>
               <div class='input-group mb-3'>
-              <label  class='input-group-text'>Número de pines en X </label>
-              <input class='form-control' type='text' value='6' disabled>
+                <label for='TipoPin' class='input-group-text'>Tipo de pin</label>
+                <select class='custom-select' id='TipoPin'>
+                  <option value='2' selected>Acero</option>
+                <option value='1'>Cerámico</option>
+                </select>
+              </div>
+              <div class='input-group mb-3'>
+                <label  class='input-group-text'>Número de pines en X </label>
+                <input class='form-control' type='text' value='6' disabled>
               </div>
               <div class='input-group mb-3'>
                 <label  class='input-group-text'>Número de pines en Y </label>

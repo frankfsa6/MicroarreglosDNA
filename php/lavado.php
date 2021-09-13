@@ -78,19 +78,19 @@
 					<br/>
 						<div class='input-group mb-3'>
 
-	          <div class='input-group mb-3'>
-						<label for='TiempoVacio' class='input-group-text'>Tiempo de vacío (s)</label>
-						<input type='text' maxlength='1' class='form-control mx-sm-3' id='TiempoVacio' value='$Vacio'>
+						<div class='input-group mb-3'>
+							<label for='TiempoMuestra' class='input-group-text'>Tiempo de toma muestra (s)</label>
+							<input type='text' maxlength='1' class='form-control mx-sm-3' id='TiempoMuestra' value='$Tmuestra'>
 						</div>
 
-				<div class='input-group mb-3'>
-						<label for='UltimoVacio' class='input-group-text'>Tiempo de último vacío (s)</label>
-						<input type='text' maxlength='1' class='form-control mx-sm-3' id='UltimoVacio' value='$Uvacio'>
+						<div class='input-group mb-3'>
+							<label for='TiempoVacio' class='input-group-text'>Tiempo de vacío (s)</label>
+							<input type='text' maxlength='1' class='form-control mx-sm-3' id='TiempoVacio' value='$Vacio'>
 						</div>
 
-				<div class='input-group mb-3'>
-						<label for='TiempoMuestra' class='input-group-text'>Tiempo de toma muestra (s)</label>
-						<input type='text' maxlength='1' class='form-control mx-sm-3' id='TiempoMuestra' value='$Tmuestra'>
+						<div class='input-group mb-3'>
+							<label for='UltimoVacio' class='input-group-text'>Tiempo de último vacío (s)</label>
+							<input type='text' maxlength='1' class='form-control mx-sm-3' id='UltimoVacio' value='$Uvacio'>
 						</div>
 
 				</fieldset>

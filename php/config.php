@@ -29,7 +29,7 @@
       mysqli_free_result($res);
     }
     // Pide datos de coordenadas y valores principales
-    $sql = "SELECT * FROM config WHERE pinConfig=".$tipoPin;
+    $sql = "SELECT * FROM config WHERE IDPin=".$tipoPin;
     if ( mysqli_query($conexion, $sql)->num_rows !=0 ) {
       $res = mysqli_query($conexion, $sql);
       while ( $dato = mysqli_fetch_assoc($res) )
@@ -60,11 +60,11 @@
         como referencia absoluta al origen (ubicado a la <b>izquierda</b> en eje X, <b>atrás</b> en eje Y, <b>arriba</b> en eje Z). </h5><br/>";
       //Seccióp para cambio de pin
       echo "<div style='width=100%;' id='tipoPin'>
-              <div style='display:inline-block; padding:10px; margin-right:auto; margin-left:0px; width:70%'> <h5>Tipo de Pin: ";
+              <div style='display:inline-block; padding:10px; margin-right:auto; margin-left:0px; width:70%'> <h5>Tipo de pin: ";
       if($tipoPin == 2){
         echo "Acero </h5></div>
               <div id='PinButton' style='display:inline-block;'>
-                Cambiar a pin &nbsp &nbsp <button id='ceramico' class='btn btn-primary' style='width:100px'> Ceramico </button>";
+                Cambiar a pin &nbsp &nbsp <button id='ceramico' class='btn btn-primary' style='width:100px'> Cerámico </button>";
       }
       elseif($tipoPin == 1){
         echo "Cerámico </h5></div>

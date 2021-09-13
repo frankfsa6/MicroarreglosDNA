@@ -2,10 +2,10 @@
 -- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Sep 13, 2021 at 04:57 AM
--- Server version: 10.4.20-MariaDB
--- PHP Version: 8.0.9
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 13-09-2021 a las 05:54:14
+-- Versión del servidor: 10.4.21-MariaDB
+-- Versión de PHP: 8.0.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `dbrobot`
+-- Base de datos: `dbrobot`
 --
 CREATE DATABASE IF NOT EXISTS `dbrobot` DEFAULT CHARACTER SET utf8 COLLATE utf8_spanish2_ci;
 USE `dbrobot`;
@@ -26,7 +26,7 @@ USE `dbrobot`;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `config`
+-- Estructura de tabla para la tabla `config`
 --
 
 DROP TABLE IF EXISTS `config`;
@@ -39,16 +39,16 @@ CREATE TABLE `config` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 --
--- Dumping data for table `config`
+-- Volcado de datos para la tabla `config`
 --
 
 INSERT INTO `config` (`nombre`, `x`, `y`, `z`, `IDPin`) VALUES
 ('Origen', 0, 0, 10, 1),
-('Lavado', 63.61, 70, 50, 1),
-('Vacío', 63.61, 12.86, 41, 1),
-('Limpieza', 46.1, 121.34, 49.3, 1),
-('Muestra', 12.52, 232.45, 52.3, 1),
-('Retícula', 168.51, 4.92, 59.2, 1),
+('Lavado', 63.64, 62, 60, 1),
+('Vacío', 63.64, 9.98, 54, 1),
+('Limpieza', 46.6, 119.44, 63, 1),
+('Muestra', 12.77, 230.09, 66.3, 1),
+('Retícula', 168.27, 2.33, 68, 1),
 ('Usuario', 300, 250, 0, 1),
 ('Origen', 0, 0, 10, 2),
 ('Lavado', 63.64, 62, 60, 2),
@@ -61,7 +61,7 @@ INSERT INTO `config` (`nombre`, `x`, `y`, `z`, `IDPin`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `lavado`
+-- Estructura de tabla para la tabla `lavado`
 --
 
 DROP TABLE IF EXISTS `lavado`;
@@ -76,18 +76,17 @@ CREATE TABLE `lavado` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 --
--- Dumping data for table `lavado`
+-- Volcado de datos para la tabla `lavado`
 --
 
 INSERT INTO `lavado` (`ciclos`, `oscilaciones`, `toques`, `vacio`, `uvacio`, `tmuestra`, `ID`) VALUES
-(1, 3, 6, 1, 1, 2, '2020-12-7-12-34-12'),
-(1, 1, 3, 1, 1, 1, '2020-2-10-11-15-17'),
-(1, 1, 1, 1, 1, 1, '2020-2-10-12-3-21');
+(3, 4, 6, 2, 3, 1, '2021-9-13-5-14-31'),
+(3, 4, 6, 2, 3, 1, '2021-9-13-5-45-34');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `pines`
+-- Estructura de tabla para la tabla `pines`
 --
 
 DROP TABLE IF EXISTS `pines`;
@@ -99,18 +98,17 @@ CREATE TABLE `pines` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 --
--- Dumping data for table `pines`
+-- Volcado de datos para la tabla `pines`
 --
 
 INSERT INTO `pines` (`PinesX`, `PinesY`, `ID`, `IDPin`) VALUES
-(12, 4, '2020-12-7-12-34-12', 1),
-(6, 4, '2020-2-10-11-15-17', 1),
-(12, 4, '2020-2-10-12-3-21', 1);
+(12, 4, '2021-9-13-5-14-31', 2),
+(6, 4, '2021-9-13-5-45-34', 2);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `raspberry`
+-- Estructura de tabla para la tabla `raspberry`
 --
 
 DROP TABLE IF EXISTS `raspberry`;
@@ -122,7 +120,7 @@ CREATE TABLE `raspberry` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 --
--- Dumping data for table `raspberry`
+-- Volcado de datos para la tabla `raspberry`
 --
 
 INSERT INTO `raspberry` (`id`, `nombre`, `tipo`, `valor`) VALUES
@@ -148,7 +146,7 @@ INSERT INTO `raspberry` (`id`, `nombre`, `tipo`, `valor`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `reticula`
+-- Estructura de tabla para la tabla `reticula`
 --
 
 DROP TABLE IF EXISTS `reticula`;
@@ -166,18 +164,17 @@ CREATE TABLE `reticula` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 --
--- Dumping data for table `reticula`
+-- Volcado de datos para la tabla `reticula`
 --
 
 INSERT INTO `reticula` (`XCoords`, `YCoords`, `XSpace`, `YSpace`, `XDots`, `YDots`, `DuplicateDots`, `PlateState`, `TotalPlates`, `ID`) VALUES
-(3, 3, 300, 300, 8, 8, 8, 1, 1, '2020-12-7-12-34-12'),
-(5, 5, 500, 600, 5, 4, 2, 1, 0.625, '2020-2-10-11-15-17'),
-(5, 5, 200, 200, 2, 2, 1, 1, 0.5, '2020-2-10-12-3-21');
+(5, 5, 300, 300, 9, 9, 9, 0, 1, '2021-9-13-5-14-31'),
+(5, 5, 300, 300, 15, 15, 1, 1, 14.063, '2021-9-13-5-45-34');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `rutinas`
+-- Estructura de tabla para la tabla `rutinas`
 --
 
 DROP TABLE IF EXISTS `rutinas`;
@@ -189,18 +186,17 @@ CREATE TABLE `rutinas` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 --
--- Dumping data for table `rutinas`
+-- Volcado de datos para la tabla `rutinas`
 --
 
 INSERT INTO `rutinas` (`nombreRutina`, `Temporal`, `rutinaIniciada`, `ID`) VALUES
-('Oficial', 0, 0, '2020-12-7-12-34-12'),
-('Pi', 0, 0, '2020-2-10-11-15-17'),
-('Prueba', 0, 0, '2020-2-10-12-3-21');
+('1placa9x9puntosDup', 0, 0, '2021-9-13-5-14-31'),
+('Chafa', 0, 0, '2021-9-13-5-45-34');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `slide`
+-- Estructura de tabla para la tabla `slide`
 --
 
 DROP TABLE IF EXISTS `slide`;
@@ -211,18 +207,17 @@ CREATE TABLE `slide` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 --
--- Dumping data for table `slide`
+-- Volcado de datos para la tabla `slide`
 --
 
 INSERT INTO `slide` (`columnasplaca`, `filasplaca`, `ID`) VALUES
-(1, 2, '2020-12-7-12-34-12'),
-(2, 3, '2020-2-10-11-15-17'),
-(1, 1, '2020-2-10-12-3-21');
+(1, 2, '2021-9-13-5-14-31'),
+(1, 1, '2021-9-13-5-45-34');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tipopin`
+-- Estructura de tabla para la tabla `tipopin`
 --
 
 DROP TABLE IF EXISTS `tipopin`;
@@ -233,7 +228,7 @@ CREATE TABLE `tipopin` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 --
--- Dumping data for table `tipopin`
+-- Volcado de datos para la tabla `tipopin`
 --
 
 INSERT INTO `tipopin` (`IDPin`, `nombrePin`, `PinSelect`) VALUES
@@ -241,41 +236,41 @@ INSERT INTO `tipopin` (`IDPin`, `nombrePin`, `PinSelect`) VALUES
 ('2', 'acero', 1);
 
 --
--- Indexes for dumped tables
+-- Índices para tablas volcadas
 --
 
 --
--- Indexes for table `lavado`
+-- Indices de la tabla `lavado`
 --
 ALTER TABLE `lavado`
   ADD PRIMARY KEY (`ID`);
 
 --
--- Indexes for table `pines`
+-- Indices de la tabla `pines`
 --
 ALTER TABLE `pines`
   ADD PRIMARY KEY (`ID`);
 
 --
--- Indexes for table `reticula`
+-- Indices de la tabla `reticula`
 --
 ALTER TABLE `reticula`
   ADD PRIMARY KEY (`ID`);
 
 --
--- Indexes for table `rutinas`
+-- Indices de la tabla `rutinas`
 --
 ALTER TABLE `rutinas`
   ADD PRIMARY KEY (`ID`);
 
 --
--- Indexes for table `slide`
+-- Indices de la tabla `slide`
 --
 ALTER TABLE `slide`
   ADD PRIMARY KEY (`ID`);
 
 --
--- Indexes for table `tipopin`
+-- Indices de la tabla `tipopin`
 --
 ALTER TABLE `tipopin`
   ADD PRIMARY KEY (`IDPin`);
