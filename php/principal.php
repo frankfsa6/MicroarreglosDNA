@@ -26,14 +26,14 @@
 			$resDB=null;
 			//Pines-----------------------------------------------
 			//Pines regresa 3 columnas PinesX y pinesY
-			$query = mysqli_query($conexion,"SELECT pinesx, pinesy FROM pines WHERE ID='".$rutina."'");
+			$query = mysqli_query($conexion,"SELECT pinesx, pinesy, IDPin FROM pines WHERE ID='".$rutina."'");
 			//Los datos se guardan en una matriz $resDB[][0]
 			$resDB=null;
 			while ($row = mysqli_fetch_row($query))
 				$resDB[]=$row;
 			if($resDB == null)
 			{
-				$longDB = 2;
+				$longDB = 3;
 				for($contadorEspacios = 0 ; $contadorEspacios < $longDB ; $contadorEspacios++)
 				{
 					$resDB[0][$contadorEspacios]='No se ha ingresado información en este campo';
@@ -44,16 +44,10 @@
 				 Dirección en Y </br>
 				 Tipo de Pin </td>";
 			echo "<td>".$resDB[0][0]." </br>".$resDB[0][1]." </br> ";
-			$query = mysqli_query($conexion,"SELECT IDPin FROM pines WHERE ID='".$rutina."'");
-			$resDB=null;
-			while ($row = mysqli_fetch_row($query))
-				$resDB[]=$row;
-			if($resDB != null){
-				if($resDB[0][0] == 1)
-					echo "Cerámico";
-				elseif($resDB[0][0] == 2)
-					echo "Acero";
-			}
+			if($resDB[0][2] == 1)
+				echo "Cerámico";
+			elseif($resDB[0][2] == 2)
+				echo "Acero";
 			echo "</td></tr>";
 			$resDB=null;
 			//Reticula----------------------------------------------
