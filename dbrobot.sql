@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 13, 2021 at 04:45 AM
+-- Generation Time: Sep 13, 2021 at 04:57 AM
 -- Server version: 10.4.20-MariaDB
 -- PHP Version: 8.0.9
 
@@ -94,17 +94,18 @@ DROP TABLE IF EXISTS `pines`;
 CREATE TABLE `pines` (
   `PinesX` int(10) NOT NULL,
   `PinesY` int(10) NOT NULL,
-  `ID` varchar(19) COLLATE utf8_spanish2_ci NOT NULL
+  `ID` varchar(19) COLLATE utf8_spanish2_ci NOT NULL,
+  `IDPin` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 --
 -- Dumping data for table `pines`
 --
 
-INSERT INTO `pines` (`PinesX`, `PinesY`, `ID`) VALUES
-(12, 4, '2020-12-7-12-34-12'),
-(6, 4, '2020-2-10-11-15-17'),
-(12, 4, '2020-2-10-12-3-21');
+INSERT INTO `pines` (`PinesX`, `PinesY`, `ID`, `IDPin`) VALUES
+(12, 4, '2020-12-7-12-34-12', 1),
+(6, 4, '2020-2-10-11-15-17', 1),
+(12, 4, '2020-2-10-12-3-21', 1);
 
 -- --------------------------------------------------------
 
@@ -184,18 +185,17 @@ CREATE TABLE `rutinas` (
   `nombreRutina` varchar(30) COLLATE utf8_spanish2_ci NOT NULL,
   `Temporal` tinyint(1) NOT NULL,
   `rutinaIniciada` int(1) NOT NULL,
-  `ID` varchar(19) COLLATE utf8_spanish2_ci NOT NULL,
-  `IDPin` int(11) DEFAULT NULL
+  `ID` varchar(19) COLLATE utf8_spanish2_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 --
 -- Dumping data for table `rutinas`
 --
 
-INSERT INTO `rutinas` (`nombreRutina`, `Temporal`, `rutinaIniciada`, `ID`, `IDPin`) VALUES
-('Oficial', 0, 0, '2020-12-7-12-34-12', 1),
-('Pi', 0, 0, '2020-2-10-11-15-17', 1),
-('Prueba', 0, 0, '2020-2-10-12-3-21', 1);
+INSERT INTO `rutinas` (`nombreRutina`, `Temporal`, `rutinaIniciada`, `ID`) VALUES
+('Oficial', 0, 0, '2020-12-7-12-34-12'),
+('Pi', 0, 0, '2020-2-10-11-15-17'),
+('Prueba', 0, 0, '2020-2-10-12-3-21');
 
 -- --------------------------------------------------------
 

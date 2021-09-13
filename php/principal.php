@@ -44,7 +44,7 @@
 				 Dirección en Y </br>
 				 Tipo de Pin </td>";
 			echo "<td>".$resDB[0][0]." </br>".$resDB[0][1]." </br> ";
-			$query = mysqli_query($conexion,"SELECT IDPin FROM rutinas WHERE ID='".$rutina."'");
+			$query = mysqli_query($conexion,"SELECT IDPin FROM pines WHERE ID='".$rutina."'");
 			$resDB=null;
 			while ($row = mysqli_fetch_row($query))
 				$resDB[]=$row;

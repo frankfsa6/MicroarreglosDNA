@@ -54,7 +54,7 @@
               $conexion = ConectarBD();
               if($conexion != false){
                 mysqli_set_charset($conexion,"utf8");
-                $sql = "SELECT IDPin FROM rutinas WHERE ID='".$_SESSION['ID']."'";
+                $sql = "SELECT IDPin FROM pines WHERE ID='".$_SESSION['ID']."'";
                 if ( mysqli_query($conexion, $sql)->num_rows !=0 ) {
                   $res = mysqli_query($conexion, $sql);
                   while ( $dato = mysqli_fetch_assoc($res) )
@@ -518,7 +518,7 @@
           for($i = 0; $i<3; $i++)
             $this->pasosMM[$i] = $cuentas['pasosRev'.$ejeBD[$i]]/$cuentas['tor'.$ejeBD[$i]];
         }
-        $sql = "SELECT IDPin FROM rutinas WHERE ID='".$_SESSION['ID']."'";
+        $sql = "SELECT IDPin FROM pines WHERE ID='".$_SESSION['ID']."'";
         if ( mysqli_query($conexion, $sql)->num_rows !=0 ) {
           $res = mysqli_query($conexion, $sql);
           while ( $dato = mysqli_fetch_assoc($res) )
