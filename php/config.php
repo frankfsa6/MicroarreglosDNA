@@ -61,12 +61,12 @@
       //Seccióp para cambio de pin
       echo "<div style='width=100%;' id='tipoPin'>
               <div style='display:inline-block; padding:10px; margin-right:auto; margin-left:0px; width:70%'> <h5>Tipo de Pin: ";
-      if($tipoPin == 1){
+      if($tipoPin == 2){
         echo "Acero </h5></div>
               <div id='PinButton' style='display:inline-block;'>
                 Cambiar a pin &nbsp &nbsp <button id='ceramico' class='btn btn-primary' style='width:100px'> Ceramico </button>";
       }
-      elseif($tipoPin == 2){
+      elseif($tipoPin == 1){
         echo "Cerámico </h5></div>
               <div id='PinButton' style='display:inline-block; margin-right:0px; margin-left:auto;'>
                 Cambiar a pin &nbsp &nbsp <button id='acero' class='btn btn-primary' style='width:100px'> Acero </button>";

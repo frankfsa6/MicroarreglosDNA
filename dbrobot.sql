@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 13, 2021 at 03:02 AM
+-- Generation Time: Sep 13, 2021 at 03:47 AM
 -- Server version: 10.4.20-MariaDB
 -- PHP Version: 8.0.9
 
@@ -236,8 +236,8 @@ CREATE TABLE `tipopin` (
 --
 
 INSERT INTO `tipopin` (`IDPin`, `nombrePin`, `PinSelect`) VALUES
-('1', 'acero', 1),
-('2', 'ceramico', 0);
+('1', 'ceramico', 0),
+('2', 'acero', 1);
 
 --
 -- Indexes for dumped tables
