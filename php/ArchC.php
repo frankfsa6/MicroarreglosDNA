@@ -54,7 +54,14 @@
               $conexion = ConectarBD();
               if($conexion != false){
                 mysqli_set_charset($conexion,"utf8");
-                $sql = "UPDATE config SET ".$ejes[$i]."=".$mms." WHERE nombre='".$joys[2]."'";
+                $sql = "SELECT IDPin FROM rutina WHERE ID='".$_SESSION['ID']."'";
+                if ( mysqli_query($conexion, $sql)->num_rows !=0 ) {
+                  $res = mysqli_query($conexion, $sql);
+                  while ( $dato = mysqli_fetch_assoc($res) )
+                    $tipoPin = $dato['IDPin'];
+                  mysqli_free_result($res);
+                }
+                $sql = "UPDATE config SET ".$ejes[$i]."=".$mms." WHERE nombre='".$joys[2]."' AND IDPin=".$tipoPin;
                 mysqli_query($conexion, $sql);
               }
               $str .= ",".$pasitos." pasos = ".$mms." mm ( ".round($this->pasosMM[$i], 3)." pasos / mm )";           
@@ -511,14 +518,21 @@
           for($i = 0; $i<3; $i++)
             $this->pasosMM[$i] = $cuentas['pasosRev'.$ejeBD[$i]]/$cuentas['tor'.$ejeBD[$i]];
         }
-        // Pide datos de coordenadas de lugares principales
-        $sql = "SELECT * FROM config";
+        $sql = "SELECT IDPin FROM rutina WHERE ID='".$_SESSION['ID']."'";
+        if ( mysqli_query($conexion, $sql)->num_rows !=0 ) {
+          $res = mysqli_query($conexion, $sql);
+          while ( $dato = mysqli_fetch_assoc($res) )
+            $tipoPin = $dato['IDPin'];
+          mysqli_free_result($res);
+        }
+        //Obtiene el valor seleccionado del tipo de pines
+        $sql = "SELECT * FROM config WHERE IDPin=".$tipoPin;
         $res = mysqli_query($conexion, $sql);
         if( $res->num_rows !=0 ) {
           while( $dato = mysqli_fetch_assoc($res) )
             $this->lugares[$dato['nombre']] = [$dato["x"], $dato["y"], $dato["z"]];
           mysqli_free_result($res);
-      }
+        }
         //Configura auxiliares que se utilizarán en la inserción de puntos de slides, limpieza y muestra
         $this->lugares["Vacío"][2] -= $this->zespera;
         $this->ReiniciaCoords(2,"Slide","Retícula");

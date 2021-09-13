@@ -41,8 +41,20 @@
 			}
 			echo "<tr> <th>Pines</th>";
 			echo "<td scope='row'> Dirección en X </br>
-				 Dirección en Y </td>";
-			echo "<td>".$resDB[0][0]." </br>".$resDB[0][1]."</td></tr>";
+				 Dirección en Y </br>
+				 Tipo de Pin </td>";
+			echo "<td>".$resDB[0][0]." </br>".$resDB[0][1]." </br> ";
+			$query = mysqli_query($conexion,"SELECT IDPin FROM rutinas WHERE ID='".$rutina."'");
+			$resDB=null;
+			while ($row = mysqli_fetch_row($query))
+				$resDB[]=$row;
+			if($resDB != null){
+				if($resDB[0][0] == 1)
+					echo "Cerámico";
+				elseif($resDB[0][0] == 2)
+					echo "Acero";
+			}
+			echo "</td></tr>";
 			$resDB=null;
 			//Reticula----------------------------------------------
 			//Se pide en reticula.php XCoords 	YCoords XSpace YSpace XDots YDots DuplicateDots PlateState

@@ -234,7 +234,16 @@
       if( $conexion == true ){
         // Pide datos de coordenadas de lugares principales
         mysqli_set_charset($conexion,"utf8");
-        $sql = "SELECT * FROM config";
+        // Obtiene el tipo de pin de la base de datos
+        $sql = "SELECT IDPin FROM rutina WHERE ID='".$_SESSION['ID']."'";
+        if ( mysqli_query($conexion, $sql)->num_rows !=0 ) {
+          $res = mysqli_query($conexion, $sql);
+          while ( $dato = mysqli_fetch_assoc($res) )
+            $tipoPin = $dato['IDPin'];
+          mysqli_free_result($res);
+        }
+        //Obtiene el valor seleccionado del tipo de pines
+        $sql = "SELECT * FROM config WHERE IDPin=".$tipoPin;
         $res = mysqli_query($conexion, $sql);
         if( $res->num_rows !=0 ) {
           while( $dato = mysqli_fetch_assoc($res) )

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 13, 2021 at 03:47 AM
+-- Generation Time: Sep 13, 2021 at 04:45 AM
 -- Server version: 10.4.20-MariaDB
 -- PHP Version: 8.0.9
 
@@ -35,14 +35,14 @@ CREATE TABLE `config` (
   `x` float UNSIGNED NOT NULL,
   `y` float UNSIGNED NOT NULL,
   `z` float UNSIGNED NOT NULL,
-  `pinConfig` int(11) DEFAULT NULL
+  `IDPin` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 --
 -- Dumping data for table `config`
 --
 
-INSERT INTO `config` (`nombre`, `x`, `y`, `z`, `pinConfig`) VALUES
+INSERT INTO `config` (`nombre`, `x`, `y`, `z`, `IDPin`) VALUES
 ('Origen', 0, 0, 10, 1),
 ('Lavado', 63.61, 70, 50, 1),
 ('Vacío', 63.61, 12.86, 41, 1),
@@ -184,17 +184,18 @@ CREATE TABLE `rutinas` (
   `nombreRutina` varchar(30) COLLATE utf8_spanish2_ci NOT NULL,
   `Temporal` tinyint(1) NOT NULL,
   `rutinaIniciada` int(1) NOT NULL,
-  `ID` varchar(19) COLLATE utf8_spanish2_ci NOT NULL
+  `ID` varchar(19) COLLATE utf8_spanish2_ci NOT NULL,
+  `IDPin` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 --
 -- Dumping data for table `rutinas`
 --
 
-INSERT INTO `rutinas` (`nombreRutina`, `Temporal`, `rutinaIniciada`, `ID`) VALUES
-('Oficial', 0, 0, '2020-12-7-12-34-12'),
-('Pi', 0, 0, '2020-2-10-11-15-17'),
-('Prueba', 0, 0, '2020-2-10-12-3-21');
+INSERT INTO `rutinas` (`nombreRutina`, `Temporal`, `rutinaIniciada`, `ID`, `IDPin`) VALUES
+('Oficial', 0, 0, '2020-12-7-12-34-12', 1),
+('Pi', 0, 0, '2020-2-10-11-15-17', 1),
+('Prueba', 0, 0, '2020-2-10-12-3-21', 1);
 
 -- --------------------------------------------------------
 
