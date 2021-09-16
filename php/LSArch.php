@@ -110,12 +110,18 @@
     if(isset( $_POST['uDBConfig'] )){
       $config = $_POST["config"];
       $raspberry = $_POST["raspberry"];
+      $tipoPin = $_POST["tipoPin"];
+      // Guarda en opuesto del tipo de pin
+      if( $tipoPin == "Acero" )
+        $tipoPin = 1;
+      else
+        $tipoPin = 2;
       // Establece codificación
       mysqli_set_charset($conexion,"utf8");
       // Guarda datos de tabla configuración
       for($i=0; $i<sizeof($config); $i++){
         $exp = explode(";",$config[$i]);
-        $sql = "UPDATE config SET x='".$exp[1]."',y='".$exp[2]."',z='".$exp[3]."' WHERE nombre='".$exp[0]."'";
+        $sql = "UPDATE config SET x='".$exp[1]."',y='".$exp[2]."',z='".$exp[3]."' WHERE nombre='".$exp[0]."' AND IDPin='".$tipoPin."'";
         mysqli_query($conexion, $sql);
       }
       // Guarda datos de tabla de pines raspberry

@@ -198,6 +198,40 @@
       }
       unset($multip, $dirX);
     }
+    // Hace toda la rutina de un ciclo de insertar los chips dobles en todos los slides (vidrios) 
+    public function InsertarChipsSlides($columnasPlaca,$filasPlaca,$vxy,$vz,$puntosDup,$XMuestraDist,$YDist,$YSlideDist,$XSlideDist){
+      for($i=1; $i<=$columnasPlaca; $i++){
+        for($j=1; $j<=$filasPlaca; $j++){
+          // Primera vez llega a retícula o se mueve con altura fija entre slides
+          if($i==1 && $j==1)
+            $this->LugarD("Slide",$vxy,$vz,"Lugar"," $i x $j");
+          else
+            $this->LugarD("Slide",$vxy,$vz,"Slide"," $i x $j");
+          // Pone primeros puntos
+          for($k=0; $k<$puntosDup; $k++)
+            $this->Toque($k, $YDist, $puntosDup);
+          // Al ser fila par avanza a la izquierda, de lo contrario, a la derecha
+          if( $j%2==0 )
+            $this->ActualizaCoords(0,-$XMuestraDist,"Slide");
+          else
+            $this->ActualizaCoords(0,$XMuestraDist,"Slide");
+          $this->LugarD("Slide",$vxy,$vz,"Slide");
+          // Pone segundos puntos
+          for($k=0; $k<$puntosDup; $k++)
+            $this->Toque($k, $YDist, $puntosDup);
+          // En columna impar, avanza en Y
+          if($i%2 == 1 && $j!=$filasPlaca)
+            $this->ActualizaCoords(1,$YSlideDist,"Slide");
+          // En columna par, retrocede en Y
+          elseif($i%2 == 0 && $j!=$filasPlaca)
+            $this->ActualizaCoords(1,-$YSlideDist,"Slide");
+        }
+        // Al acabar la columna, mueve X distancia de slide; si la fila es impar, regresa el extra de separación doble
+        $this->ActualizaCoords(0,$XSlideDist,"Slide");
+        if( $filasPlaca%2==1 )
+          $this->ActualizaCoords(0,-$XMuestraDist,"Slide");
+      }
+    }
     // Baja a poner gotita, sube y avanza en Y
     public function Toque($NumToque, $Ydist, $fin){
       // Primera vez baja 1.5 mm a poner gotitas, después 0.5 mm al estar dentro del vidrio
@@ -324,18 +358,38 @@
       // Datos fijos si es tipo numeración o chips múltiples
       else {
         $info = explode(",",$info);
-        $texto = "(Rutina específica: ".$info[1].")\n";
-        if( $info[0]=="1" )
-          $texto .= "(Pines: 6x1 tipo cerámico)\n";
-        else
-          $texto .= "(Pines: 6x1 tipo acero)\n";
-        if( (int)$info[2]<10 )
-          $texto .= "(Sección por imprimir: superior)\n";
-        else
-          $texto .= "(Sección por imprimir: inferior para slides girados)\n";
-        $texto .= "(Slides a imprimir: ".$info[3]."x".$info[4].")\n";
-        $texto .= "(Ciclos de lavado: 3 con 4 osc)\n";
-        $texto .= "(Tiempo de muestra, vacío y último vacío: 1, 2 y 3 s)\n";
+        if( $info[5]=="Numeración" ){
+          $texto = "(Rutina específica: ".$info[5].")\n";
+          if( $info[0]=="1" )
+            $texto .= "(Pines: 6x1 tipo cerámico)\n";
+          else
+            $texto .= "(Pines: 6x1 tipo acero)\n";
+          if( (int)$info[1]<10 )
+            $texto .= "(Sección por imprimir: superior)\n";
+          else
+            $texto .= "(Sección por imprimir: inferior para slides girados)\n";
+          $texto .= "(Coords y espaciado: ".$info[1]."x".$info[2]."mm con 130um)\n";
+          $texto .= "(Slides a imprimir: ".$info[3]."x".$info[4].")\n";
+          $texto .= "(Ciclos de lavado: 3 con 4 osc)\n";
+          $texto .= "(Tiempo de muestra, vacío y último vacío: 1, 2 y 3 s)\n";
+        }
+        else{
+          $texto = "(Rutina específica: ".$info[12].")\n";
+          if( $info[1]=="1" )
+            $extra = "con serie duplicada";
+          else
+            $extra = null;
+          if( $info[0]=="1" )
+            $texto .= "(Pines: 4x2 tipo cerámico $extra)\n";
+          else
+            $texto .= "(Pines: 4x2 tipo acero $extra)\n";
+          $texto .= "(Puntos por arreglo: ".$info[6]."x".$info[7]." con ".$info[8]." dup)\n";
+          $texto .= "(Coords y espaciado: ".$info[2]."x".$info[3]."mm con ".$info[4]."x".$info[5]."um)\n";
+          $texto .= "(Placas a realizar: ".$info[9].")\n";
+          $texto .= "(Slides a imprimir: ".$info[10]."x".$info[11].")\n";
+          $texto .= "(Ciclos de lavado: 3 con 4 osc)\n";
+          $texto .= "(Tiempo de muestra, vacío y último vacío: 1, 2 y 3 s)\n";
+        }
       }
       // Guarda comentarios de inicio
       $texto .= "\n";

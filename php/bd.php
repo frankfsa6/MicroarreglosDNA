@@ -9,7 +9,7 @@
   function ConectarBD(){
     global $lusuario, $lcontras, $wusuario, $wcontras;
     $conexion = false;
-    // En caso de detectar windows (modo prueba), no lleva contrase?a
+    // En caso de detectar windows (modo prueba), no lleva contraseña
     if( strtoupper(substr(PHP_OS, 0, 3) ) == "WIN" )
       $conexion = @mysqli_connect("localhost", $wusuario, $wcontras, "dbrobot");
     // Al detectar LINUX, debe tomar datos definidos por PHPMYADMIN

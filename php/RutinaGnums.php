@@ -32,7 +32,7 @@
   $tvac = 2;
   $utvac = 3;
   // Obtiene datos DB y comienza a ejecutar
-  $archivito = new ArchG("nums", "$tipoPin,Numeración,$XCoords,$columnasPlaca,$filasPlaca");
+  $archivito = new ArchG("nums", implode(",", $datos).",Numeración");
   $archivito->SensarOrigen();
   // Mueve retícula a slide el valor dado de coordenadas y limpieza a 3mmXY de esquina
   $archivito->ActualizaCoords(0, $XCoords,"Retícula");

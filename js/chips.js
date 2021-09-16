@@ -245,16 +245,16 @@ $(document).ready( function(){
 	}
 
 	function Placas(){
-			// Numero de muestras en las que se entra
-			var div = 12;
-			div=div*($("#DuplicateDotsY").val());
-			var num = parseFloat(($("#XDots").val()))*parseFloat(($("#YDots").val()));
-			var res = num/div;
-			if ($("#PlateState").prop('checked') || res < 1)
-				$("#NoPlates").val(res.toFixed(3));
-			else
-				$("#NoPlates").val(Math.trunc(res));
-			PointingTable ();
+		// Numero de muestras en las que se entra
+		var div = 12;
+		div=div*($("#DuplicateDotsY").val());
+		var num = parseFloat(($("#XDots").val()))*parseFloat(($("#YDots").val()));
+		var res = num/div;
+		if ($("#PlateState").prop('checked') || res < 1)
+			$("#NoPlates").val(res.toFixed(3));
+		else
+			$("#NoPlates").val(Math.trunc(res));
+		PointingTable ();
 	}
 
 	function PointingTable(){

@@ -32,7 +32,7 @@ function valNums(){
   var temp = parseFloat($(this).val());
   // Manda error si no cumple características
   if(temp>1000 || !$.isNumeric(temp)){
-    $("#error").text("Sólo se aceptan formatos numéricos entre 0 y 1000").show();
+    $("#error").text("Sólo se aceptan dimensiones menores a 1 metro").show();
     $(this).val(anteVal);
     document.documentElement.scrollTop = 0;
   }
@@ -46,6 +46,7 @@ function guardarCfg(){
   // Pone velo oscuro
   $("#espera").css({"width":"100%","height":"100%","cursor":"wait"});
   var t1 = new Array(), t2 = new Array(), i = 0;
+  var tipoPin = $("#PinButton").children().text();
   // Obtiene valores de tabla 1 con coordenadas: "Lugar;X;Y;Z"
   $("#t1 tbody").children("tr").each(function(){
     t1[i] = $(this).children("td").first().text();
@@ -71,7 +72,7 @@ function guardarCfg(){
   $.ajax({
 		type: 'POST',
 		url:'php/LSArch.php',
-		data: {uDBConfig:true,"config":t1, "raspberry":t2}
+		data: {uDBConfig:true,"tipoPin":tipoPin,"config":t1, "raspberry":t2}
 	}).done(function(){
     $("#info").html("Actualizando nueva información en la base de datos").show();
     document.documentElement.scrollTop = 0;
@@ -127,7 +128,7 @@ function cambiaCoord(){
   }).fail(function(){
     $("#info, #pags, #botones").empty();
     $("#info").hide();
-    $("#error").text("No se complet? la petici?n de p?gina").show();
+    $("#error").text("No se completó la petición de página").show();
   });
 }
 
@@ -135,8 +136,7 @@ function cambiaCoord(){
 $(document).ready( function(){
   // Limpia mensajes y aplica filtro
   $("#error, #botones, #info").empty().hide();
-  $("#oriX, #oriY, #oriZ").attr("disabled","true");
-  //Cambia coordendas
+  $("#oriX, #oriY").attr("disabled","true");
   $("#tipoPin").on("click","button",cambiaCoord);
   // Detonadas al iniciar o cambiar su valor
   $(".ejes").ready(InhabPines);
