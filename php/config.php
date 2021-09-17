@@ -5,6 +5,7 @@
   $GPIORasp = [2,3,4,5,6,7,8,9,10,11,12,13,16,17,18,19,20,21,22,23,24,25,26,27];
   $diamTorn = [ 2.5, 3, 3.5, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 20, 22, 24, 25, 26, 27, 28, 30];
   $ejes = ["X", "Y", "Z"];
+  $hab = ( strtoupper(substr(PHP_OS, 0, 3))=="WIN" ) ? " disabled" : null;
   // Obtiene datos de base o asigna genéricos
   $conexion = ConectarBD();
   if($conexion == false)
@@ -18,7 +19,6 @@
       mysqli_query($conexion, $sql);
       $sql = "UPDATE tipopin SET PinSelect = 1 WHERE nombrePin = '".$_POST['cambiaPin']."'";
       mysqli_query($conexion, $sql);
-      //usleep(10000);
     }
     //Obtiene el valor seleccionado del tipo de pines
     $sql = "SELECT IDPin FROM tipopin WHERE PinSelect=1";
@@ -55,21 +55,21 @@
     // Obtiene datos de JS mientras no se oprima botón de guardar info
     if( !isset($_POST['guarda'])){
       // Velocidad y altura
-      echo "<h5>Coordenadas y valores asociados.</h5>
+      echo "<h3>Coordenadas y valores asociados.</h3>
         <h5 class='text-muted'>Las unidades están dadas en milímetros (únicamente valores positivos), tomando 
         como referencia absoluta al origen (ubicado a la <b>izquierda</b> en eje X, <b>atrás</b> en eje Y, <b>arriba</b> en eje Z). </h5><br/>";
       //Seccióp para cambio de pin
       echo "<div style='width=100%;' id='tipoPin'>
-              <div style='display:inline-block; padding:10px; margin-right:auto; margin-left:0px; width:70%'> <h5>Tipo de pin: ";
+              <div style='display:inline-block; padding:10px; margin-right:auto; margin-left:0px; width:70%'> <h3>Tipo de pin: ";
       if($tipoPin == 2){
-        echo "Acero </h5></div>
-              <div id='PinButton' style='display:inline-block;'>
-                Cambiar a pin &nbsp &nbsp <button id='ceramico' class='btn btn-primary' style='width:100px'> Cerámico </button>";
+        echo "acero </h3></div>
+              <div id='PinButton' style='display:inline-block;'><h5>
+                <button id='ceramico' class='btn-lg btn-primary' style='width:100%'> Cambiar a pin cerámico</button></h5>";
       }
       elseif($tipoPin == 1){
-        echo "Cerámico </h5></div>
-              <div id='PinButton' style='display:inline-block; margin-right:0px; margin-left:auto;'>
-                Cambiar a pin &nbsp &nbsp <button id='acero' class='btn btn-primary' style='width:100px'> Acero </button>";
+        echo "cerámico </h3></div>
+              <div id='PinButton' style='display:inline-block; margin-right:0px; margin-left:auto;'><h5>
+                <button id='acero' class='btn-lg btn-warning' style='width:100%'>Cambiar a pin de acero</button></h5>";
       }
       echo "</div> </div>";
       
@@ -87,7 +87,7 @@
       }
       echo "</tr></tbody></table>";
       // Manda encabezado de pines
-      echo "<h5>Pines configurados en Raspberry.</h5><h5 class='text-muted'>Utilizar con borneras acopladas y conectadas a controladores. Pines disponibles y no repetitivos.</h5><br/>";
+      echo "<h3>Pines configurados en Raspberry.</h3><h5 class='text-muted'>Utilizar con borneras acopladas y conectadas a controladores. Los pines disponibles no se pueden repetir.</h5><br/>";
       // Inicio de tabla y encabezados de columnas
       echo "<div class='table-responsive'><table class='table table-hover .table-responsive' id='t2'>
         <thead><tr>
@@ -105,7 +105,7 @@
           <div class='input-group-prepend'>
             <label class='input-group-text' for='pul".$ejes[$i]."'> Pin GPIO </label>
           </div>
-          <select class='ejes custom-select' id='pul".$ejes[$i]."'>";
+          <select class='ejes custom-select' id='pul".$ejes[$i]."' $hab>";
         foreach ($GPIORasp as $pin){
           if($pin == $pinActual["pul".$ejes[$i]][1])
             echo "<option value='".$pin."' selected>".$pin."</option>";
@@ -118,7 +118,7 @@
           <div class='input-group-prepend'>
             <label class='input-group-text' for='dir".$ejes[$i]."'> Pin GPIO </label>
           </div>
-          <select class='ejes custom-select' id='dir".$ejes[$i]."'>";
+          <select class='ejes custom-select' id='dir".$ejes[$i]."' $hab>";
         foreach ($GPIORasp as $pin){
           if($pin == $pinActual["dir".$ejes[$i]][1])
             echo "<option value='".$pin."' selected>".$pin."</option>";
@@ -131,7 +131,7 @@
           <div class='input-group-prepend'>
             <label class='input-group-text' for='lim".$ejes[$i]."'> Pin GPIO </label>
           </div>
-          <select class='ejes custom-select' id='lim".$ejes[$i]."'>";
+          <select class='ejes custom-select' id='lim".$ejes[$i]."' $hab>";
         foreach ($GPIORasp as $pin){
           if($pin == $pinActual["lim".$ejes[$i]][1])
             echo "<option value='".$pin."' selected>".$pin."</option>";
@@ -147,7 +147,7 @@
           echo "<tr><td>".$datoGPIO[0]."</td><td colspan='3'>
           <div class='input-group mb-3'><div class='input-group-prepend'>
             <label class='input-group-text' for=".$listaGPIO."> Pin GPIO </label>
-          </div><select class='ejes custom-select' id=".$listaGPIO.">";
+          </div><select class='ejes custom-select' id=".$listaGPIO." $hab>";
           foreach ($GPIORasp as $pin){
             if($pin == $datoGPIO[1])
               echo "<option value='".$pin."' selected>".$pin."</option>";
@@ -159,7 +159,7 @@
       }
       echo "</tbody></table></div>";
       // Configuración para micropasos de motores
-      echo "<h5>Resolución de pasos para motores.</h5>
+      echo "<h3>Resolución de pasos para motores controlados por Raspberry.</h3>
         <h5 class='text-muted'>Revisar la configuración física en controladores dada por la hoja de especificaciones del fabricante.</h5><br/>";
         // Inicio de tabla y encabezados de columnas
       echo "<div class='table-responsive'><table class='table table-hover .table-responsive' id='t3'>
@@ -176,12 +176,12 @@
         // Segunda columna con lista de pasos
         echo "<td class='pasos'><div class='input-group mb-3'> <div class='input-group-prepend'>
           <label class='input-group-text' for='pasosRev".$ejes[$i]."'> ".$motActual['pasosRev'.$ejes[$i]][0]." </label>
-          </div> <input type='text' class='form-control selMot' id='pasosRev".$ejes[$i]."' value='".$motActual['pasosRev'.$ejes[$i]][1]."'/>
+          </div> <input type='text' class='form-control selMot' id='pasosRev".$ejes[$i]."' value='".$motActual['pasosRev'.$ejes[$i]][1]."' $hab/>
         </div></td>";
         // Tercera columna con lista de diámetros de tornillo
         echo "<td class='tornillo'><div class='input-group mb-3'> <div class='input-group-prepend'>
             <label class='input-group-text' for='tor".$ejes[$i]."'> ".$motActual['tor'.$ejes[$i]][0]." </label>
-          </div> <input type='text' class='form-control selMot' id='tor".$ejes[$i]."' value='".$motActual['tor'.$ejes[$i]][1]."'/>
+          </div> <input type='text' class='form-control selMot' id='tor".$ejes[$i]."' value='".$motActual['tor'.$ejes[$i]][1]."' $hab/>
         </div></td>";  
         // Cuarta columna con cuenta
         echo "<td><input type='text' class='form-control' id='pasosmm".$ejes[$i]."' disabled></td></tr>";

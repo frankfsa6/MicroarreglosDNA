@@ -121,7 +121,7 @@
         $archivito->Espera($tmuestra);
         $Muestra[0]++;
         if ($Muestra[0]==$XMuestra){
-          $Muestra[0]=0;
+          $Muestra[0] = 0;
           $Muestra[1]++;
           $archivito->ReiniciaCoords(0,"Toma de muestra","Muestra");
           if ($Muestra[1]==$YMuestra){

@@ -728,14 +728,12 @@ $(document).ready(function () {
 											else {
 												if (accion == '2') {
 													$("#info").html("La rutina fue guardada con éxito").show();
-													$("#rutinaGuardadaTexto").html("SÍ");
+													$("#rutinaGuardadaTexto").html("Sí");
 													$("#guardaRutina").html("R<u>e</u>nombrar rutina");
 													$("h4").text("Rutina actual: " + $("#nombreDB").val());
+													$("#codigoGlink").parent().attr("href", "./G/"+$("#nombreDB").val()+".nc" );
 													$("#error").empty().hide();
-													// Muestra mensaje de que se guardó la rutina por un segundo
-													setTimeout(function () {
-														$("#info").empty().hide();
-													}, 1000);
+													$("#info").empty().hide(3000);
 												}
 											}
 										}
@@ -950,7 +948,7 @@ $(document).ready(function () {
 			});
 			// Inicia rutina de chips múltiples 
 			$("#botones").on("click", "#inicioChips", function () {
-				// Junta datos de formulario para numeración
+				// Junta datos de formulario para chips
 				var datChips = $("#PinesXDobles").val() + "," + $("#XCoords").val() + "," + $("#YCoords").val();
 				datChips += "," + $("#XDotsSpace").val() + "," + $("#YDotsSpace").val();
 				datChips += "," + $("#XDots").val() + "," + $("#YDots").val() + "," + $("#DuplicateDotsY").val() + "," + $("#NoPlates").val();
@@ -1051,10 +1049,12 @@ $(document).ready(function () {
 					}
 					else {
 						// Junta datos de formulario para chips múltiples
-						var datNums = $("#coordXNums").val() + "," + $("#coordYNums").val();
-						datNums += "," + $("#xSlidesNumeros").val() + "," + $("#ySlidesNumeros").val();
+						var datChips = $("#TipoPin").val() + "," + $("#PinesXDobles").val() + "," + $("#XCoords").val() + "," + $("#YCoords").val();
+						datChips += "," + $("#XDotsSpace").val() + "," + $("#YDotsSpace").val();
+						datChips += "," + $("#XDots").val() + "," + $("#YDots").val() + "," + $("#DuplicateDotsY").val() + "," + $("#NoPlates").val();
+						datChips += "," + $("#xSlidesNumeros").val() + "," + $("#ySlidesNumeros").val();
 						// Crea archivo G
-						$.post("php/RutinaGchips.php", { "datnum": datNums }, function () {
+						$.post("php/RutinaGchips.php", { "datchips": datChips }, function () {
 							$("#codigoGlink").trigger("click");
 						}).always(function () {
 							$("#espera").css({ "width": "0%", "height": "0%", "cursor": "default" });

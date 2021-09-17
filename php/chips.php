@@ -7,26 +7,33 @@
     <div class='container'>
       <div class='row'>
         <div class='col-5'>
-            <div class='input-group mb-3'>
-              <label  class='input-group-text'>Número de pines en X </label>
-              <input class='form-control' type='text' value='4' id='PinesNumeros_ejeX' disabled>
-             </div>
-             <div class='input-group mb-3'>
-              <label  class='input-group-text'>Número de pines en Y </label>
-              <input class='form-control' type='text' value='2' id='PinesNumeros_ejeY' disabled>
+          <div class='input-group mb-3'>
+            <label for='TipoPin' class='input-group-text'>Tipo de pin</label>
+            <select class='custom-select' id='TipoPin'>
+              <option value='2' selected>Acero</option>
+            <option value='1'>Cerámico</option>
+            </select>
+          </div>
+          <div class='input-group mb-3'>
+            <label  class='input-group-text'>¿Duplicar serie? </label>
+            <select class='custom-select' id='PinesXDobles'>
+              <option value='0' selected>No</option>
+              <option value='1'>Sí</option>
+            </select>
+          </div> 
+          <div class='input-group mb-3'>
+            <label  class='input-group-text'>Número de pines en X </label>
+            <input class='form-control' type='text' value='4' id='PinesNumeros_ejeX' disabled>
             </div>
             <div class='input-group mb-3'>
-              <label  class='input-group-text'>¿Duplicar serie? </label>
-              <select class='custom-select' id='PinesXDobles'>
-                <option value='0' selected>No</option>
-                <option value='1'>Sí</option>
-              </select>
-            </div> 
-            </br>
-            <div class='input-group mb-3'>
-              <label  class='input-group-text'>Total de pines (simulados)</label>
-              <input class='form-control' type='text' value='8' id='PinesNumeros_totales' disabled>
-            </div>
+            <label  class='input-group-text'>Número de pines en Y </label>
+            <input class='form-control' type='text' value='2' id='PinesNumeros_ejeY' disabled>
+          </div>
+          </br>
+          <div class='input-group mb-3'>
+            <label  class='input-group-text'>Total de pines (simulados)</label>
+            <input class='form-control' type='text' value='8' id='PinesNumeros_totales' disabled>
+          </div>
         </div>
         <div id='tablaPines' class='col-7'> </div>
       </div>
@@ -80,10 +87,10 @@
             </div>
             <div class='col'>
               <center><div class='btn-group btn-group-toggle' data-toggle='buttons'>
-              <label class='btn btn-outline-primary active'>
-                <input type='radio' name='Show' id='ShowSlides' autocomplete='off' checked>Mostrar diseño de sólo un pin</label>
               <label class='btn btn-outline-primary'>
-                <input type='radio' name='Show' id='ShowPin' autocomplete='off'>Mostrar diseño del slide completo</label>
+                <input type='radio' name='Show' id='ShowSlides' autocomplete='off'>Mostrar diseño de sólo un pin</label>
+              <label class='btn btn-outline-primary active'>
+                <input type='radio' name='Show' id='ShowPin' autocomplete='off' checked>Mostrar diseño del slide completo</label>
               </div></center>
               <br/>
               <div id='Figura'> </div>

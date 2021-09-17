@@ -38,10 +38,10 @@
                 </select>
               </div>
               <div class='input-group mb-3'>
-                <label class='input-group-text'>Coordenada X (mm)</label><input class='form-control coordsXY' type='text' id='coordXNums' value='4.500'>
+                <label class='input-group-text'>Coordenada X (mm)</label><input class='form-control coordsXY' type='text' id='coordXNums' value='4.5'>
               </div>
               <div class='input-group mb-3'>
-                <label class='input-group-text'>Coordenada Y (mm)</label><input class='form-control coordsXY' type='text' id='coordYNums' value='6.500'>
+                <label class='input-group-text'>Coordenada Y (mm)</label><input class='form-control coordsXY' type='text' id='coordYNums' value='6.5'>
               </div>
             </div>
             <div id='tablaCoordenadas' class='col-7'> </div> 
