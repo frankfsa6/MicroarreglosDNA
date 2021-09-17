@@ -350,7 +350,7 @@
         $texto .= "(Puntos por arreglo: ".$reti["XDots"]."x".$reti["YDots"]." con ".$reti["DuplicateDots"]." dup)\n";
         $texto .= "(Coords y espaciado: ".$reti["XCoords"]."x".$reti["YCoords"]."mm con ".$reti["XSpace"]."x".$reti["YSpace"]."um)\n";
         $texto .= "(Placas a realizar: ".$reti["TotalPlates"].")\n";
-        $texto .= "(Slides a imprimir: ".$slide["filasplaca"]."x".$slide["columnasplaca"].")\n";
+        $texto .= "(Slides a imprimir: ".$slide["columnasplaca"]."x".$slide["filasplaca"].")\n";
         $texto .= "(Ciclos de lavado: ".$lavado["ciclos"]." con ".$lavado["oscilaciones"]." osc)\n";
         $texto .= "(Tiempo de muestra, vacío y último vacío: ".$lavado["tmuestra"].", ".$lavado["vacio"]." y ".$lavado["uvacio"]." s)\n";
         unset($pines, $lavado, $slide, $reti);

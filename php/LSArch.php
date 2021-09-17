@@ -112,7 +112,7 @@
       $raspberry = $_POST["raspberry"];
       $tipoPin = $_POST["tipoPin"];
       // Guarda en opuesto del tipo de pin
-      if( $tipoPin == "Acero" )
+      if( $tipoPin == "acero" )
         $tipoPin = 1;
       else
         $tipoPin = 2;

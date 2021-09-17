@@ -123,16 +123,16 @@
 			echo "<tr> <th>Lavado/Limpieza</th>";
 			echo "<td scope='row'> Número de ciclos </br>
 				Número de oscilaciones </br>
-				Tiempo de vacío </br>
-				Tiempo de último vacío </br>
 				Número de toques de limpieza </br>
-				Tiempo de toma de muestra </br></td>";
+				Tiempo de toma de muestra </br>
+				Tiempo de vacío </br>
+				Tiempo de último vacío </br></td>";
 			echo "<td> ".$resDB[0][0]." </br>
 				".$resDB[0][1]." </br>
-				".$resDB[0][2]." </br>
-				".$resDB[0][3]." </br>
 				".$resDB[0][4]." </br>
-				".$resDB[0][5]." </br> </td>";
+				".$resDB[0][5]." </br>
+				".$resDB[0][2]." </br>
+				".$resDB[0][3]." </br> </td>";
 			echo "</tr>";
 			$resDB=null;
 			//Nombre y estado de la rutina (guardada o no)-------------------------

@@ -46,7 +46,8 @@ function guardarCfg(){
   // Pone velo oscuro
   $("#espera").css({"width":"100%","height":"100%","cursor":"wait"});
   var t1 = new Array(), t2 = new Array(), i = 0;
-  var tipoPin = $("#PinButton").children().text();
+  var tipoPin = $("#PinButton").children().last().children().attr("id");
+  console.log(tipoPin);
   // Obtiene valores de tabla 1 con coordenadas: "Lugar;X;Y;Z"
   $("#t1 tbody").children("tr").each(function(){
     t1[i] = $(this).children("td").first().text();
@@ -86,7 +87,7 @@ function guardarCfg(){
       $("#salirConfig").trigger("click");
     });
   }).fail(function(){
-    $("#error").text("Falló actualización de datos");
+    $("#error").text("Falló actualización de datos").show();
   });
 }
 // Oprime botón sin guardar datos
