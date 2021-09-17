@@ -6,8 +6,6 @@
   $cambioPlaca = [0,0];
   $XSlideDistance = 80.9;
   $YSlideDistance = 30.9;
-  $vxy = null;
-  $vz = null;
   // Distancia entre pines de 4.5 mm para calcular muestra
   $PinDist = 4.5;
   $YMuestraDistance = $PinDist*4;
@@ -86,11 +84,11 @@
         // Primera vez inicia humedeciendo los pines y deja en pausa según usuario
         // Luego seca en vacío y sube para una segunda pausa
         if( $a==1 && $b==1 ){
-          $archivito->LugarD("Lavado",$vxy,$vz,"Lugar");
+          $archivito->LugarD("Lavado","Lugar");
           $archivito->ActualizaPausa($cambioPlaca[0],$cambioPlaca[1]);
           $cambioPlaca = [1,1];
           $archivito->BVac(1);
-          $archivito->LugarD("Vacío",$vxy,$vz,"Lugar");
+          $archivito->LugarD("Vacío","Lugar");
           $archivito->Espera($tvac);
           $archivito->BVac(0);
         }
@@ -98,9 +96,9 @@
         else{
           $archivito->BVac(1);
           for($i=0; $i<$cicLav; $i++){
-            $archivito->LugarD("Lavado",$vxy,$vz,"Lugar");
+            $archivito->LugarD("Lavado","Lugar");
             $archivito->Lavado($oscLav);
-            $archivito->LugarD("Vacío",$vxy,$vz,"Lugar");
+            $archivito->LugarD("Vacío","Lugar");
             // Último lavado cambia tiempo 
             if($i == $cicLav-1)
               $archivito->Espera($utvac);
@@ -117,7 +115,7 @@
         }
         // Toma de muestra y actualiza coordenadas del siguiente lugar de la toma
         // Al llegar a fin de X, regresa a inicio X además de avanzar Y
-        $archivito->LugarD( "Toma de muestra",$vxy,$vz,"Lugar", " ".(1+$Muestra[0])." x ".(1+$Muestra[1]) );
+        $archivito->LugarD( "Toma de muestra","Lugar", " ".(1+$Muestra[0])." x ".(1+$Muestra[1]) );
         $archivito->Espera($tmuestra);
         $Muestra[0]++;
         if ($Muestra[0]==$XMuestra){
@@ -138,7 +136,7 @@
             $archivito->ActualizaCoords(0,$XMuestraDistance,"Toma de muestra");
         // Hace la limpieza de pines y actualiza coordenadas de los siguientes toques
         // Cada vidrio alcanza para dos placas muestra, donde en la segunda avanza en Y
-        $archivito->LugarD("Toque de limpieza",$vxy,$vz,"Lugar");
+        $archivito->LugarD("Toque de limpieza","Lugar");
         $archivito->ToquesLimpieza($toques);
         $Limpieza[0]++;
         if ($Limpieza[0]==$LimpiezaDots){
@@ -163,7 +161,7 @@
           $archivito->ActualizaCoords(0,0.5,"Toque de limpieza");
         // Inserción en slides de la retícula completa
         // Al terminar avanza YPuntosDup o si acabó columna, regresa a Ycoord y avanza X espaciado
-        $archivito->InsertarPuntosSlides($columnasPlaca,$filasPlaca,$vxy,$vz,$DupDots,$YSpace,$YSlideDistance,$XSlideDistance);
+        $archivito->InsertarPuntosSlides($columnasPlaca,$filasPlaca,$DupDots,$YSpace,$YSlideDistance,$XSlideDistance);
         $archivito->ActualizaCoords(1, $YSpace*$DupDots,"Retícula");
         if( $b==$YDots ){
           $archivito->ActualizaCoords(1, -$YSpace*$DupDots*$YDots,"Retícula");
@@ -176,9 +174,9 @@
   // Por último, deja limpios y secos los pines
   $archivito->BVac(1);
   for($i=0; $i<$cicLav; $i++){
-    $archivito->LugarD("Lavado",$vxy,$vz,"Lugar");
+    $archivito->LugarD("Lavado","Lugar");
     $archivito->Lavado($oscLav);
-    $archivito->LugarD("Vacío",$vxy,$vz,"Lugar");
+    $archivito->LugarD("Vacío","Lugar");
     if($i == $cicLav-1)
       $archivito->Espera($utvac);
     else
@@ -186,7 +184,7 @@
   }
   $archivito->BVac(0);
   // Termina rutina yendo a origen
-  $archivito->LugarD("Origen",$vxy,$vz,"Lugar");
+  $archivito->LugarD("Origen","Lugar");
   $archivito->FinCodigoG();
   unset($archivito);
 ?>
