@@ -236,6 +236,8 @@ function cargaPrincipal () {
 							//Detecta el sistema operativo
 							if (navigator.userAgent.indexOf("Linux") != -1)
 								$("#tablaBotonesRutina").append("<td style='width:22%'><button type='button' class='btn btn-success btn-lg btn-block' id='inicioProceso'><u>I</u>niciar proceso</button>");
+							else 
+								$("#tablaBotonesRutina").append("<td style='width:22%'><button type='button' class='btn btn-secondary btn-lg btn-block' id='inicioProceso' disabled><u>I</u>niciar proceso</button>");
 							if(!$("#codigoG").length){
 								$("#tablaBotonesRutina").append("<td></td>");
 								$("#tablaBotonesRutina").append("<td style='width:22%'><button type='button' class='btn btn-info btn-lg btn-block' id='codigoG' name='principal'>Código <u>G</u>&nbsp;&nbsp;</button></td></tr>");
