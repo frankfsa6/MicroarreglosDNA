@@ -4,8 +4,6 @@
   include("ArchG.php");
   // Chips ( 0-TipoPin, 1-PinesDob, 2-XCoord, 3-YCoord, 4-XEsp, 5-YEsp, 6-XPunt, 7-YPunt, 8-Duplic, 9-Placas, 10-XSlide, 11-YSlide)
   $datos = explode(",", $_POST['datchips']);
-  $vxy = null;
-  $vz = null;
   //Variable del cambio de placa/vidrio y distancias en mm (dadas por la estructura de la máquina)
   $cambioPlaca = [0, 0];
   $XSlideDist = 80.9;
@@ -56,11 +54,11 @@
     while( $b<=$YPuntos && $placasTot!=0 ){
       // Primera vez inicia humedeciendo los pines, espera según usuario y luego seca en vacío
       if( $a==1 && $b==1 ){
-        $archivito->LugarD("Lavado",$vxy,$vz,"Lugar");
+        $archivito->LugarD("Lavado","Lugar");
         $archivito->ActualizaPausa($cambioPlaca[0],$cambioPlaca[1]);
         $cambioPlaca = [1,1];
         $archivito->BVac(1);
-        $archivito->LugarD("Vacío",$vxy,$vz,"Lugar");
+        $archivito->LugarD("Vacío","Lugar");
         $archivito->Espera($tvac);
         $archivito->BVac(0);
       }
@@ -68,9 +66,9 @@
       else{
         $archivito->BVac(1);
         for($i=0; $i<$cicLav; $i++){
-          $archivito->LugarD("Lavado",$vxy,$vz,"Lugar");
+          $archivito->LugarD("Lavado","Lugar");
           $archivito->Lavado($oscLav);
-          $archivito->LugarD("Vacío",$vxy,$vz,"Lugar");
+          $archivito->LugarD("Vacío","Lugar");
           // Último lavado cambia tiempo 
           if($i == $cicLav-1)
             $archivito->Espera($utvac);
@@ -95,7 +93,7 @@
       }
       // Toma muestra en el siguiente número y espera
       // En caso de ser primera o segunda columna, suma mmX para siguiente vez; de lo contrario, quita mmX y suma mmY
-      $archivito->LugarD("Toma de muestra",$vxy,$vz,"Lugar", " ".(1+$Muestra[0])." x ".($Muestra[1]) );
+      $archivito->LugarD("Toma de muestra","Lugar", " ".(1+$Muestra[0])." x ".($Muestra[1]) );
       $archivito->Espera($tmuestra);
       $Muestra[0]++;
       if( $Muestra[0] == 12 ){
@@ -111,7 +109,7 @@
         $archivito->ActualizaCoords(0, $XMuestraDist, "Toma de muestra");
       // Hace la limpieza de pines y avanza 0.5 mmX para siguiente vez
       // Si ya terminó la primera placa, regresa a XMuestra y aumenta 5 mmY
-      $archivito->LugarD("Toque de limpieza",$vxy,$vz,"Lugar");
+      $archivito->LugarD("Toque de limpieza","Lugar");
       $archivito->ToquesLimpieza($toquesLimp);
       $archivito->ActualizaCoords(0, $limpDist,"Toque de limpieza");
       if( $Muestra[0]==0  ){
@@ -121,9 +119,9 @@
       // Comienza a poner puntos en tantos slides se hayan configurado
       // Al terminar los puntos, avanza en Y para reiniciar slide y aumenta cantidad con los duplicados
       if( $pinesDobles==0 )
-        $archivito->InsertarPuntosSlides($columnasPlaca,$filasPlaca,$vxy,$vz,$puntosDup,$YDist,$YSlideDist,$XSlideDist);
+        $archivito->InsertarPuntosSlides($columnasPlaca,$filasPlaca,$puntosDup,$YDist,$YSlideDist,$XSlideDist);
       else
-        $archivito->InsertarChipsSlides($columnasPlaca,$filasPlaca,$vxy,$vz,$puntosDup,$XMuestraDist,$YDist,$YSlideDist,$XSlideDist);
+        $archivito->InsertarChipsSlides($columnasPlaca,$filasPlaca,$puntosDup,$XMuestraDist,$YDist,$YSlideDist,$XSlideDist);
       $archivito->ActualizaCoords(1, $puntosDup*$YDist,"Retícula");
       $archivito->ReiniciaCoords(2,"Slide","Retícula");
       $b+=$puntosDup;
@@ -138,9 +136,9 @@
   // Por último, deja limpios y secos los pines
   $archivito->BVac(1);
   for($i=0; $i<$cicLav; $i++){
-    $archivito->LugarD("Lavado",$vxy,$vz,"Lugar");
+    $archivito->LugarD("Lavado","Lugar");
     $archivito->Lavado($oscLav);
-    $archivito->LugarD("Vacío",$vxy,$vz,"Lugar");
+    $archivito->LugarD("Vacío","Lugar");
     if($i == $cicLav-1)
       $archivito->Espera($utvac);
     else
@@ -148,7 +146,7 @@
   }
   $archivito->BVac(0);
   // Termina rutina yendo a origen
-  $archivito->LugarD("Origen",$vxy,$vz,"Lugar");
+  $archivito->LugarD("Origen","Lugar");
   $archivito->FinCodigoG();
   unset($archivito);
 ?>

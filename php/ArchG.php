@@ -43,7 +43,7 @@
       unset($texto);
     }
     // Usa diagonales para lugares principales
-    public function LugarD($lugar, $vxy, $vz, $typeZ, $extra = null){
+    public function LugarD($lugar, $typeZ, $extra = null){
       // En lugares, primero sube eje Z para evitar chocar
       if($this->actual[2] != $this->lugares["Origen"][2] && $typeZ == "Lugar"){
         $this->actual[2] = $this->lugares["Origen"][2];
@@ -77,7 +77,7 @@
       // Oscila alrededor de 4 mm en X únicamente
       $mov = 4;
       for($i=0; $i<$osc*2; $i++){
-        $texto = ($i%2 == 0) ? "G00 X".$this->actual[0]+$mov." \n" : "G00 X".$this->actual[0]." \n";
+        $texto = ($i%2 == 0) ? "G00 X".($this->actual[0]+$mov)." \n" : "G00 X".$this->actual[0]." \n";
         $this->escribeArchivo($texto);
         unset($texto);
       }
@@ -90,7 +90,7 @@
       $this->escribeArchivo($texto);
       unset($texto);
       // Secuencia sube-baja para tiempos de espera
-      for($i=0; $i<=$tiempo*3; $i++)
+      for($i=0; $i<=$tiempo*10; $i++)
         $this->PinSB($i%2, 0.5);
     }
     // Enciende o apaga la bomba de vacío
@@ -106,14 +106,14 @@
         $this->Toque($i, $sepY, $toques);
     }
     // Inserta los puntos Y en todos los slides (vidrios)
-    public function InsertarPuntosSlides($columnasPlaca,$filasPlaca,$vxy,$vz,$DupDots,$YSpace,$YSlideDist,$XSlideDist){
+    public function InsertarPuntosSlides($columnasPlaca,$filasPlaca,$DupDots,$YSpace,$YSlideDist,$XSlideDist){
       for($i=1; $i<=$columnasPlaca; $i++){
         for($j=1; $j<=$filasPlaca; $j++){
           // Primera vez llega a retícula, después entre vidrios con misma altura
           if($i==1 && $j==1)
-            $this->LugarD("Slide",$vxy,$vz,"Lugar"," $i x $j");
+            $this->LugarD("Slide","Lugar"," $i x $j");
           else
-            $this->LugarD("Slide",$vxy,$vz,"Slide"," $i x $j");
+            $this->LugarD("Slide","Slide"," $i x $j");
           // Pone puntos simples o duplicados
           for($k=0; $k<$DupDots; $k++)
             $this->Toque($k, $YSpace, $DupDots);
@@ -129,18 +129,17 @@
       }
     }
     // Insertar los números en todos los slides (vidrios)
-    public function InsertarNumSlides($columnasPlaca, $filasPlaca, $vxy, $vz, $numImp, $numDist, $YSlideDist, $XSlideDist){
+    public function InsertarNumSlides($columnasPlaca, $filasPlaca, $numImp, $numDist, $YSlideDist, $XSlideDist){
       // Matrices de puntos 5x3 donde no hay puntito, yendo de 9 a 2
       $mat5x3 = [ [7,9,14], [7,9], [6,7,8,9,12,13,14,15], [2,7,9], [2,7,9,14], [6,7,9,10,14,15], [7,9,12,14],[4,7,9,12] ];
-      $vpunto = 150;
       // Recorre la retícula completa en zigzag
       for ($i=1; $i<=$columnasPlaca; $i++){
         for ($j=1; $j<=$filasPlaca; $j++){
           // Primera vez llega a retícula, después entre vidrios con misma altura
           if($i==1 && $j==1)
-            $this->LugarD("Slide",$vxy,$vz,"Lugar"," $i x $j");
+            $this->LugarD("Slide","Lugar"," $i x $j");
           else
-            $this->LugarD("Slide",$vxy,$vz,"Slide"," $i x $j");
+            $this->LugarD("Slide","Slide"," $i x $j");
           // Siempre pone el puntito 1 en todos los números y fija altura en 0.5 mm
           $this->PinSB(1, 1.5);
           $this->PinSB(0, 0.5);
@@ -199,14 +198,14 @@
       unset($multip, $dirX);
     }
     // Hace toda la rutina de un ciclo de insertar los chips dobles en todos los slides (vidrios) 
-    public function InsertarChipsSlides($columnasPlaca,$filasPlaca,$vxy,$vz,$puntosDup,$XMuestraDist,$YDist,$YSlideDist,$XSlideDist){
+    public function InsertarChipsSlides($columnasPlaca,$filasPlaca,$puntosDup,$XMuestraDist,$YDist,$YSlideDist,$XSlideDist){
       for($i=1; $i<=$columnasPlaca; $i++){
         for($j=1; $j<=$filasPlaca; $j++){
           // Primera vez llega a retícula o se mueve con altura fija entre slides
           if($i==1 && $j==1)
-            $this->LugarD("Slide",$vxy,$vz,"Lugar"," $i x $j");
+            $this->LugarD("Slide","Lugar"," $i x $j");
           else
-            $this->LugarD("Slide",$vxy,$vz,"Slide"," $i x $j");
+            $this->LugarD("Slide","Slide"," $i x $j");
           // Pone primeros puntos
           for($k=0; $k<$puntosDup; $k++)
             $this->Toque($k, $YDist, $puntosDup);
@@ -215,7 +214,7 @@
             $this->ActualizaCoords(0,-$XMuestraDist,"Slide");
           else
             $this->ActualizaCoords(0,$XMuestraDist,"Slide");
-          $this->LugarD("Slide",$vxy,$vz,"Slide");
+          $this->LugarD("Slide","Slide");
           // Pone segundos puntos
           for($k=0; $k<$puntosDup; $k++)
             $this->Toque($k, $YDist, $puntosDup);
