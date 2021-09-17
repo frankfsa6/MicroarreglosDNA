@@ -83,7 +83,7 @@
       // Crea base de datos con archivo externo SQL
       if( $res->num_rows == 0 ){
         $sql = "";
-        $archSQL = file("../dbrobot.sql");
+        $archSQL = file("../sql/dbrobot.sql");
         // Comienza a recorrer el archivo
         foreach($archSQL as $linea){
           $linea = trim($linea);
