@@ -1,0 +1,14 @@
+/*Acopmoda los divs en un solo bloque*/
+#pinesNumeros,#coordenadasNumeros,#slidesNumeros,#iniNum{
+  position: relative;
+  margin: auto;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+table#casillas{
+	border-collapse: separate;
+	border-spacing: 10px;
+}

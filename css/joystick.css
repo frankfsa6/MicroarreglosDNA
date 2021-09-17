@@ -1,0 +1,53 @@
+button.lugares, button.calibrar, button.prueba{
+  margin:10px 5px 5px 5px;
+}
+td{
+  width: 100px;
+  height: 100px;
+  text-align: center;
+  vertical-align: middle;
+  border-radius: 30%;
+}
+td.parofin{
+  background-color: #f8d7da;
+}
+td.c:hover, .cc{
+  background-color: #fd9d44;
+  cursor:pointer;
+}
+td.u:hover, .uu{
+  background-color: #f7f453;
+  cursor:pointer;
+}
+td.d:hover, .dd{
+  background-color: #79f133;
+  cursor:pointer;
+}
+td.parofin:hover{
+  background-color: #dd1414;
+  cursor:pointer;
+}
+td>img{
+  width: 80px;
+}
+img#z0, #x0{
+  transform: rotate(180deg);
+}
+img#y0{
+  transform: rotate(270deg);
+}
+img#y1{
+  transform: rotate(90deg);
+}
+img#d00{
+  transform: rotate(225deg);
+}
+img#d10{
+  transform: rotate(315deg);
+}
+img#d01{
+  transform: rotate(135deg);
+}
+img#d11{
+  transform: rotate(45deg);
+}
