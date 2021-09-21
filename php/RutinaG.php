@@ -15,6 +15,7 @@
   $YLimpiezaDistance = $YMuestraDistance+2;
   $YLimpieza = 2;
   $Limpieza = [0,0,0];
+  $limpDist = 0.5;
   $origLimp = 3;
   // Asigna variable pines
   $pines = getDBdata("pines");
@@ -158,7 +159,7 @@
               $archivito->ActualizaCoords(0,$XLimpiezaDistance,"Toque de limpieza");
         }
         else
-          $archivito->ActualizaCoords(0,0.5,"Toque de limpieza");
+          $archivito->ActualizaCoords(0,$limpDist,"Toque de limpieza");
         // Inserción en slides de la retícula completa
         // Al terminar avanza YPuntosDup o si acabó columna, regresa a Ycoord y avanza X espaciado
         $archivito->InsertarPuntosSlides($columnasPlaca,$filasPlaca,$DupDots,$YSpace,$YSlideDistance,$XSlideDistance);

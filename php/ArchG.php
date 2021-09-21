@@ -12,7 +12,8 @@
     private $actual;	 //Coordenadas posición actual en mm
     private $lugares;	 //Coordenadas de los lugares obtenidos en mm
     private $nombreG ; //Nombre del archivo en código G
-    private $zslide = 1.5;	// Número de milimetros -1.5mm que baja para poner puntos en el Slide
+    private $zslide = 2;	// Número de milímetros que baja para poner puntos en el slide
+    private $zslidentro = 1.5;	// Número de milímetros mínimos para poner puntos dentro del slide
     private $zespera = 4;   // Aproximación en Z para lugares principales
 
     // Constructor que fija tipo de archivo e inicializa rutina
@@ -84,14 +85,15 @@
     }
     // Simula tiempo de espera con vibraciones en vacío y toma de muestra
     public function Espera($tiempo){
-      //Baja 4mm como acercamiento
-      $this->actual[2] += 4;
+      $vibraMM = 0.5;
+      //Baja el acercamiento
+      $this->actual[2] += $this->zespera;
       $texto = "G00 Z-".$this->actual[2]." \n";
       $this->escribeArchivo($texto);
       unset($texto);
       // Secuencia sube-baja para tiempos de espera
       for($i=0; $i<=$tiempo*10; $i++)
-        $this->PinSB($i%2, 0.5);
+        $this->PinSB($i%2, $vibraMM);
     }
     // Enciende o apaga la bomba de vacío
     public function BVac($estado){
@@ -99,7 +101,7 @@
       $this->escribeArchivo($texto);
       unset($texto);
     }
-    // Hace los toques de limpieza seguidos cada 0.5mmY
+    // Hace los toques de limpieza seguidos 
     public function ToquesLimpieza($toques){
       $sepY = 0.5;
       for($i=0; $i<$toques; $i++)
@@ -140,9 +142,9 @@
             $this->LugarD("Slide","Lugar"," $i x $j");
           else
             $this->LugarD("Slide","Slide"," $i x $j");
-          // Siempre pone el puntito 1 en todos los números y fija altura en 0.5 mm
-          $this->PinSB(1, 1.5);
-          $this->PinSB(0, 0.5);
+          // Siempre pone el puntito 1 en todos los números y fija altura en mm mínimos
+          $this->PinSB(1, $this->zslide);
+          $this->PinSB(0, $this->zslidentro);
           $multip = 1;
           $dirX = 1;
           for($k=2; $k<=15; $k++){
@@ -177,8 +179,8 @@
                 unset($texto);
               }
               // Pone gotita instantáneamente y reinicia multiplicador
-              $this->PinSB(1, 0.5);
-              $this->PinSB(0, 0.5);
+              $this->PinSB(1, $this->zslidentro);
+              $this->PinSB(0, $this->zslidentro);
               $multip = 1;
             }
             // Aumenta multiplicador al encontrar vacío si no acaba de avanzar fila
@@ -233,16 +235,16 @@
     }
     // Baja a poner gotita, sube y avanza en Y
     public function Toque($NumToque, $Ydist, $fin){
-      // Primera vez baja 1.5 mm a poner gotitas, después 0.5 mm al estar dentro del vidrio
+      // Primera vez baja más mm a poner gotitas, después el mínimo al estar dentro del vidrio
       if( $NumToque == 0 )
-        $this->actual[2] += 1.5;
+        $this->actual[2] += $this->zslide;
       else
-        $this->actual[2] += 0.5;
+        $this->actual[2] += $this->zslidentro;
       $texto = "G00 Z-".$this->actual[2]." \n";
       $this->escribeArchivo($texto);
       unset($texto);
-      // Sube 0.5 mm en altura dentro del vidrio
-      $this->actual[2] -= 0.5;
+      // Sube mm mínimos en altura dentro del vidrio
+      $this->actual[2] -= $this->zslidentro;
       $texto = "G00 Z-".$this->actual[2]." \n";
       $this->escribeArchivo($texto);
       unset($texto);
