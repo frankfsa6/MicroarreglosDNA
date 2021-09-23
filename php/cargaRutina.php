@@ -80,10 +80,8 @@
           echo "</tbody> </table>";
         }
         else{
-          echo "<h3>Advertencia: </h3><div class='alert alert-warning' role='alert'>
-          </br><strong>No hay ninguna rutina en la base de datos</strong>
-          ";
-
+          echo "<h3>Advertencia </h3></br><div class='alert alert-warning' role='alert'>
+          <strong>No hay ninguna rutina en la base de datos</strong></div>";
         }
         mysqli_close($conexion);
       }
