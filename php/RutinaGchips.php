@@ -93,7 +93,7 @@
       }
       // Toma muestra en el siguiente número y espera
       // En caso de ser primera o segunda columna, suma mmX para siguiente vez; de lo contrario, quita mmX y suma mmY
-      $archivito->LugarD("Toma de muestra","Lugar", " ".(1+$Muestra[0])." x ".($Muestra[1]) );
+      $archivito->LugarD("Toma de muestra","Lugar", " ".(1+$Muestra[0])."/12");
       $archivito->Espera($tmuestra);
       $Muestra[0]++;
       if( $Muestra[0] == 12 ){
@@ -112,9 +112,10 @@
       $archivito->LugarD("Toque de limpieza","Lugar");
       $archivito->ToquesLimpieza($toquesLimp);
       $archivito->ActualizaCoords(0, $limpDist,"Toque de limpieza");
-      if( $Muestra[0]==0  ){
+      if( $Muestra[0]==0 ){
         $archivito->ReiniciaCoords(2,"Toque de limpieza","Limpieza");
-        $archivito->ActualizaCoords(1, 5+$limpDist*($toquesLimp-1),"Toque de limpieza");
+        if( $Muestra[1]==1 )
+          $archivito->ActualizaCoords(1, 10+2*$limpDist*$toquesLimp,"Toque de limpieza");
       }
       // Comienza a poner puntos en tantos slides se hayan configurado
       // Al terminar los puntos, avanza en Y para reiniciar slide y aumenta cantidad con los duplicados
