@@ -16,7 +16,7 @@ echo .
 echo .
 echo .
 cd C:\xampp\htdocs\MicroarreglosDNA
-git pull
+git reset --hard origin/master
 start /b C:\xampp\xampp_start.exe
 start ""  http://localhost/MicroarreglosDNA/
 cls
