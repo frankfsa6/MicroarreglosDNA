@@ -21,7 +21,7 @@ git pull
 mkdir "%userprofile%\Desktop\MicroarreglosDNA"
 copy /y "C:\xampp\htdocs\MicroarreglosDNA\Windows\MicroarreglosDNA.bat" "%userprofile%\Desktop\MicroarreglosDNA\"
 copy /y "C:\xampp\htdocs\MicroarreglosDNA\Windows\*.url" "%userprofile%\Desktop\MicroarreglosDNA\"
-start /b "C:\xampp\xampp_start.exe"
+start /b C:\xampp\xampp_start.exe
 start ""  "http://localhost/MicroarreglosDNA/"
 cls
 echo .
@@ -32,6 +32,6 @@ cls
 echo .
 echo .
 echo  Terminando MicroarreglosDNA, esta ventana se cerrará automáticamente...
-START /b "C:\xampp\xampp_stop.exe"
+START /b C:\xampp\xampp_stop.exe
 del "%TEMP%\MicroDNA.tmp"
 exit /b 1
