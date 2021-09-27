@@ -1,33 +1,37 @@
 @echo off
 title MicroarreglosDNA
 color 9
+chcp 65001
+mode 80,20
 cls
 if exist "%TEMP%\MicroDNA.tmp" (
-    echo MicroarreglosDNA se encuentra ya funcionando, presione enter para salir...
     echo .
-    set /p X=MicroarreglosDNA is already running, press Enter to exit...
+    echo .
+    echo  MicroarreglosDNA ya está funcionando...
+    timeout 3
     exit /b 1
 )
+echo .
+echo .
+echo  Iniciando MicroarreglosDNA...
 copy NUL "%TEMP%\MicroDNA.tmp"
-echo Actualizando e iniciando MicroarreglosDNA...
-echo .
-echo Updating and starting MicroarreglosDNA...
-echo .
-echo .
-echo .
-cd C:\xampp\htdocs\MicroarreglosDNA
+cd "C:\xampp\htdocs\MicroarreglosDNA"
 git reset --hard origin/master
 git pull
-start /b C:\xampp\xampp_start.exe
-start ""  http://localhost/MicroarreglosDNA/
+mkdir "%userprofile%\Desktop\MicroarreglosDNA"
+copy /y "C:\xampp\htdocs\MicroarreglosDNA\Windows\MicroarreglosDNA.bat" "%userprofile%\Desktop\MicroarreglosDNA\"
+copy /y "C:\xampp\htdocs\MicroarreglosDNA\Windows\*.url" "%userprofile%\Desktop\MicroarreglosDNA\"
+start /b "C:\xampp\xampp_start.exe"
+start ""  "http://localhost/MicroarreglosDNA/"
 cls
-echo MicroarreglosDNA activo, presione enter para terminar el programa...
 echo .
-set /p X=MicroarreglosDNA running, press Enter to finish the program...
+echo .
+echo  MicroarreglosDNA ya está funcionando, presione cualquier tecla para terminar...
+pause
 cls
-echo Terminando y cerrando los servicios de MicroarreglosDNA...
 echo .
-START /b C:\xampp\xampp_stop.exe
+echo .
+echo  Terminando MicroarreglosDNA, esta ventana se cerrará automáticamente...
+START /b "C:\xampp\xampp_stop.exe"
 del "%TEMP%\MicroDNA.tmp"
-echo MsgBox "El servicio se ha detenido de forma exitosa.", 64, "Se detuvo el servicio de Microarreglos" >%temp%\mensaje.vbs
-start %temp%\mensaje.vbs
+exit /b 1
