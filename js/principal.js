@@ -393,6 +393,14 @@ function tecRap (event) {
 	// Teclas libres del footer
 	if ( $("#popup").attr("class") != "active" && $(":password").length == 0 ){
 		switch (event.keyCode) {
+			// D: página de microarreglos
+			case 68:
+				$("#ifc").trigger("click");
+				break;
+			// H: github
+			case 72:
+				$("#git").trigger("click");
+				break;
 			// L: cambia ventana completa
 			case 76:
 				$("#pantcomp").trigger("click");
@@ -549,7 +557,9 @@ $(document).ready(function () {
 			$("#pantcomp").on("click", pantComp);
 			$("#credsTXT").hide();
 			$("#creds").on("click", function () { $("#credsTXT").toggle("slow") });
-			$("#docref").on("click", function () { window.open("Manual de usuario.pdf") });
+			$("#docref").on("click", function () { window.open("Usuario.pdf") });
+			$("#ifc").on("click", function () { window.open("http://zazil.ibt.unam.mx/umdna/") });
+			$("#git").on("click", function () { window.open("https://github.com/frankfsa6/MicroarreglosDNA") });
 			// Carga página, barra de navegación y eventos delegados (no pueden ir con funciones externas)
 			cargaPrincipal();
 			$("a").on("click", barraNav);
