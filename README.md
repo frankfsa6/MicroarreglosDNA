@@ -1,17 +1,30 @@
-# MicroarreglosDNA
+# Microarreglos DNA
 
-> > > Control CNC usando Raspberry, enfocada a investigación en ciencias biológicas.
+![DNA 1](https://github.com/frankfsa6/MicroarreglosDNA/blob/master/github/DNA1.gif)
+![DNA 2](https://github.com/frankfsa6/MicroarreglosDNA/blob/master/github/DNA2.gif)
 
-Dedicado a la Unidad de Microarreglos de DNA en el Instituto de Fisiología Celular, UNAM, México. El programa “Microarreglos DNA” fue realizado por alumnos de la Facultad de Ingeniería, UNAM, México, enfocado al control numérico (CNC) de una máquina de trabajo en laboratorios de investigación en ciencias biológicas.
+> > > Control CNC enfocado a investigación en ciencias biológicas.
 
-Usando una “Raspberry”, opera con una interfaz de usuario basada en programación web (php, javascript y mysql) que permite el control de un sistema electrónico mediante sus pines de propósito general (GPIO controlados mediante lenguaje C).
+Dedicado a la [Unidad de Microarreglos de DNA en el Instituto de Fisiología Celular, UNAM, México](http://zazil.ibt.unam.mx/umdna/). El programa “Microarreglos DNA” fue realizado por alumnos de la Facultad de Ingeniería, UNAM, México; enfocado al control numérico de una máquina (CNC) de laboratorio de investigación en ciencias biológicas. Este proyecto tiene las siguientes características.
 
-Siga la “Guía de instalación” para usar el programa ya sea en Linux (Raspbian/Raspberry OS) o Windows, y lea detenidamente el “Manual de usuario” para el manejo apropiado del mismo.
+* Interfaz de usuario basada en programación web (servidor local apache, php, js, css, mysql).
+* Linux / Raspbian / Raspberry OS
+  - Mediante los pines digitales de Raspberry, es posible controlar un sistema electrónico.
+  - Lenguaje C utilizado para control preciso.
+* Windows
+  - Generación de archivos G en coordenadas cartesianas para control preciso.
 
-> > > CNC controller using Raspberry, focused on biological science investigation.
+Siga la [Guía de instalación](./Instalador.pdf) para usar el programa ya sea en Linux-Raspberry o Windows, y lea detenidamente el [Manual de usuario](./Usuario.pdf) para el manejo apropiado del mismo.
 
-Dedicated to the DNA Microarrays Unit, Institute of Cellular Physiology, UNAM, Mexico. The software “Microarreglos DNA” was made by students from Faculty of Engineering, UNAM, Mexico, focused on numeric control (CNC) of a machine used in laboratories of biological science investigation.
+> > > CNC controller focused on biological science investigation.
 
-Using a “Raspberry”, it works with a user interface based on web programming (php, javascript and mysql) which allows to control an electronic system (hardware), using its general purpose pins (GPIO controlled by C language).
+Dedicated to the [DNA Microarrays Unit, Institute of Cellular Physiology, UNAM, Mexico](http://zazil.ibt.unam.mx/umdna/). The software “Microarreglos DNA” was made by students from Faculty of Engineering, UNAM, Mexico, focused on numeric control of a machine (CNC) used in laboratories of biological science investigation. This project has the following characteristics.
 
-Follow "Guía de instalación” to use the program either in Linux (Raspbian/Raspberry OS) or Windows, and read with detail the "User manual" for its appropiate use.
+* User interface based on web programming (local server apache, php, js, css, mysql).
+* Linux / Raspbian / Raspberry OS
+  - Using the digital pinout included in Raspberry, it is possible to control an electronic system.
+  - C language used for precise control.
+* Windows
+  - G code generated in cartesian coordinates for precise control.
+
+Follow the [Installation Guide](./Instalador.pdf) to use the program either in Linux-Raspberry or Windows, and read with detail the [User manual](./Usuario.pdf) for its appropiate use.
