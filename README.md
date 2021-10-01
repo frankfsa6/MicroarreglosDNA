@@ -1,7 +1,7 @@
 # Microarreglos DNA
 
-![DNA 1](https://github.com/frankfsa6/MicroarreglosDNA/blob/master/github/DNA1.gif)
-![DNA 2](https://github.com/frankfsa6/MicroarreglosDNA/blob/master/github/DNA2.gif)
+![DNA 1](github/DNA1.gif)
+![DNA 2](github/DNA2.gif)
 
 > > > Control CNC enfocado a investigación en ciencias biológicas.
 
