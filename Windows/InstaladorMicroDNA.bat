@@ -16,6 +16,6 @@ echo MsgBox "Paso 3) Verificar el programa principal: MicroarreglosDNA. Finalmen
 cscript %temp%\InstaDNA.vbs
 cd "C:\xampp\htdocs\"
 git clone "https://github.com/frankfsa6/MicroarreglosDNA.git"
-start ""  "C:\xampp\htdocs\MicroarreglosDNA\Windows\MicroarreglosDNA.bat"
-del "%TEMP%\InstaDNA.vbs" 
+del "%temp%\InstaDNA.vbs" 
+start /b ""  "C:\xampp\htdocs\MicroarreglosDNA\Windows\MicroarreglosDNA.bat"
 exit /b 1
