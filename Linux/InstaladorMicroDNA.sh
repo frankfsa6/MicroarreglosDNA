@@ -1,10 +1,5 @@
 #!/bin/bash
 # --- Unidad de Microarreglos DNA, IFC, UNAM, MX ---
-#Verifica sólo una instancia
-if test -f ~/Downloads/instDNA.txt; then
-    echo .
-    read -t 5 -p "MicroarreglosDNA ya se está instalando, esta ventana se cerrará automáticamente..."
-fi
 #Revisa paquete Zenity y actualiza paquetes
 echo "instDNA">~/Downloads/instDNA.txt
 sudo apt-get install zenity -y

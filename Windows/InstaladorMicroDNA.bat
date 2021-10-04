@@ -3,14 +3,6 @@ title Instalador MicroarreglosDNA
 color 9
 chcp 65001
 mode 80,20
-if exist "%TEMP%\InstaDNA.vbs" (
-    echo .
-    echo .
-    echo .
-    echo  MicroarreglosDNA ya se está instalando...
-    timeout 3
-    exit /b 1
-)
 echo MsgBox "Bienvenido a MicroarreglosDNA. Enseguida, se va dirigir a la 'Guia de instalacion'. Siga la parte dedicada a Windows para instalar correctamente el programa. Este archivo ejecutable lo redirige a los enlaces descritos en el documento.", 64, "Instalador Microarreglos DNA">%temp%\InstaDNA.vbs
 cscript %temp%\InstaDNA.vbs
 start ""  "https://github.com/frankfsa6/MicroarreglosDNA/blob/master/Instalador.pdf"
