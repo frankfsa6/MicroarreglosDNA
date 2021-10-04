@@ -3,8 +3,8 @@ title Instalador MicroarreglosDNA
 color 9
 chcp 65001
 mode 80,20
-cls
 if exist "%TEMP%\InstaDNA.vbs" (
+    echo .
     echo .
     echo .
     echo  MicroarreglosDNA ya se está instalando...

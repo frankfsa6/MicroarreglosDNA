@@ -3,9 +3,8 @@ title MicroarreglosDNA
 color 9
 chcp 65001
 mode 80,20
-START /b C:\xampp\xampp_stop.exe
-cls
 if exist "%TEMP%\MicroDNA.vbs" (
+    echo .
     echo .
     echo .
     echo  MicroarreglosDNA ya está funcionando...
@@ -22,12 +21,11 @@ copy /y "C:\xampp\htdocs\MicroarreglosDNA\Windows\MicroarreglosDNA.bat" "%userpr
 copy /y "C:\xampp\htdocs\MicroarreglosDNA\Windows\*.url" "%userprofile%\Desktop\MicroarreglosDNA\"
 start /b C:\xampp\xampp_start.exe
 start ""  "http://localhost/MicroarreglosDNA/"
-cls
+echo .
 echo .
 echo .
 echo  MicroarreglosDNA ya está funcionando, presione cualquier tecla para terminar el programa y sus servicios...
 pause
-cls
 START /b C:\xampp\xampp_stop.exe
 echo MsgBox "Servicios del programa finalizados.", 64, "Microarreglos DNA">%temp%\MicroDNA.vbs
 cscript %temp%\MicroDNA.vbs
