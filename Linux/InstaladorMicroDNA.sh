@@ -40,7 +40,7 @@ sudo apt-get autoremove -y
 sudo mysql < /var/www/html/MicroarreglosDNA/sql/"usuario.sql"
 sudo service apache2 restart
 #Otorga permiso superusuario y pone última versión
-sudo echo 'www-data ALL=(ALL)NOPASSWD:ALL' | sudo EDITOR='tee -a' visudo
+sudo echo "www-data ALL=(ALL)NOPASSWD:ALL" | sudo EDITOR="tee -a" visudo
 cd /var/www/html/MicroarreglosDNA
 sudo git reset --hard origin/master
 sudo git pull
