@@ -3,18 +3,17 @@ title MicroarreglosDNA
 color 9
 chcp 65001
 mode 80,20
+START /b C:\xampp\xampp_stop.exe
 cls
-if exist "%TEMP%\MicroDNA.tmp" (
+if exist "%TEMP%\MicroDNA.vbs" (
     echo .
     echo .
     echo  MicroarreglosDNA ya está funcionando...
     timeout 3
     exit /b 1
 )
-echo .
-echo .
-echo  Iniciando MicroarreglosDNA...
-copy NUL "%TEMP%\MicroDNA.tmp"
+echo MsgBox "Actualizando e iniciando los servicios, espere que terminen los procesos asociados.", 64, "Microarreglos DNA">%temp%\MicroDNA.vbs
+start %temp%\MicroDNA.vbs
 cd "C:\xampp\htdocs\MicroarreglosDNA"
 git reset --hard origin/master
 git pull
@@ -26,12 +25,11 @@ start ""  "http://localhost/MicroarreglosDNA/"
 cls
 echo .
 echo .
-echo  MicroarreglosDNA ya está funcionando, presione cualquier tecla para terminar...
+echo  MicroarreglosDNA ya está funcionando, presione cualquier tecla para terminar el programa y sus servicios...
 pause
 cls
-echo .
-echo .
-echo  Terminando MicroarreglosDNA, esta ventana se cerrará automáticamente...
 START /b C:\xampp\xampp_stop.exe
-del "%TEMP%\MicroDNA.tmp"
+echo MsgBox "Servicios del programa finalizados.", 64, "Microarreglos DNA">%temp%\MicroDNA.vbs
+cscript %temp%\MicroDNA.vbs
+del "%TEMP%\MicroDNA.vbs"
 exit /b 1
