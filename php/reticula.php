@@ -72,34 +72,34 @@
       <div class='row'>
     		<div class='col'>
     			<form id='placas'>
-    				<div class='input-group mb-3'>
-						<label for='YCoords' class='input-group-text'>Coordenadas de rejilla en eje Y (mm)</label>
-						<input type='text' maxlength='4' class='form-control mx-sm-3' id='YCoords' value='$Valores[0]'>
-  					</div>
   					<div class='input-group mb-3'>
 						<label for='xCoords' class='input-group-text'>Coordenadas de rejilla en eje X (mm)</label>
 						<input type='text' maxlength='4' class='form-control mx-sm-3' id='XCoords' value='$Valores[1]'>
   					</div>
-				<hr>
-  					<div class='input-group mb-3'>
-						<label for='YDotSpace' class='input-group-text'>Espaciado de puntos en eje Y (&mu;m)</label>
-						<input type='text' maxlength='4' class='form-control mx-sm-3' id='YDotsSpace' value='$Valores[2]'>
+					<div class='input-group mb-3'>
+						<label for='YCoords' class='input-group-text'>Coordenadas de rejilla en eje Y (mm)</label>
+						<input type='text' maxlength='4' class='form-control mx-sm-3' id='YCoords' value='$Valores[0]'>
   					</div>
+				<hr>
   					<div class='input-group mb-3'>
 						<label for='XDotSpace' class='input-group-text'>Espaciado de puntos en eje X (&mu;m)</label>
 						<input type='text' maxlength='4' class='form-control mx-sm-3' id='XDotsSpace' value='$Valores[3]'>
   					</div>
-  					<div class='input-group mb-3'>
-						<label for='YDots' class='input-group-text'>Número de puntos por rejilla en eje Y</label>
-						<input type='text' maxlength='3' class='form-control mx-sm-3' id='YDots' value='$Valores[4]'>
+					<div class='input-group mb-3'>
+						<label for='YDotSpace' class='input-group-text'>Espaciado de puntos en eje Y (&mu;m)</label>
+						<input type='text' maxlength='4' class='form-control mx-sm-3' id='YDotsSpace' value='$Valores[2]'>
   					</div>
   					<div class='input-group mb-3'>
 						<label for='XDots' class='input-group-text'>Número de puntos por rejilla en eje X</label>
 						<input type='text' maxlength='3' class='form-control mx-sm-3' id='XDots' value='$Valores[5]'>
   					</div>
+					<div class='input-group mb-3'>
+					  <label for='YDots' class='input-group-text'>Número de puntos por rejilla en eje Y</label>
+					  <input type='text' maxlength='3' class='form-control mx-sm-3' id='YDots' value='$Valores[4]'>
+					</div>
   				<hr>
   					<div class='input-group mb-3'>
-						<label for='DuplicateDotsY' class='input-group-text'>Puntos duplicados por rejilla (eje Y)</label>
+						<label for='DuplicateDotsY' class='input-group-text'>Puntos Y duplicados por rejilla</label>
 						<select class='form-control mx-sm-3' id='DuplicateDotsY'></select>
   					</div>
   					<div class='custom-control custom-switch'>";

@@ -3,12 +3,6 @@ title MicroarreglosDNA
 color 9
 chcp 65001
 mode 80,20
-if exist %temp%\MicroDNA.vbs (
-    echo .
-    echo  MicroarreglosDNA ya está funcionando...
-    timeout 3
-    exit 1
-)
 echo MsgBox "Los servicios se van a actualizar e iniciar inmediatamente.", 64, "Microarreglos DNA">%temp%\MicroDNA.vbs
 start %temp%\MicroDNA.vbs
 cd C:\xampp\htdocs\MicroarreglosDNA

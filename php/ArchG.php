@@ -348,10 +348,10 @@
           $texto .= "(Pines: ".$pines["PinesX"]."x4 tipo cerámico)\n";
         else
           $texto .= "(Pines: ".$pines["PinesX"]."x4 tipo acero)\n";
-        $texto .= "(Puntos por arreglo: ".$reti["XDots"]."x".$reti["YDots"]." con ".$reti["DuplicateDots"]." dup)\n";
-        $texto .= "(Coords y espaciado: ".$reti["XCoords"]."x".$reti["YCoords"]."mm con ".$reti["XSpace"]."x".$reti["YSpace"]."um)\n";
+        $texto .= "(Puntos XY por arreglo: ".$reti["XDots"]."x".$reti["YDots"]." con ".$reti["DuplicateDots"]." dup)\n";
+        $texto .= "(Coords XY con espaciado: ".$reti["XCoords"]."x".$reti["YCoords"]."mm con ".$reti["XSpace"]."x".$reti["YSpace"]."um)\n";
         $texto .= "(Placas a realizar: ".$reti["TotalPlates"].")\n";
-        $texto .= "(Slides a imprimir: ".$slide["columnasplaca"]."x".$slide["filasplaca"].")\n";
+        $texto .= "(Slides XY a imprimir: ".$slide["columnasplaca"]."x".$slide["filasplaca"].")\n";
         $texto .= "(Ciclos de lavado: ".$lavado["ciclos"]." con ".$lavado["oscilaciones"]." osc)\n";
         $texto .= "(Tiempo de muestra, vacío y último vacío: ".$lavado["tmuestra"].", ".$lavado["vacio"]." y ".$lavado["uvacio"]." s)\n";
         unset($pines, $lavado, $slide, $reti);
@@ -369,8 +369,8 @@
             $texto .= "(Sección por imprimir: superior)\n";
           else
             $texto .= "(Sección por imprimir: inferior para slides girados)\n";
-          $texto .= "(Coords y espaciado: ".$info[1]."x".$info[2]."mm con 130um)\n";
-          $texto .= "(Slides a imprimir: ".$info[3]."x".$info[4].")\n";
+          $texto .= "(Coords XY con espaciado: ".$info[1]."x".$info[2]."mm con 130um)\n";
+          $texto .= "(Slides XY a imprimir: ".$info[3]."x".$info[4].")\n";
           $texto .= "(Ciclos de lavado: 3 con 4 osc)\n";
           $texto .= "(Tiempo de muestra, vacío y último vacío: 1, 2 y 3 s)\n";
         }
@@ -384,10 +384,10 @@
             $texto .= "(Pines: 4x2 tipo cerámico $extra)\n";
           else
             $texto .= "(Pines: 4x2 tipo acero $extra)\n";
-          $texto .= "(Puntos por arreglo: ".$info[6]."x".$info[7]." con ".$info[8]." dup)\n";
-          $texto .= "(Coords y espaciado: ".$info[2]."x".$info[3]."mm con ".$info[4]."x".$info[5]."um)\n";
+          $texto .= "(Puntos XY por arreglo: ".$info[6]."x".$info[7]." con ".$info[8]." dup)\n";
+          $texto .= "(Coords XY con espaciado: ".$info[2]."x".$info[3]."mm con ".$info[4]."x".$info[5]."um)\n";
           $texto .= "(Placas a realizar: ".$info[9].")\n";
-          $texto .= "(Slides a imprimir: ".$info[10]."x".$info[11].")\n";
+          $texto .= "(Slides XY a imprimir: ".$info[10]."x".$info[11].")\n";
           $texto .= "(Ciclos de lavado: 3 con 4 osc)\n";
           $texto .= "(Tiempo de muestra, vacío y último vacío: 1, 2 y 3 s)\n";
         }
