@@ -12,9 +12,9 @@
     private $actual;	 //Coordenadas posición actual en mm
     private $lugares;	 //Coordenadas de los lugares obtenidos en mm
     private $nombreG ; //Nombre del archivo en código G
-    private $zslide = 2;	// Número de milímetros que baja para poner puntos en el slide
-    private $zslidentro = 1.5;	// Número de milímetros mínimos para poner puntos dentro del slide
-    private $zespera = 4;   // Aproximación en Z para lugares principales
+    private $zslide = 2.000;	// Número de milímetros que baja para poner puntos en el slide
+    private $zslidentro = 1.500;	// Número de milímetros mínimos para poner puntos dentro del slide
+    private $zespera = 4.000;   // Aproximación en Z para lugares principales
 
     // Constructor que fija tipo de archivo e inicializa rutina
     public function __construct($nombreRutina, $info = null){
@@ -39,7 +39,7 @@
     public function SensarOrigen(){
       $this->actual = $this->lugares["Origen"];
       $texto = "G00 Z-".$this->actual[2]." (Origen del sistema) \n";
-      $texto .= "G00 X0 Y0 \n";
+      $texto .= "G00 X".$this->actual[0]." Y".$this->actual[1]." \n";
       $this->escribeArchivo($texto);
       unset($texto);
     }
@@ -76,18 +76,18 @@
     // Realiza oscilaciones en lavado
     public function Lavado($osc){
       // Oscila alrededor de 4 mm en X únicamente
-      $mov = 4;
+      $mov = 4.000;
       for($i=0; $i<$osc*2; $i++){
-        $texto = ($i%2 == 0) ? "G00 X".($this->actual[0]+$mov)." \n" : "G00 X".$this->actual[0]." \n";
+        $texto = ($i%2 == 0) ? "G00 X".bcdiv($this->actual[0]+$mov,1,3)." \n" : "G00 X".bcdiv($this->actual[0],1,3)." \n";
         $this->escribeArchivo($texto);
         unset($texto);
       }
     }
     // Simula tiempo de espera con vibraciones en vacío y toma de muestra
     public function Espera($tiempo){
-      $vibraMM = 0.5;
+      $vibraMM = 0.500;
       //Baja el acercamiento
-      $this->actual[2] += $this->zespera;
+      $this->actual[2] = bcdiv($this->actual[2]+$this->zespera,1,3);
       $texto = "G00 Z-".$this->actual[2]." \n";
       $this->escribeArchivo($texto);
       unset($texto);
@@ -103,7 +103,7 @@
     }
     // Hace los toques de limpieza seguidos 
     public function ToquesLimpieza($toques){
-      $sepY = 0.5;
+      $sepY = 0.500;
       for($i=0; $i<$toques; $i++)
         $this->Toque($i, $sepY, $toques);
     }
@@ -155,13 +155,13 @@
                 // Caso especial para ajustar número 4
                 if( $numImp==5 && $k==11 )
                   $multip--;
-                $this->actual[0] += ( $dirX==0 ) ? -$multip*$numDist : $multip*$numDist;
+                $this->actual[0] = ( $dirX==0 ) ? bcdiv($this->actual[0]-$multip*$numDist,1,3) : bcdiv($this->actual[0]+$multip*$numDist,1,3);
                 $texto = "G00 X".$this->actual[0]." \n";
                 $this->escribeArchivo($texto);
                 unset($texto);
               }
               // Mueve en Y hacia adelante
-              $this->actual[1] += $numDist;
+              $this->actual[1] = bcdiv($this->actual[1]+$numDist,1,3);
               $texto = "G00 Y-".$this->actual[1]." \n";
               $this->escribeArchivo($texto);
               unset($texto);
@@ -173,7 +173,7 @@
             if( !in_array($k, $mat5x3[$numImp]) ) {
               // Avanza mmX acumulados si no acaba de avanzar fila y actualiza coordenada X
               if( $k!=6 && $k !=11 ){
-                $this->actual[0] += ( $dirX==0 ) ? -$multip*$numDist : $multip*$numDist;
+                $this->actual[0] = ( $dirX==0 ) ? bcdiv($this->actual[0]-$multip*$numDist,1,3) : bcdiv($this->actual[0]+$multip*$numDist,1,3);
                 $texto = "G00 X".$this->actual[0]." \n";
                 $this->escribeArchivo($texto);
                 unset($texto);
@@ -237,20 +237,20 @@
     public function Toque($NumToque, $Ydist, $fin){
       // Primera vez baja más mm a poner gotitas, después el mínimo al estar dentro del vidrio
       if( $NumToque == 0 )
-        $this->actual[2] += $this->zslide;
+        $this->actual[2] = bcdiv($this->actual[2]+$this->zslide,1,3);
       else
-        $this->actual[2] += $this->zslidentro;
+        $this->actual[2] = bcdiv($this->actual[2]+$this->zslidentro,1,3);
       $texto = "G00 Z-".$this->actual[2]." \n";
       $this->escribeArchivo($texto);
       unset($texto);
       // Sube mm mínimos en altura dentro del vidrio
-      $this->actual[2] -= $this->zslidentro;
+      $this->actual[2] = bcdiv($this->actual[2]-$this->zslidentro,1,3);
       $texto = "G00 Z-".$this->actual[2]." \n";
       $this->escribeArchivo($texto);
       unset($texto);
       // Avanza Y mm si no es última vez de toque
       if( $NumToque != $fin-1 ){
-        $this->actual[1] += $Ydist;
+        $this->actual[1] = bcdiv($this->actual[1]+$Ydist,1,3);
         $texto = "G00 Y-".$this->actual[1]." \n";
         $this->escribeArchivo($texto);
         unset($texto);
@@ -259,12 +259,12 @@
     // Sube o baja el pin dados los mm
     public function PinSB($dir,$mm){
       if ($mm == "Cambio")
-        $mm = $this->actual[2]-$this->lugares["Origen"][2];
+        $mm = bcdiv($this->actual[2]-$this->lugares["Origen"][2],1,3);
       //Asigna dirección del movimiento en Z
       if ($dir==0)
-        $this->actual[2] -= $mm;
+        $this->actual[2] = bcdiv($this->actual[2]-$mm,1,3);
       else
-        $this->actual[2] += $mm;
+        $this->actual[2] = bcdiv($this->actual[2]+$mm,1,3);
       $texto = "G00 Z-".$this->actual[2]." \n";
       $this->escribeArchivo($texto);
       unset($texto);
@@ -286,22 +286,22 @@
             mysqli_free_result($res);
           }
         }
-        //Obtiene el valor seleccionado del tipo de pines
+        //Obtiene coordenadas según el tipo de pin seleccionado
         $sql = "SELECT * FROM config WHERE IDPin=".$tipoPin;
         $res = mysqli_query($conexion, $sql);
         if( $res->num_rows !=0 ) {
           while( $dato = mysqli_fetch_assoc($res) )
-            $this->lugares[$dato['nombre']] = [$dato["x"], $dato["y"], $dato["z"]];
+            $this->lugares[$dato['nombre']] = [ bcdiv($dato["x"],1,3), bcdiv($dato["y"],1,3), bcdiv($dato["z"],1,3) ];
           mysqli_free_result($res);
         }
         //Configura auxiliares para la inserción de puntos de slides, limpieza y muestra
-        $this->lugares["Vacío"][2] -= $this->zespera;
+        $this->lugares["Vacío"][2] = bcdiv($this->lugares["Vacío"][2]-$this->zespera,1,3);
         $this->ReiniciaCoords(2,"Slide","Retícula");
-        $this->lugares["Slide"][2] = $this->lugares["Retícula"][2]-$this->zslide;
+        $this->lugares["Slide"][2] = bcdiv($this->lugares["Retícula"][2]-$this->zslide,1,3);
         $this->ReiniciaCoords(2,"Toque de limpieza","Limpieza");
-        $this->lugares["Toque de limpieza"][2] = $this->lugares["Limpieza"][2]-$this->zslide;
+        $this->lugares["Toque de limpieza"][2] = bcdiv($this->lugares["Limpieza"][2]-$this->zslide,1,3);
         $this->ReiniciaCoords(2,"Toma de muestra","Muestra");
-        $this->lugares["Toma de muestra"][2] = $this->lugares["Muestra"][2]-$this->zespera;
+        $this->lugares["Toma de muestra"][2] = bcdiv($this->lugares["Muestra"][2]-$this->zespera,1,3);
       }
     }
     // Reinicia los parámetros del lugar indicado (0 en X,  1 en Y, 2 en XY )
@@ -313,7 +313,7 @@
     }
     // Actualiza los datos de las coordenadas del lugar indicado (eje, mm, lugar)
     public function ActualizaCoords($eje, $mm, $lugar){
-      $this->lugares[$lugar][$eje] += $mm;
+      $this->lugares[$lugar][$eje] = bcdiv($this->lugares[$lugar][$eje]+$mm,1,3);
     }
     // Genera las pausas requeridas para los cambios
     public function ActualizaPausa($cambioPlaca, $cambioVidrio, $extra = null){

@@ -743,7 +743,6 @@ $(document).ready(function () {
 													$("h4").text("Rutina actual: " + $("#nombreDB").val());
 													$("#codigoGlink").parent().attr("href", "./G/"+$("#nombreDB").val()+".nc" );
 													$("#error").empty().hide();
-													$("#info").empty().hide(3000);
 												}
 											}
 										}
@@ -792,7 +791,7 @@ $(document).ready(function () {
 								// Abre popup
 								$("#overlay, #popup").addClass("active");
 								// Genera botones para borrar la rutina 
-								$("#cargadoDeRutina").html("<h3>Advertencia: </h3> <strong>Está a punto de borrar una rutina, ¿Desea continuar?</strong>");
+								$("#cargadoDeRutina").html("<h3>Advertencia </h3> Está a punto de borrar una rutina, ¿desea continuar?");
 								$("#cargadoDeRutina").append("<center><table style='width:60%' id='botonesBorraRutina'>");
 								$("#botonesBorraRutina").append("<th></br><button type='button' class='btn btn-danger btn-lg btn-block' id='cacelarRutina'>Cancelar</button></th>");
 								$("#botonesBorraRutina").append("<th></br><button type='button' class='btn btn-info btn-lg btn-block' id='borrarRutina'>Continuar</button></th>");

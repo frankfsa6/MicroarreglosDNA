@@ -121,7 +121,7 @@
       // Guarda datos de tabla configuración
       for($i=0; $i<sizeof($config); $i++){
         $exp = explode(";",$config[$i]);
-        $sql = "UPDATE config SET x='".$exp[1]."',y='".$exp[2]."',z='".$exp[3]."' WHERE nombre='".$exp[0]."' AND IDPin='".$tipoPin."'";
+        $sql = "UPDATE config SET x='".bcdiv($exp[1],1,3)."',y='".bcdiv($exp[2],1,3)."',z='".bcdiv($exp[3],1,3)."' WHERE nombre='".$exp[0]."' AND IDPin='".$tipoPin."'";
         mysqli_query($conexion, $sql);
       }
       // Guarda datos de tabla de pines raspberry
