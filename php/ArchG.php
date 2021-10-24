@@ -302,6 +302,8 @@
         $this->lugares["Toque de limpieza"][2] = bcdiv($this->lugares["Limpieza"][2]-$this->zslide,1,3);
         $this->ReiniciaCoords(2,"Toma de muestra","Muestra");
         $this->lugares["Toma de muestra"][2] = bcdiv($this->lugares["Muestra"][2]-$this->zespera,1,3);
+        $this->ReiniciaCoords(2,"Origen de retícula","Retícula");
+        $this->lugares["Origen de retícula"][2] = $this->lugares["Origen"][2];
       }
     }
     // Reinicia los parámetros del lugar indicado (0 en X,  1 en Y, 2 en XY )

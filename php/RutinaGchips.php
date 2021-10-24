@@ -119,6 +119,9 @@
       }
       // Comienza a poner puntos en tantos slides se hayan configurado
       // Al terminar los puntos, avanza en Y para reiniciar slide y aumenta cantidad con los duplicados
+      // Si es primer punto de la columna, va primero a origen de retícula
+      if($b==1)
+        $archivito->LugarD("Origen de retícula","Lugar");
       if( $pinesDobles==0 )
         $archivito->InsertarPuntosSlides($columnasPlaca,$filasPlaca,$puntosDup,$YDist,$YSlideDist,$XSlideDist);
       else
