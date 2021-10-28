@@ -162,9 +162,8 @@
           $archivito->ActualizaCoords(0,$limpDist,"Toque de limpieza");
         // Inserción en slides de la retícula completa
         // Al terminar avanza YPuntosDup o si acabó columna, regresa a Ycoord y avanza X espaciado
-        // Si es primer punto de la columna, va primero a origen de retícula
-        if( $b==1 )
-          $archivito->LugarD("Origen de retícula","Lugar");
+        // Va primero a origen de retícula y luego movimientos rectos
+        $archivito->LugarD("Origen de retícula","Lugar");
         $archivito->InsertarPuntosSlides($columnasPlaca,$filasPlaca,$DupDots,$YSpace,$YSlideDistance,$XSlideDistance);
         $archivito->ActualizaCoords(1, $YSpace*$DupDots,"Retícula");
         if( $b==$YDots ){

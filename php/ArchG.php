@@ -62,7 +62,13 @@
       // Adquiere y escribe XY del próximo lugar al que se va a mover
       for($i=0; $i<2; $i++)
         $this->actual[$i] = $this->lugares[$lugar][$i];
-      $texto = "G00 X".$this->actual[0]." Y-".$this->actual[1]." (".$lugar.$extra.") \n";
+      // En slides, evita diagonales
+      if( $lugar != "Slide" )
+        $texto = "G00 X".$this->actual[0]." Y-".$this->actual[1]." (".$lugar.$extra.") \n";
+      else{
+        $texto = "G00 X".$this->actual[0]." (".$lugar.$extra.") \n";
+        $texto .= "G00 Y-".$this->actual[1]." (".$lugar.$extra.") \n";
+      }
       $this->escribeArchivo($texto);
       unset($texto);
       // Si son lugares definidos, finaliza eje Z para llegar al lugar
@@ -205,9 +211,9 @@
         for($j=1; $j<=$filasPlaca; $j++){
           // Primera vez llega a retícula o se mueve con altura fija entre slides
           if($i==1 && $j==1)
-            $this->LugarD("Slide","Lugar"," $i x $j");
+            $this->LugarD("Slide","Lugar"," $i x $j primero");
           else
-            $this->LugarD("Slide","Slide"," $i x $j");
+            $this->LugarD("Slide","Slide"," $i x $j primero");
           // Pone primeros puntos
           for($k=0; $k<$puntosDup; $k++)
             $this->Toque($k, $YDist, $puntosDup);
@@ -216,7 +222,7 @@
             $this->ActualizaCoords(0,-$XMuestraDist,"Slide");
           else
             $this->ActualizaCoords(0,$XMuestraDist,"Slide");
-          $this->LugarD("Slide","Slide");
+          $this->LugarD("Slide","Slide"," $i x $j segundo");
           // Pone segundos puntos
           for($k=0; $k<$puntosDup; $k++)
             $this->Toque($k, $YDist, $puntosDup);

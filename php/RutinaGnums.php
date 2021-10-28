@@ -94,9 +94,8 @@
       }
       // Comienza a poner dígitos en tantos slides se hayan configurado
       // En cada número, avanza 3*distPuntitosNum en mmY; al terminar la serie, regresa 8 veces y se mueve 6*distPuntitosNum en mmX
-      // Si es primer punto de la columna, va primero a origen de retícula
-      if( $j==0 )
-        $archivito->LugarD("Origen de retícula","Lugar");            
+      // Va primero a origen de retícula y luego movimientos rectos dentro
+      $archivito->LugarD("Origen de retícula","Lugar");            
       $archivito->InsertarNumSlides($columnasPlaca, $filasPlaca, $j, $numDist, $YSlideDist, $XSlideDist);
       $archivito->ActualizaCoords(1, 3*$numDist,"Retícula");
       if( $j==7 ){
