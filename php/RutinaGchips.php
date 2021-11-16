@@ -119,12 +119,10 @@
       }
       // Comienza a poner puntos en tantos slides se hayan configurado
       // Al terminar los puntos, avanza en Y para reiniciar slide y aumenta cantidad con los duplicados
-      // Va primero a origen de retícula y luego movimientos rectos
-      $archivito->LugarD("Origen de retícula","Lugar");
       if( $pinesDobles==0 )
-        $archivito->InsertarPuntosSlides($columnasPlaca,$filasPlaca,$puntosDup,$YDist,$YSlideDist,$XSlideDist);
+        $archivito->InsertarPuntosSlides($columnasPlaca,$filasPlaca,$puntosDup,$YDist,$YSlideDist,$XSlideDist, $b);
       else
-        $archivito->InsertarChipsSlides($columnasPlaca,$filasPlaca,$puntosDup,$XMuestraDist,$YDist,$YSlideDist,$XSlideDist);
+        $archivito->InsertarChipsSlides($columnasPlaca,$filasPlaca,$puntosDup,$XMuestraDist,$YDist,$YSlideDist,$XSlideDist, $b);
       $archivito->ActualizaCoords(1, $puntosDup*$YDist,"Retícula");
       $archivito->ReiniciaCoords(2,"Slide","Retícula");
       $b+=$puntosDup;

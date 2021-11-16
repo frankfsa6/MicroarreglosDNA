@@ -12,9 +12,10 @@
     private $actual;	 //Coordenadas posición actual en mm
     private $lugares;	 //Coordenadas de los lugares obtenidos en mm
     private $nombreG ; //Nombre del archivo en código G
-    private $zslide = 2.000;	// Número de milímetros que baja para poner puntos en el slide
-    private $zslidentro = 1.500;	// Número de milímetros mínimos para poner puntos dentro del slide
+    private $zslide = 2.000;	// Milímetros que deja para saltar vidrios en el slide
+    private $zslidentro = 1.500;	// Milímetros que deja para saltar puntos dentro del slide
     private $zespera = 4.000;   // Aproximación en Z para lugares principales
+    private $ycorrigeslide = 0.500;	// Milímetros que deja en primera columna para corregir Y
 
     // Constructor que fija tipo de archivo e inicializa rutina
     public function __construct($nombreRutina, $info = null){
@@ -46,7 +47,7 @@
     // Usa diagonales para lugares principales
     public function LugarD($lugar, $typeZ, $extra = null){
       // En lugares, primero sube eje Z para evitar chocar
-      if($this->actual[2] != $this->lugares["Origen"][2] && $typeZ == "Lugar"){
+      if($this->actual[2] != $this->lugares["Origen"][2] && $typeZ == "Lugar" ){
         $this->actual[2] = $this->lugares["Origen"][2];
         $texto = "G00 Z-".$this->actual[2]." \n";
         $this->escribeArchivo($texto);
@@ -62,19 +63,42 @@
       // Adquiere y escribe XY del próximo lugar al que se va a mover
       for($i=0; $i<2; $i++)
         $this->actual[$i] = $this->lugares[$lugar][$i];
-      // En slides, evita diagonales
-      if( $lugar != "Slide" )
-        $texto = "G00 X".$this->actual[0]." Y-".$this->actual[1]." (".$lugar.$extra.") \n";
-      else{
-        $texto = "G00 X".$this->actual[0]." (".$lugar.$extra.") \n";
-        $texto .= "G00 Y-".$this->actual[1]." (".$lugar.$extra.") \n";
+      // Al iniciar slide, quita mmY para el slide siguiente
+      if( $typeZ == "IniciaSlide" ){
+        if($extra == " inicia 1 x 1"){
+          $this->actual[2] = $this->lugares["Origen"][2];
+          $texto = "G00 Z-".$this->actual[2]." \n";
+          $this->escribeArchivo($texto);
+          unset($texto);
+        }
+        else{
+          $this->actual[2] = $this->lugares["Slide"][2];
+          $texto = "G00 Z-".$this->actual[2]." \n";
+          $this->escribeArchivo($texto);
+          unset($texto);
+        }
+        $this->actual[1] = bcdiv($this->actual[1]-$this->ycorrigeslide,1,3);
       }
+      $texto = "G00 X".$this->actual[0]." Y-".$this->actual[1]." (".$lugar.$extra.") \n";
       $this->escribeArchivo($texto);
       unset($texto);
       // Si son lugares definidos, finaliza eje Z para llegar al lugar
       if ($typeZ == "Lugar"){
         $this->actual[2] = $this->lugares[$lugar][2];
         $texto = "G00 Z-".$this->actual[2]." \n";
+        $this->escribeArchivo($texto);
+        unset($texto);
+      }
+      // Al inicio del slide, pone Z y recorre Y que faltaban
+      else if($typeZ == "IniciaSlide"){
+        if($extra == " inicia 1 x 1"){
+          $this->actual[2] = $this->lugares["Slide"][2];
+          $texto = "G00 Z-".$this->actual[2]." \n";
+          $this->escribeArchivo($texto);
+          unset($texto);
+        }
+        $this->actual[1] = bcdiv($this->actual[1]+$this->ycorrigeslide,1,3);
+        $texto = "G00 Y-".$this->actual[1]." (".$lugar.$extra.") \n";
         $this->escribeArchivo($texto);
         unset($texto);
       }
@@ -114,11 +138,13 @@
         $this->Toque($i, $sepY, $toques);
     }
     // Inserta los puntos Y en todos los slides (vidrios)
-    public function InsertarPuntosSlides($columnasPlaca,$filasPlaca,$DupDots,$YSpace,$YSlideDist,$XSlideDist){
+    public function InsertarPuntosSlides($columnasPlaca,$filasPlaca,$DupDots,$YSpace,$YSlideDist,$XSlideDist,$iniciaSlide){
       for($i=1; $i<=$columnasPlaca; $i++){
         for($j=1; $j<=$filasPlaca; $j++){
           // Primera vez llega a retícula, después entre vidrios con misma altura
-          if($i==1 && $j==1)
+          if( $iniciaSlide == 1)
+            $this->LugarD("Slide","IniciaSlide"," inicia $i x $j");
+          else if($i==1 && $j==1)
             $this->LugarD("Slide","Lugar"," $i x $j");
           else
             $this->LugarD("Slide","Slide"," $i x $j");
@@ -137,14 +163,16 @@
       }
     }
     // Insertar los números en todos los slides (vidrios)
-    public function InsertarNumSlides($columnasPlaca, $filasPlaca, $numImp, $numDist, $YSlideDist, $XSlideDist){
+    public function InsertarNumSlides($columnasPlaca, $filasPlaca, $numImp, $numDist, $YSlideDist, $XSlideDist, $iniciaSlide){
       // Matrices de puntos 5x3 donde no hay puntito, yendo de 9 a 2
       $mat5x3 = [ [7,9,14], [7,9], [6,7,8,9,12,13,14,15], [2,7,9], [2,7,9,14], [6,7,9,10,14,15], [7,9,12,14],[4,7,9,12] ];
       // Recorre la retícula completa en zigzag
       for ($i=1; $i<=$columnasPlaca; $i++){
         for ($j=1; $j<=$filasPlaca; $j++){
           // Primera vez llega a retícula, después entre vidrios con misma altura
-          if($i==1 && $j==1)
+          if( ($iniciaSlide+1)*($numImp+1) == 1)
+            $this->LugarD("Slide","IniciaSlide"," inicia $i x $j");
+          else if($i==1 && $j==1)
             $this->LugarD("Slide","Lugar"," $i x $j");
           else
             $this->LugarD("Slide","Slide"," $i x $j");
@@ -206,11 +234,13 @@
       unset($multip, $dirX);
     }
     // Hace toda la rutina de un ciclo de insertar los chips dobles en todos los slides (vidrios) 
-    public function InsertarChipsSlides($columnasPlaca,$filasPlaca,$puntosDup,$XMuestraDist,$YDist,$YSlideDist,$XSlideDist){
+    public function InsertarChipsSlides($columnasPlaca,$filasPlaca,$puntosDup,$XMuestraDist,$YDist,$YSlideDist,$XSlideDist,$iniciaSlide){
       for($i=1; $i<=$columnasPlaca; $i++){
         for($j=1; $j<=$filasPlaca; $j++){
           // Primera vez llega a retícula o se mueve con altura fija entre slides
-          if($i==1 && $j==1)
+          if( $iniciaSlide == 1)
+            $this->LugarD("Slide","IniciaSlide"," inicia $i x $j");
+          else if($i==1 && $j==1)
             $this->LugarD("Slide","Lugar"," $i x $j primero");
           else
             $this->LugarD("Slide","Slide"," $i x $j primero");
@@ -308,8 +338,6 @@
         $this->lugares["Toque de limpieza"][2] = bcdiv($this->lugares["Limpieza"][2]-$this->zslide,1,3);
         $this->ReiniciaCoords(2,"Toma de muestra","Muestra");
         $this->lugares["Toma de muestra"][2] = bcdiv($this->lugares["Muestra"][2]-$this->zespera,1,3);
-        $this->ReiniciaCoords(2,"Origen de retícula","Retícula");
-        $this->lugares["Origen de retícula"][2] = $this->lugares["Origen"][2];
       }
     }
     // Reinicia los parámetros del lugar indicado (0 en X,  1 en Y, 2 en XY )
