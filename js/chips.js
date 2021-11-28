@@ -232,16 +232,23 @@ $(document).ready( function(){
 		}
 
 	}
-
 	function OnlyNumVal(){
+		var tipo = $(this).attr("id");
 		var temp = $(this).val();
-		temp = temp.replace(" ","");
-		var tipo=$(this).attr("id");
-		if (tipo == "YCoords" || tipo == "XCoords"){
-			if(!$.isNumeric(temp))
-			this.value = this.value.replace(/\D/g,'');
-		}else
-			this.value = this.value.replace(/\D/g,'');
+		if( tipo != "nomChipsNums" ){
+			temp = temp.replace(" ","");
+			if (tipo == "YCoords" || tipo == "XCoords"){
+				if(!$.isNumeric(temp))
+				this.value = this.value.replace(/\D/g,'');
+			}
+			else
+				this.value = this.value.replace(/\D/g,'');
+		}
+		else
+			if(temp.length >= 50){
+				this.value = temp.substr(0,50);
+				$("#info").empty().text("Máximo 50 caracteres para el nombre temporal de la rutina").show();
+			}
 	}
 
 	function Placas(){

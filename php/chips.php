@@ -3,6 +3,10 @@
 <?php
   echo "
     <h2 style='text-align:center'> Rutina específica para chips múltiples </h2></br>
+    <div class='input-group mb-3'>
+      <label  class='input-group-text'>Nombre temporal de la rutina </label>
+      <input class='form-control' type='text' value='chips' id='nomChipsNums'>
+    </div> </br>
     <h4>Configuración predeterminada de pines</h4><hr>
     <div class='container'>
       <div class='row'>
@@ -10,15 +14,15 @@
           <div class='input-group mb-3'>
             <label for='TipoPin' class='input-group-text'>Tipo de pin</label>
             <select class='custom-select' id='TipoPin'>
-              <option value='2' selected>Acero</option>
-            <option value='1'>Cerámico</option>
+              <option value='2'>Acero</option>
+            <option value='1' selected>Cerámico</option>
             </select>
           </div>
           <div class='input-group mb-3'>
             <label  class='input-group-text'>¿Duplicar serie? </label>
             <select class='custom-select' id='PinesXDobles'>
-              <option value='0' selected>No</option>
-              <option value='1'>Sí</option>
+              <option value='0'>No</option>
+              <option value='1' selected>Sí</option>
             </select>
           </div> 
           <div class='input-group mb-3'>
@@ -62,11 +66,11 @@
             </div>
             <div class='input-group mb-3'>
               <label for='XDots' class='input-group-text'>Número de puntos por rejilla en eje X</label>
-              <input type='text' maxlength='3' class='form-control mx-sm-3' id='XDots' value='25'>
+              <input type='text' maxlength='3' class='form-control mx-sm-3' id='XDots' value='5'>
             </div>
             <div class='input-group mb-3'>
               <label for='YDots' class='input-group-text'>Número de puntos por rejilla en eje Y</label>
-              <input type='text' maxlength='3' class='form-control mx-sm-3' id='YDots' value='25'>
+              <input type='text' maxlength='3' class='form-control mx-sm-3' id='YDots' value='5'>
             </div>
             <hr>
             <div class='input-group mb-3'>
@@ -100,7 +104,7 @@
       </div>";
 
   echo "</br>     
-      <h4>Número de slides a utilizar</h4><hr>
+      <h4>Número de vidrios / slides a utilizar</h4><hr>
       <div class='container'>
         <div class='row'>
           <div class='col-5'>

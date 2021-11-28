@@ -118,6 +118,14 @@ function slideTabla(){
 		fila = fila.next();
 	}
 }
+// Valida largo del nombre
+function NomNums(){
+	var temp = $(this).val();
+	if(temp.length >= 50){
+		this.value = temp.substr(0,50);
+		$("#info").empty().text("Máximo 50 caracteres para el nombre temporal de la rutina").show();
+	}
+}
 // Al iniciar página
 $(document).ready( function(){
 	$("#info").empty().hide();
@@ -127,6 +135,7 @@ $(document).ready( function(){
 	$(".coordsXY").on("click", function(){
 		anteVal = $(this).val();
 	});
+	$("#nomChipsNums").keyup(NomNums);
 	pinTabla();
 	slideTabla();
 	coordTabla();

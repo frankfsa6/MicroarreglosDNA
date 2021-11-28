@@ -5,6 +5,7 @@
   ini_set('display_errors', 1);
   // Variables recibidas
   $datos = explode(",", $_POST['datnum']);
+  $nomTemp = $_POST['nomTemp'];
   $tipoPin = round((int)$datos[0]);
   $XCoords = round((float)$datos[1], 3);
   $YCoords = round((float)$datos[2], 3);
@@ -29,7 +30,7 @@
   $tvac = 2;
   $utvac = 3;
   // Obtiene datos DB y comienza a ejecutar
-  $archivito = new ArchG("nums", implode(",", $datos).",Numeración");
+  $archivito = new ArchG($nomTemp, implode(",", $datos).",numeración");
   $archivito->SensarOrigen();
   // Mueve retícula a slide el valor dado de coordenadas y limpieza a 3mmXY de esquina
   $archivito->ActualizaCoords(0, $XCoords,"Retícula");
@@ -94,7 +95,7 @@
       }
       // Comienza a poner dígitos en tantos slides se hayan configurado
       // En cada número, avanza 3*distPuntitosNum en mmY; al terminar la serie, regresa 8 veces y se mueve 6*distPuntitosNum en mmX         
-      $archivito->InsertarNumSlides($columnasPlaca, $filasPlaca, $j, $numDist, $YSlideDist, $XSlideDist, $i);
+      $archivito->InsertarNumSlides($columnasPlaca, $filasPlaca, $j, $numDist, $YSlideDist, $XSlideDist);
       $archivito->ActualizaCoords(1, 3*$numDist,"Retícula");
       if( $j==7 ){
         $archivito->ActualizaCoords(1, -8*3*$numDist,"Retícula");

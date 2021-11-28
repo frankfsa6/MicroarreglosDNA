@@ -4,6 +4,7 @@
   include("ArchG.php");
   // Chips ( 0-TipoPin, 1-PinesDob, 2-XCoord, 3-YCoord, 4-XEsp, 5-YEsp, 6-XPunt, 7-YPunt, 8-Duplic, 9-Placas, 10-XSlide, 11-YSlide)
   $datos = explode(",", $_POST['datchips']);
+  $nomTemp = $_POST['nomTemp'];
   //Variable del cambio de placa/vidrio y distancias en mm (dadas por la estructura de la máquina)
   $cambioPlaca = [0, 0];
   $XSlideDist = 80.9;
@@ -37,7 +38,7 @@
   $puntosDup = $datos[8];
   $placasTot = $datos[9];
   // Obtiene datos DB y comienza a ejecutar
-  $archivito = new ArchG("chips", implode(",", $datos).",Chips múltiples");
+  $archivito = new ArchG($nomTemp, implode(",", $datos).",chips múltiples");
   $archivito->SensarOrigen();
   // Mueve retícula a slide el valor dado de coordenadas y limpieza a 3mmXY de esquina
   $archivito->ActualizaCoords(0, $XCoords,"Retícula");
@@ -120,9 +121,9 @@
       // Comienza a poner puntos en tantos slides se hayan configurado
       // Al terminar los puntos, avanza en Y para reiniciar slide y aumenta cantidad con los duplicados
       if( $pinesDobles==0 )
-        $archivito->InsertarPuntosSlides($columnasPlaca,$filasPlaca,$puntosDup,$YDist,$YSlideDist,$XSlideDist, $b);
+        $archivito->InsertarPuntosSlides($columnasPlaca,$filasPlaca,$puntosDup,$YDist,$YSlideDist,$XSlideDist, true);
       else
-        $archivito->InsertarChipsSlides($columnasPlaca,$filasPlaca,$puntosDup,$XMuestraDist,$YDist,$YSlideDist,$XSlideDist, $b);
+        $archivito->InsertarChipsSlides($columnasPlaca,$filasPlaca,$puntosDup,$XMuestraDist,$YDist,$YSlideDist,$XSlideDist);
       $archivito->ActualizaCoords(1, $puntosDup*$YDist,"Retícula");
       $archivito->ReiniciaCoords(2,"Slide","Retícula");
       $b+=$puntosDup;

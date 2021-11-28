@@ -2,14 +2,18 @@
 <link rel="stylesheet" href="css/numeros.css?v=3">
 <?php
   echo "<h2 style='text-align:center'> Rutina específica para numeración</h2></br>
+          <div class='input-group mb-3'>
+            <label  class='input-group-text'>Nombre temporal de la rutina </label>
+            <input class='form-control' type='text' value='nums' id='nomChipsNums'>
+          </div> </br>
           <h4>Configuración predeterminada de pines</h4><hr>
           <div class='container'><div class='row'>
             <div class='col-5'>
               <div class='input-group mb-3'>
                 <label for='TipoPin' class='input-group-text'>Tipo de pin</label>
                 <select class='custom-select' id='TipoPin'>
-                  <option value='2' selected>Acero</option>
-                <option value='1'>Cerámico</option>
+                  <option value='2'>Acero</option>
+                <option value='1' selected>Cerámico</option>
                 </select>
               </div>
               <div class='input-group mb-3'>

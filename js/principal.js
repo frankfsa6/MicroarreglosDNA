@@ -1,5 +1,5 @@
 // Variable que guarda la posicion en la que se encuentra y tipo de rutina
-var actual = null, navpag = "principal", tipoRut = "", rep;
+var actual = null, navpag = "principal", tipoRut = "", rep, tecRapi;
 // Se crea un vector que controla el movimiento de las páginas
 var pages = ["pines", "reticula", "slide", "lavado"];
 // Variable que controla si se carga una rutina o se inicia una nueva
@@ -390,34 +390,10 @@ function pantComp () {
 }
 // Teclas rápidas para eventos del navegador cuando no hay campo de texto
 function tecRap (event) {
-	// Teclas libres del footer
-	if ( $("#popup").attr("class") != "active" && $(":password").length == 0 ){
-		switch (event.keyCode) {
-			// D: página de microarreglos
-			case 68:
-				$("#ifc").trigger("click");
-				break;
-			// H: github
-			case 72:
-				$("#git").trigger("click");
-				break;
-			// L: cambia ventana completa
-			case 76:
-				$("#pantcomp").trigger("click");
-				break;
-			// M: abre documentación
-			case 77:
-				$("#docref").trigger("click");
-				break;
-			// O: abre créditos
-			case 79:
-				if ($("#popup").attr("class") != "active")
-					$("#creds").trigger("click");
-				break;
-		}
-	}
-	// Teclas condicionales según campos de texto o pestañas activas
-	if ( !( $(":text").length > 0 && $("#popup").attr("class") == "active" && navpag != "nums" && navpag != "chips") && navpag != "login" && navpag != "joystick") {
+	// Asigna eventos a campos de texto nuevos
+	$("body").on("focus","input:text, input:password", function(){ tecRapi = false; });
+	$("body").on("blur", "input:text, input:password", function(){ tecRapi = true; });
+	if ( tecRapi == true ){
 		switch (event.keyCode) {
 			// A: botón de anterior
 			case 65:
@@ -434,6 +410,10 @@ function tecRap (event) {
 				if ($("#cargaRutina").length > 0 && $("#popup").attr("class") != "active")
 					$("#cargaRutina").trigger("click");
 				break;
+			// D: página de microarreglos
+			case 68:
+				$("#ifc").trigger("click");
+				break;
 			// E: renombra rutina
 			case 69:
 				if ($("#guardaRutina").length > 0 && $("#popup").attr("class") != "active")
@@ -444,6 +424,10 @@ function tecRap (event) {
 				if ($("#codigoG").length > 0 && $("#popup").attr("class") != "active")
 					$("#codigoG").trigger("click");
 				break;
+			// H: github
+			case 72:
+				$("#git").trigger("click");
+				break;				
 			// I: inicia procesos según el caso
 			case 73:
 				if ($("#inicioProceso").length > 0 && $("#popup").attr("class") != "active")
@@ -453,11 +437,23 @@ function tecRap (event) {
 				else if ($("#inicioChips").length > 0 && $("#popup").attr("class") != "active")
 					$("#inicioChips").trigger("click");
 				break;
+			// L: cambia ventana completa
+			case 76:
+				$("#pantcomp").trigger("click");
+				break;
+			// M: abre documentación
+			case 77:
+				$("#docref").trigger("click");
+				break;								
 			// N: nueva rutina
 			case 78:
 				if ($("#nuevaRutina").length > 0 && $("#popup").attr("class") != "active")
 					$("#nuevaRutina").trigger("click");
 				break;
+			// O: abre créditos
+			case 79:
+				$("#creds").trigger("click");
+				break;				
 			// P: pausa proceso o recarga página
 			case 80:
 				if ($("#pausaRutina").length > 0)
@@ -538,6 +534,7 @@ function barraNav () {
 		if (navpag == "principal" || navpag == "logo")
 			cargaPrincipal();
 	}
+	tecRapi = true;
 }
 // Inicia documento y verifica base de datos
 $(document).ready(function () {
@@ -1048,8 +1045,10 @@ $(document).ready(function () {
 						// Junta datos de formulario para numeración
 						var datNums = $("#TipoPin").val() + "," + $("#coordXNums").val() + "," + $("#coordYNums").val();
 						datNums += "," + $("#xSlidesNumeros").val() + "," + $("#ySlidesNumeros").val();
+						var nomTemp = $("#nomChipsNums").val();
+						$("#codigoGlink").parent().attr("href", "./G/"+nomTemp+".nc");
 						// Crea archivo G
-						$.post("php/RutinaGnums.php", { "datnum": datNums }, function () {
+						$.post("php/RutinaGnums.php", { "datnum": datNums, "nomTemp": nomTemp }, function () {
 							$("#codigoGlink").trigger("click");
 						}).always(function () {
 							$("#espera").css({ "width": "0%", "height": "0%", "cursor": "default" });
@@ -1062,8 +1061,10 @@ $(document).ready(function () {
 						datChips += "," + $("#XDotsSpace").val() + "," + $("#YDotsSpace").val();
 						datChips += "," + $("#XDots").val() + "," + $("#YDots").val() + "," + $("#DuplicateDotsY").val() + "," + $("#NoPlates").val();
 						datChips += "," + $("#xSlidesNumeros").val() + "," + $("#ySlidesNumeros").val();
+						var nomTemp = $("#nomChipsNums").val();
+						$("#codigoGlink").parent().attr("href", "./G/"+nomTemp+".nc");
 						// Crea archivo G
-						$.post("php/RutinaGchips.php", { "datchips": datChips }, function () {
+						$.post("php/RutinaGchips.php", { "datchips": datChips, "nomTemp": nomTemp }, function () {
 							$("#codigoGlink").trigger("click");
 						}).always(function () {
 							$("#espera").css({ "width": "0%", "height": "0%", "cursor": "default" });
