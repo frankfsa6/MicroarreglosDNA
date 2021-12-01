@@ -47,14 +47,14 @@
     // Usa diagonales para lugares principales
     public function LugarD($lugar, $typeZ, $extra = null){
       // En lugares, primero sube eje Z para evitar chocar
-      if($this->actual[2] != $this->lugares["Origen"][2] && ($typeZ == "Lugar" || $typeZ == "LugarRet") ){
+      if($this->actual[2] != $this->lugares["Origen"][2] && $typeZ == "Lugar"){
         $this->actual[2] = $this->lugares["Origen"][2];
         $texto = "G00 Z-".$this->actual[2]." \n";
         $this->escribeArchivo($texto);
         unset($texto);
       }
       // Al ser un slide, sube mínimo para moverse entre vidrios
-      else if ($this->actual[2] != $this->lugares["Slide"][2] && ($typeZ == "Slide" || $typeZ == "SlideRet") ){
+      else if ($this->actual[2] != $this->lugares["Slide"][2] && $typeZ == "Slide"){
         $this->actual[2] = $this->lugares["Slide"][2];
         $texto = "G00 Z-".$this->actual[2]." \n";
         $this->escribeArchivo($texto);
@@ -63,22 +63,23 @@
       // Adquiere y escribe XY del próximo lugar al que se va a mover
       for($i=0; $i<2; $i++)
         $this->actual[$i] = $this->lugares[$lugar][$i];
-      // Al ser el caso de slide, quita mmY para corregir pasos
-      if( $typeZ == "LugarRet" || $typeZ == "SlideRet" )
+      // Al ser slide, quita mmY para corregir pasos
+      if( $lugar == "Slide" )
         $this->actual[1] = bcdiv($this->actual[1]-$this->ycorrigeslide,1,3);
       $texto = "G00 X".$this->actual[0]." Y-".$this->actual[1]." (".$lugar.$extra.") \n";
       $this->escribeArchivo($texto);
       unset($texto);
-      // Si son lugares definidos o slides, finaliza eje Z para llegar al lugar
-      if ($typeZ == "Lugar"){
+      // Si son lugares definidos distintos a slides, finaliza eje Z para llegar al lugar
+      if ($lugar != "Slide"){
         $this->actual[2] = $this->lugares[$lugar][2];
         $texto = "G00 Z-".$this->actual[2]." \n";
         $this->escribeArchivo($texto);
         unset($texto);
       }
-      // Al ser slides corregidos, pone Z y recorre Y que faltaba
-      else if( $typeZ != "Slide" ){
-        if( $typeZ == "LugarRet" ){
+      // Al ser slides, pone Z y recorre Y que faltaba
+      else{
+        // Primera vez corrige Z
+        if( $typeZ == "Lugar" ){
           $this->actual[2] = $this->lugares["Slide"][2];
           $texto = "G00 Z-".$this->actual[2]." \n";
           $this->escribeArchivo($texto);
@@ -125,23 +126,14 @@
         $this->Toque($i, $sepY, $toques);
     }
     // Inserta los puntos Y en todos los slides (vidrios)
-    public function InsertarPuntosSlides($columnasPlaca,$filasPlaca,$DupDots,$YSpace,$YSlideDist,$XSlideDist,$chips){
+    public function InsertarPuntosSlides($columnasPlaca,$filasPlaca,$DupDots,$YSpace,$YSlideDist,$XSlideDist){
       for($i=1; $i<=$columnasPlaca; $i++){
         for($j=1; $j<=$filasPlaca; $j++){
-          // Primera vez llega a retícula, después entre vidrios con misma altura
-          // Al ser tipo chips múltiples, genera rutina con retrocesos de corrección
-          if( $chips == true){
-            if($i==1 && $j==1)
-             $this->LugarD("Slide","LugarRet"," $i x $j");
-            else
-              $this->LugarD("Slide","SlideRet"," $i x $j");
-          }
-          else{
-            if($i==1 && $j==1)
-              $this->LugarD("Slide","Lugar"," $i x $j");
-            else
-              $this->LugarD("Slide","Slide"," $i x $j");
-          }
+          // Primera vez llega a retícula, después entre vidrios con misma altura     
+          if($i==1 && $j==1)
+            $this->LugarD("Slide","Lugar"," $i x $j");
+          else
+            $this->LugarD("Slide","Slide"," $i x $j");
           // Pone puntos simples o duplicados
           for($k=0; $k<$DupDots; $k++)
             $this->Toque($k, $YSpace, $DupDots);
@@ -165,9 +157,9 @@
         for ($j=1; $j<=$filasPlaca; $j++){
           // Primera vez llega a retícula, después entre vidrios con misma altura
           if($i==1 && $j==1)
-            $this->LugarD("Slide","LugarRet"," $i x $j");
+            $this->LugarD("Slide","Lugar"," $i x $j");
           else
-            $this->LugarD("Slide","SlideRet"," $i x $j");
+            $this->LugarD("Slide","Slide"," $i x $j");
           // Siempre pone el puntito 1 en todos los números y fija altura en mm mínimos
           $this->PinSB(1, $this->zslide);
           $this->PinSB(0, $this->zslidentro);
@@ -231,9 +223,9 @@
         for($j=1; $j<=$filasPlaca; $j++){
           // Primera vez llega a retícula o se mueve con altura fija entre slides
           if($i==1 && $j==1)
-            $this->LugarD("Slide","LugarRet"," $i x $j primero");
+            $this->LugarD("Slide","Lugar"," $i x $j primero");
           else
-            $this->LugarD("Slide","SlideRet"," $i x $j primero");
+            $this->LugarD("Slide","Slide"," $i x $j primero");
           // Pone primeros puntos
           for($k=0; $k<$puntosDup; $k++)
             $this->Toque($k, $YDist, $puntosDup);
@@ -242,7 +234,7 @@
             $this->ActualizaCoords(0,-$XMuestraDist,"Slide");
           else
             $this->ActualizaCoords(0,$XMuestraDist,"Slide");
-          $this->LugarD("Slide","SlideRet"," $i x $j segundo");
+          $this->LugarD("Slide","Slide"," $i x $j segundo");
           // Pone segundos puntos
           for($k=0; $k<$puntosDup; $k++)
             $this->Toque($k, $YDist, $puntosDup);
