@@ -1,6 +1,6 @@
 # Microarreglos DNA / DNA Microarrays
 
-![UI Microarreglos DNA](github/UI.gif)
+<img align="center" src="github/UI.gif" alt="UI Microarreglos DNA">
 
 > > > Control CNC enfocado a investigación en ciencias biológicas.
 
