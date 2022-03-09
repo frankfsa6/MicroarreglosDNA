@@ -1,6 +1,6 @@
 # Microarreglos DNA / DNA Microarrays
 
-<img align="center" src="github/UI.gif" alt="UI Microarreglos DNA">
+<p align="center"> <img src="github/UI.gif" alt="UI Microarreglos DNA"> </p>
 
 > > > Control CNC enfocado a investigación en ciencias biológicas.
 
@@ -26,5 +26,4 @@ Dedicated to the [DNA Microarrays Unit, Institute of Cellular Physiology, UNAM, 
 
 Follow the [Installation Guide](./Instalador.pdf) and the [User manual](./Usuario.pdf) for the appropiate use of the program.
 
-![DNA 1](github/DNA1.gif)
-![DNA 2](github/DNA2.gif)
+<p align="center"> <img src="github/DNA1.gif" alt="DNA 1"> <img src="github/DNA2.gif" alt="DNA 2"> </p>
