@@ -1,0 +1,15 @@
+cff-version: 1.2.0
+message: "This software is for the humanity."
+authors:
+- family-names: "Salgado"
+  given-names: "Francisco"
+- family-names: "Delhumeau"
+  given-names: "Francisco"
+- family-names: "Romero"
+  given-names: "Rodrigo"
+- family-names: "Sanabria"
+  given-names: "Jordy"  
+title: "MicroarreglosDNA"
+version: 5.7
+date-released: 2022-03-08
+url: "https://github.com/frankfsa6/MicroarreglosDNA"
