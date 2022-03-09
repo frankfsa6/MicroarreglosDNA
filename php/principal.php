@@ -160,6 +160,6 @@
 	}
 	//Cuando la sesión no esta activa, envía un mensaje de advertencia
 	else
-		echo "<div class='alert alert-info' role='alert' style='width:90%; text-align:center; margin:0 auto'> Los datos recopilados se encuentran aquí una vez presionado el botón de <strong>Nueva rutina<strong> </div>";
+		echo "<div class='alert alert-info' role='alert' style='width:90%; text-align:center; margin:0 auto'> Bienvenido a Microarreglos DNA. <br> Comience generando un nuevo proceso al presionar en <strong>Nueva rutina</strong> o busque alguna guardada en <strong>Cargar rutina</strong> </div>";
 	session_write_close();
 ?>

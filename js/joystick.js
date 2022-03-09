@@ -290,35 +290,40 @@ function popCalibra(){
 }
 // Inicia con recursos al cargar página
 $(document).ready( function(){
-  // Pone velo y desactiva mientras carga elementos
-  $("#botones").empty().hide();
-	$("#espera").css({"width":"100%","height":"100%","cursor":"wait"});
-  jAlgoFunciona(false);
-  // Pide ajax para referencia pasos por mm (únicamente una vez)
-  $.ajax({
-    type: 'POST',
-    url:"php/joysMotores.php",
-    data: {"pasoslug":"pasosmm"}
-  }).done(function(datos){
-    // Recibe nuevas posiciones de motores (mm) en campos de texto
-    datos = datos.split(",");
-    pasosMM = [ datos[0], datos[1], datos[2] ];
-    for(var i=0; i<3; i++)
-      $("#"+ejes[i]+"pasosmm").text(pasosMM[i]);
-    // Habilita joystick, botón de emergencia y asigna velocidad lenta
-    jAlgoFunciona(true);
-    $("#parofin").on("click", paroFin);
-    vel = 3;
-    // Escribe mensajes y quita velo
-    $("#info").html("<b>Velocidad lenta</b> seleccionada (no aplica para sensar origen ni lugares conocidos)").show();
-    $("#error").html("Antes de realizar movimientos, pruebe el funcionamiento de los sensores y el botón de emergencia. Posteriormente, presione <img src='img/casa.svg' alt='Origen' width=25px'> para inicializar correctamente los pasos y lugares predeterminados").show();  
-    $("#espera").css({"width":"0%","height":"0%","cursor":"auto"});
-  }).fail(function(){
-    // Evita que se ejecuten funciones si no hay valores
+  $("#botones, #info, #error").empty().hide();
+  // Sólo se activa cuando no es Windows
+  if( !(navigator.userAgent.indexOf("Windows") != -1) ){
+    // Pone velo y desactiva mientras carga elementos
+    $("#espera").css({"width":"100%","height":"100%","cursor":"wait"});
     jAlgoFunciona(false);
-    pasosMM = [0,0,0];
-    $("#xpasosmm, #ypasosmm, #zpasosmm").text(0);
-    $("#info").html("Sin información disponible").show();
-    $("#error").html("No se pudieron obtener los valores de medición para el joystick").show();  
-  });
+    // Pide ajax para referencia pasos por mm (únicamente una vez)
+    $.ajax({
+      type: 'POST',
+      url:"php/joysMotores.php",
+      data: {"pasoslug":"pasosmm"}
+    }).done(function(datos){
+      // Recibe nuevas posiciones de motores (mm) en campos de texto
+      datos = datos.split(",");
+      pasosMM = [ datos[0], datos[1], datos[2] ];
+      for(var i=0; i<3; i++)
+        $("#"+ejes[i]+"pasosmm").text(pasosMM[i]);
+      // Habilita joystick, botón de emergencia y asigna velocidad lenta
+      jAlgoFunciona(true);
+      $("#parofin").on("click", paroFin);
+      vel = 3;
+      // Escribe mensajes y quita velo
+      $("#info").html("<b>Velocidad lenta</b> seleccionada (no aplica para sensar origen ni lugares conocidos)").show();
+      $("#error").html("Antes de realizar movimientos, pruebe el funcionamiento de los sensores y el botón de emergencia. Posteriormente, presione <img src='img/casa.svg' alt='Origen' width=25px'> para inicializar correctamente los pasos y lugares predeterminados").show();  
+      $("#espera").css({"width":"0%","height":"0%","cursor":"auto"});
+    }).fail(function(){
+      // Evita que se ejecuten funciones si no hay valores
+      jAlgoFunciona(false);
+      pasosMM = [0,0,0];
+      $("#xpasosmm, #ypasosmm, #zpasosmm").text(0);
+      $("#info").html("Sin información disponible").show();
+      $("#error").html("No se pudieron obtener los valores de medición para el joystick").show();  
+    });
+  }
+  else
+    $("#info").html("Sólo es posible acceder a los movimientos usando una Raspberry Pi").show();  
 });

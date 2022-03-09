@@ -160,7 +160,7 @@ function linCanv () {
 			anima.stroke();
 		}
 }
-// Crea los botones
+// Crea los botones al pie de página (iniciar, anterior, siguiente, código G...)
 function creaBotones (pags) {
 	//	Las secciones de login, joystick y numeros contienen sus propios botones por lo que no deben agregarse a esta condicional
 	if (pags != 'login' && pags != 'joystick' && pags != 'nums' && pags != 'chips' && pags != 'config') {
@@ -189,19 +189,18 @@ function creaBotones (pags) {
 		// Cierra la tabla 
 		$("#botones").append("</tr></table> </br>");
 	}
-	// Genera los botones de la sección de numeros 
+	// Genera botones en números y chips múltiples 
 	if (pags == 'nums' || pags == 'chips') {
 		$("#botones").html("<table style='width:100%; margin-left: auto; margin-right: auto;' id='tablaBotonesRutina'><tr>").show();
-		if (navigator.userAgent.indexOf("Linux") != -1){
+		if ( !(navigator.userAgent.indexOf("Windows") != -1) ){
 			if (pags == 'nums')
 				$("#tablaBotonesRutina").append("<th><button type='button' style='width:30vw; margin-left: auto; margin-right: auto;' class='btn btn-success btn-lg btn-block' id='inicioNumeracion' ><u>I</u>niciar numeración</button><th>");
 			else
 				$("#tablaBotonesRutina").append("<th><button type='button' style='width:30vw; margin-left: auto; margin-right: auto;' class='btn btn-success btn-lg btn-block' id='inicioChips' ><u>I</u>niciar chips múltiples</button><th>");
 		}
-			// Boton de códigoG
+		// Boton de código G
 		$("#tablaBotonesRutina").append("<th><button type='button' style='width:30vw; margin-left: auto; margin-right: auto;' class='btn btn-info btn-lg btn-block' id='codigoG' name='" + pags + "'>Código <u>G</u></button>");
 		$("#tablaBotonesRutina").append("<a href='./G/" + pags + ".nc' download><button type='button' class='btn btn-md btn-light' id='codigoGlink' hidden></button></a><th>");
-		//$("#tablaBotonesRutina").append("<th><button type='button' class='btn btn-outline-light btn-lg btn-block' disabled>boton</button><th>");
 		$("#botones").append("</tr></table> </br>");
 	}
 }
@@ -210,8 +209,7 @@ function cargaPrincipal () {
 	$("#espera").css({ "width": "100%", "height": "100%", "cursor": "wait" });
 	// Comienza a crear menú inicial
 	$.post("php/principal.php", function (datos) {
-		$("#info").empty().hide();
-		$("#error").empty().hide();
+		$("#info, #error").empty().hide();
 		$("#botones").empty().show();
 		$("#pags").html(datos);
 		//Crea los botones de guardado y nueva rutina
@@ -226,27 +224,24 @@ function cargaPrincipal () {
 				//Cambia el contenido del botón dependiendo si la rutina ya fue guardada
 				$.post("php/LSArch.php",{temporal:true}, function(resp){
 					if(resp == '0') //la rutina ya está guardada
-						$("#tablaBotonesRutina").append("<td style='width:18%'><button type='button' class='btn btn-outline-primary btn-lg btn-block' id='guardaRutina' >R<u>e</u>nombrar rutina</button><span> </span></td>");
+						$("#tablaBotonesRutina").append("<td><button type='button' class='btn btn-outline-primary btn-lg btn-block' id='guardaRutina' >R<u>e</u>nombrar rutina</button><span> </span></td>");
 					else if(resp == '1')
-						$("#tablaBotonesRutina").append("<td style='width:18%'><button type='button' class='btn btn-outline-primary btn-lg btn-block' id='guardaRutina' ><u>G</u>uardar rutina</button><span> </span></td>");
+						$("#tablaBotonesRutina").append("<td><button type='button' class='btn btn-outline-primary btn-lg btn-block' id='guardaRutina' ><u>G</u>uardar rutina</button><span> </span></td>");
 					$.post("php/LSArch.php",{rutinaIniciada:true}, function(datos){
 						if(datos == '0'){
-							pageKey = true;
-							$("#tablaBotonesRutina").append("<td style='width:2%'></td>");
-							//Detecta el sistema operativo
-							if (navigator.userAgent.indexOf("Linux") != -1)
-								$("#tablaBotonesRutina").append("<td style='width:22%'><button type='button' class='btn btn-success btn-lg btn-block' id='inicioProceso'><u>I</u>niciar proceso</button>");
-							else 
-								$("#tablaBotonesRutina").append("<td style='width:22%'><button type='button' class='btn btn-secondary btn-lg btn-block' id='inicioProceso' disabled><u>I</u>niciar proceso</button>");
+							pageKey = true; 
+							// Sólo con linux manda botón de iniciar rutina
+							if (!( navigator.userAgent.indexOf("Windows") != -1))
+								$("#tablaBotonesRutina").append("<td><button type='button' class='btn btn-success btn-lg btn-block' id='inicioProceso'><u>I</u>niciar proceso</button>");
 							if(!$("#codigoG").length){
 								$("#tablaBotonesRutina").append("<td></td>");
-								$("#tablaBotonesRutina").append("<td style='width:22%'><button type='button' class='btn btn-info btn-lg btn-block' id='codigoG' name='principal'>Código <u>G</u>&nbsp;&nbsp;</button></td></tr>");
+								$("#tablaBotonesRutina").append("<td><button type='button' class='btn btn-info btn-lg btn-block' id='codigoG' name='principal'>Código <u>G</u>&nbsp;&nbsp;</button></td></tr>");
 								$.ajax({
 									type:'POST',
 									url:'php/bd.php',
 									data:{nombreRutina : 1},
 									success: function(elemento){
-										$("#tablaBotonesRutina").append("<a href='./G/"+elemento+".nc' download><button type='button' class='btn btn-md btn-light' id='codigoGlink' hidden></button></a>");
+										$("#tablaBotonesRutina").append("<a href='./G/"+elemento+".nc' download><button type='button' class='btn btn-lg btn-light' id='codigoGlink' hidden></button></a>");
 									}
 								});
 							}
@@ -489,10 +484,9 @@ function tecRap (event) {
 // Activado cada vez que se presiona la barra de navegación
 function barraNav () {
 	navpag = $(this).attr("id");
-	// Mientras se presione pestaña que no sea rutina
-	if (navpag != "principal" && navpag != "logo" && (navpag == actual || (navpag == "joystick" && navigator.userAgent.indexOf("Linux") != -1) || navpag == "login" || navpag == "nums" || navpag == "chips" || (pageKey && navpag != "joystick"))) {
+	// No entra a rutina (pines, retícula, slide ni lavado)
+	if (navpag != "principal" && navpag != "logo" && (navpag == actual || navpag == "login" || navpag == "nums" || navpag == "chips" || navpag == "joystick")) {
 		$("#espera").css({ "width": "100%", "height": "100%", "cursor": "wait" });
-		//Comprueba que la clase de joystick sea verdadera para eliminar la clase active
 		$("#joystick, #login, #nums, #chips").parent().removeClass("active");
 		//Remueve los atributos de active cuando se puede desplazar en cualquier pestaña
 		if (pageKey)
@@ -500,36 +494,31 @@ function barraNav () {
 		$(this).parent().addClass("active");
 		// Genera animación para llevar al principio de la página
 		var arriba = $("#info").parent().offset().top;
-		$("HTML, BODY").animate({ scrollTop: arriba }, 1000);
+		$("HTML, BODY").animate({ scrollTop: arriba }, 500);
 		// Solicita página respectiva y escribe datos recibidos
-		setTimeout(function () {
-			$.post("php/" + navpag + ".php", function (datos) {
-				var indice = buscaIndice(navpag);
-				$("#info").text("Paso: " + indice + " de 4").show();
-				$("#error").empty().hide();
-				$("#pags").html(datos);
-				//Botones de cada página
-				creaBotones(navpag);
-				setTimeout(function () {
-					if (actual == "reticula") {
-						$(".update-db-submit").trigger("click");
-					}
-				}, 50);
-				// Desaparece oscuridad
-				$("#espera").css({ "width": "0%", "height": "0%", "cursor": "default" });
-			}).fail(function (datos) {
-				$("#info, #pags, #botones").empty()
-				$("#info").hide();
-				$("#error").text("No se completó la petición de página").show();
-				console.log("Error ajax por petición de página " + navpag + ":" + JSON.stringify(datos));
-			});
-		}, 50);
+		$.post("php/" + navpag + ".php", function (datos) {
+			var indice = buscaIndice(navpag);
+			$("#info").text("Paso: " + indice + " de 4").show();
+			$("#error").empty().hide();
+			$("#pags").html(datos);
+			//Botones de cada página
+			creaBotones(navpag);
+			if (actual == "reticula")
+				$(".update-db-submit").trigger("click");
+			// Desaparece oscuridad
+			$("#espera").css({ "width": "0%", "height": "0%", "cursor": "default" });
+		}).fail(function (datos) {
+			$("#info, #pags, #botones").empty()
+			$("#info").hide();
+			$("#error").text("No se completó la petición de página").show();
+			console.log("Error ajax por petición de página " + navpag + ":" + JSON.stringify(datos));
+		});
 	}
 	// Recarga página del índice
 	else {
-		//Remueve el atributo de active del joystick o config
+		//Remueve el atributo de active de los demás
 		var joyconf = $("ul").find("li.nav-item.active").children().attr("id");
-		if ((joyconf == "joystick" && navigator.userAgent.indexOf("Linux") != -1) || joyconf == "login" || joyconf == "chips" || joyconf == "nums")
+		if (joyconf == "joystick" || joyconf == "login" || joyconf == "chips" || joyconf == "nums")
 			$("li").removeClass("active");
 		if (navpag == "principal" || navpag == "logo")
 			cargaPrincipal();
@@ -550,21 +539,21 @@ $(document).ready(function () {
 		// Carga si toda la base está bien
 		if (existe) {
 			// Botones de créditos y link a pdf de documentación
-			$(document).on("keydown", tecRap);
 			$("#pantcomp").on("click", pantComp);
 			$("#credsTXT").hide();
 			$("#creds").on("click", function () { $("#credsTXT").toggle("slow") });
 			$("#docref").on("click", function () { window.open("Usuario.pdf") });
 			$("#ifc").on("click", function () { window.open("http://zazil.ibt.unam.mx/umdna/") });
 			$("#git").on("click", function () { window.open("https://github.com/frankfsa6/MicroarreglosDNA") });
-			// Carga página, barra de navegación y eventos delegados (no pueden ir con funciones externas)
+			// Carga página, barra de navegación y eventos delegados
 			cargaPrincipal();
 			$("a").on("click", barraNav);
+			$(document).on("keydown", tecRap);
 			// Movimiento entre páginas siguiente
 			$("#botones").on("click", "#Siguiente", function () {
 				// Genera animación para llevar al principio de la página
 				var arriba = $("#info").parent().offset().top;
-				$("HTML, BODY").animate({ scrollTop: arriba }, 1000);
+				$("HTML, BODY").animate({ scrollTop: arriba }, 500);
 				// Obtiene la pagina actual
 				var actualPage = $("ul").find("li.nav-item.active").children().attr("id")
 				// Obtiene la página siguiente 
@@ -579,33 +568,28 @@ $(document).ready(function () {
 				//Remueve la clase active para quitar el remarcado
 				$("li").removeClass("active");
 				$("li").find("a#" + pages[nextPage]).parent().addClass("active");
-				setTimeout(function () {
-					// Carga la página con un ligero delay para subir los datos a la BD
-					$.post("php/" + pags + ".php", function (datos) {
-						var indice = buscaIndice(pags);
-						$("#info").text("Paso: " + indice + " de 4").show();
-						$("#error").empty().hide();
-						$("#pags").html(datos);
-						//Botones de cada página
-						creaBotones(pags);
-						setTimeout(function () {
-							if (actual == "reticula") {
-								$(".update-db-submit").trigger("click");
-							}
-						}, 100);
-					}).fail(function (datos) {
-						$("#info, #pags, #botones").empty()
-						$("#info").hide();
-						$("#error").text("No se completó la petición de página").show();
-						console.log("Error ajax por petición de página " + pags + ":" + JSON.stringify(datos));
-					});
-				}, 100);
+				// Carga la página y sube los datos a la BD
+				$.post("php/" + pags + ".php", function (datos) {
+					var indice = buscaIndice(pags);
+					$("#info").text("Paso: " + indice + " de 4").show();
+					$("#error").empty().hide();
+					$("#pags").html(datos);
+					//Botones de cada página
+					creaBotones(pags);
+					if (actual == "reticula")
+						$(".update-db-submit").trigger("click");
+				}).fail(function (datos) {
+					$("#info, #pags, #botones").empty()
+					$("#info").hide();
+					$("#error").text("No se completó la petición de página").show();
+					console.log("Error ajax por petición de página " + pags + ":" + JSON.stringify(datos));
+				});
 			});
 			// Movimiento entre páginas anterior
 			$("#botones").on("click", "#Anterior", function () {
 				// Genera animación para llevar al principio de la página
 				var arriba = $("#info").parent().offset().top;
-				$("HTML, BODY").animate({ scrollTop: arriba }, 1000);
+				$("HTML, BODY").animate({ scrollTop: arriba }, 500);
 				// Verifica la página en la que se enceuntra y carga la siguiente
 				var actualPage = $("ul").find("li.nav-item.active").children().attr("id")
 				var nextPage = $.inArray(actualPage, pages) - 1;
@@ -616,28 +600,22 @@ $(document).ready(function () {
 				// Remueve el atributo active para colocarlo a la página a cargar
 				$("li").removeClass("active");
 				$("li").find("a#" + pages[nextPage]).parent().addClass("active");
-				// Genera un ligero delay para poder subir los datos a la BD
-				setTimeout(function () {
-					// Carga la página anterior
-					$.post("php/" + pags + ".php", function (datos) {
-						var indice = buscaIndice(pags);
-						$("#info").text("Paso: " + indice + " de 4").show();
-						$("#error").empty().hide();
-						$("#pags").html(datos);
-						//Botones de cada página
-						creaBotones(pags);
-						setTimeout(function () {
-							if (actual == "reticula") {
-								$(".update-db-submit").trigger("click");
-							}
-						}, 50);
-					}).fail(function (datos) {
-						$("#info, #pags, #botones").empty()
-						$("#info").hide();
-						$("#error").text("No se completó la petición de página").show();
-						console.log("Error ajax por petición de página " + pags + ":" + JSON.stringify(datos));
-					});
-				}, 50);
+				// Carga la página anterior
+				$.post("php/" + pags + ".php", function (datos) {
+					var indice = buscaIndice(pags);
+					$("#info").text("Paso: " + indice + " de 4").show();
+					$("#error").empty().hide();
+					$("#pags").html(datos);
+					//Botones de cada página
+					creaBotones(pags);
+					if (actual == "reticula") 
+						$(".update-db-submit").trigger("click");
+				}).fail(function (datos) {
+					$("#info, #pags, #botones").empty()
+					$("#info").hide();
+					$("#error").text("No se completó la petición de página").show();
+					console.log("Error ajax por petición de página " + pags + ":" + JSON.stringify(datos));
+				});
 			});
 			// LLeva a la pestaña de pines y crea el ID, manda un popup preguntando si se desea continuar sin guardar
 			$("#botones").on("click", "#nuevaRutina", function () {
@@ -664,7 +642,6 @@ $(document).ready(function () {
 						}
 						else
 							cargaPrincipal();
-						//$("#error").text("No se pudo iniciar el servicio").show();
 					}
 				});
 			});
@@ -834,7 +811,6 @@ $(document).ready(function () {
 							else {
 								//recarga la ventana principal en caso de haber borrado
 								cargaPrincipal();
-								//pageKey = false;
 							}
 						}
 					}
@@ -1113,13 +1089,11 @@ $(document).ready(function () {
 				// Acciona bomba
 				$.post("php/joysMotores.php", { "popup": tipoBom });
 			});
-		}
-		else {
-			$("#info").empty().hide();
-			$("#error").text("No se puede conectar a la base de datos del programa").show();
+			// Activa botones
+			$("#logo").trigger("click");
 		}
 	}).fail(function () {
 		$("#info").empty().hide();
-		$("#error").text("Error interno con el servidor. Verifique su funcionamiento").show();
+		$("#error").text("Error interno con el servidor y la base de datos. Verifique su funcionamiento").show();
 	});
 });
